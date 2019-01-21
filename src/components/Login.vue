@@ -1,6 +1,5 @@
 <template>
 	<div id="login">
-
 		<div class="panel">
 			<div class='login-texts'>
 				
