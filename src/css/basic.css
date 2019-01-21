@@ -1,0 +1,257 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+ul{
+  list-style-type: none;
+}
+
+li {
+	list-style-type: none;
+}
+
+a {
+	text-decoration: none;
+}
+
+* {
+  font-family: "Microsoft YaHei";
+}
+
+select {
+  border-color: #d7d7d7;
+}
+
+
+/* operations text buttons */
+.op{
+    position: relative;
+    bottom: 5px;
+    font-size: 14px;
+    /*color: #333333;*/
+ }    
+
+.selectclass {
+  height: 60px;
+  background: #f7f7f7;
+  /*must set this*/
+  overflow: hidden;
+  width: 100%;
+}
+
+.pagetitle {
+  font-weight: bold;
+  font-size: 20px;
+  color: #333333;
+  text-align: left;
+}
+
+/*element ui*/
+.el-main{
+	/*background: #f7f7f7;*/
+  border: 60px solid #f0f2f5;
+}
+
+.el-input__inner{
+  height: 30px;
+  width: 190px;
+  border-radius: 0;
+}
+
+.searchinput {
+  padding-left: 20px;
+  border: 0;
+  background: #f7f7f7;
+  width: 220px;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  -webkit-border-top-left-radius: 20px;
+  -webkit-border-bottom-left-radius: 20px;
+  border-right: none;
+}
+
+.searchinput:focus {
+  border: 0;
+  outline: none;
+}
+
+/*
+.el-table {
+  border-left: 1px solid #d7d7d7;
+  border-right: 1px solid #d7d7d7;
+}*/
+
+.el-table td {
+  height: 40px;
+  /*text-overflow: ellipsis !important;*/
+  text-align: center;
+}
+
+.el-table__row .cell {
+  line-height: 20px;
+  font-size: 14px;
+  height: 19px;
+  /*text-align: center;*/
+}
+
+.el-button {
+	line-height: 0;
+}
+
+/* Table Head */
+.el-table th{
+  background:#f7f7f7;
+  font-size: 14px;
+  color: black;
+  line-height: 0px;
+  text-align: center;
+}
+
+.el-table__header .cell {
+  line-height: 20px;
+  height: 18px;
+  /*text-align: center;*/
+}
+
+.el-table__body tr.current-row>td {
+  background: #f7f8fc !important;
+}
+
+/*添加按钮颜色*/
+.addbtn, .addbtn:hover, .addbtn:active, .addbtn:focus {
+  background: #33577b;
+  color: #ffffff;
+  border-color: #33577b;
+} 
+
+.addbtn {
+  font-size: 14px;
+  font-family: "Microsoft YaHei";
+  width: 97px;
+  height: 34px;
+  margin: 0 auto;
+}
+
+/*搜索框样式*/
+.searchwindow {
+   display: flex;
+   float: right; 
+   margin: 20px;
+}
+
+.searchbtn {
+  flex-basis: 40px;
+  float: left;
+  width: 30px; 
+  height: 30px; 
+  background: #f7f7f7; 
+  top: 218px;
+  border: 1px solid #d7d7d7;
+  cursor: pointer;
+  border: none;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  -webkit-border-top-right-radius: 20px;
+  -webkit-border-bottom-right-radius: 20px;
+}
+
+/*radio style*/
+input[type="radio"] {
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+}
+
+/*
+input[type="radio"] + label::before {
+  content: '\a0';
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 18px;
+  width: 1em;
+  height: 1em;
+  margin-right: .4em;
+  border-radius: 50%;
+  border: 1px solid #01cd78;
+  text-indent: .15em;
+  line-height: 1;
+}*/
+
+input[type="radio"] + label::before {
+  content: '';
+  background: #ffffff;
+  border: 2px solid #c2c7cb;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  float: left;
+  margin-right: 6px;
+  margin-top: 2px;
+  box-sizing: border-box;
+}
+
+input[type="radio"]:checked + label::before {
+  border: 1px solid #0099ff;
+  background-color: #0099ff;
+  background-clip: content-box;
+  box-sizing: border-box;
+  padding: 4px;
+}
+
+#obsolete + label::before {
+  margin-left: 20px;
+}
+
+.goback, .goback:hover, .goback:active, .goback:focus{
+  color: white;
+  background: #999999;
+  border-color: #999999;
+  width: 70px;
+  height: 35px;
+}
+
+.confirm, .confirm:hover, .confirm:active, .confirm:focus{
+  background: #0099ff;
+    color: white;
+    border-color: #0099ff;
+    width: 70px;
+    height: 35px;
+}
+
+.el-icon-search {
+  line-height: 30px;
+}
+
+.longinput {
+  width: 283px;
+  height: 30px;
+  border: 1px solid #d7d7d7;
+  padding-left: 15px;
+}
+
+/*Records*/
+.el-progress--circle .el-progress__text {
+  font-weight: bold;
+  color: #333333;
+  /*overwrite default inline style 16px*/
+  font-size: 30px !important;
+}
+
+.el-progress-bar__inner, .el-progress-bar__outer {
+  border-radius: 0;
+}
+
+.el-progress-bar__innerText {
+  opacity: 0;
+}
+
+.el-textarea__inner {
+  width: 576px;
+  height: 140px;
+}
+
+
+
+
+
+
