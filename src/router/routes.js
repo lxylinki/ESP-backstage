@@ -14,6 +14,11 @@ const AdminEdit = ()=> import('@/components/usermanage/admin/AdminEdit.vue');
 
 const School = ()=> import('@/components/usermanage/schoolmanage/School.vue');
 const SchoolAdd = ()=> import('@/components/usermanage/schoolmanage/SchoolAdd.vue');
+const SchoolEdit = ()=> import('@/components/usermanage/schoolmanage/SchoolEdit.vue');
+
+const SchAdmin = ()=> import('@/components/usermanage/schooladmin/SchoolAdmin.vue');
+const SchAdminAdd = ()=> import('@/components/usermanage/schooladmin/SchAdminAdd.vue');
+const SchAdminEdit = ()=> import('@/components/usermanage/schooladmin/SchAdminEdit.vue');
 
 //2. set route paths
 const myRoutes = [
@@ -29,9 +34,13 @@ const myRoutes = [
 
 	 	{path: '/school', meta: {title: '学校管理'}, component: School},
 	 	{path: '/schooladd', meta: {title: '学校管理'}, component: SchoolAdd},
+	 	{path: '/schooledit', meta: {title: '学校管理'}, component: SchoolEdit},
+
+	 	{path: '/schooladmin', meta: {title: '校管理员'}, component: SchAdmin},
+	 	{path: '/schadminadd', meta: {title: '校管理员'}, component: SchAdminAdd},
+	 	{path: '/schadminedit', meta: {title: '校管理员'}, component: SchAdminEdit}
 	 ]
 	},
-
 	{path: '*', redirect: '/login'}	/*default when no match*/
 ];
 

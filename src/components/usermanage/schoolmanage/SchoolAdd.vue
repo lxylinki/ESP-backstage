@@ -43,6 +43,7 @@
 	export default {
 		data(){
 			return {
+				mod_name: 'school',
 				schname: '',
 				alias: '',
 				visits: 0
@@ -51,6 +52,26 @@
 		methods: {
 			goBack(){
 				this.$router.go(-1);
+			},
+
+			addCreate(){
+				var api = global_.school_create;
+				let data = {
+					'name': this.schname,
+					'alias': this.alias,
+					'login_num': this.visits
+				}
+				
+				this.$http.post(api, data).then((resp)=>{
+					Utils.lalert('创建学校成功');
+					this.$store.commit('sign', this.mod_name);
+					this.$store.commit('incRowNumAfter', 1);
+					this.$router.go(-1);
+
+				}, (err)=>{
+					Utils.lalert('创建学校失败');
+					console.log(err);
+				});
 			}
 		}
 	}

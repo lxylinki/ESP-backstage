@@ -140,9 +140,16 @@
 		},
 
 		methods: {
+			invokeSearch(e){
+				if(e.keyCode === 13) {
+					this.reqSchList(this.search_state,'', 1);
+				}
+			},
+
 			addSchool(){
 				this.$router.push('/schooladd');
 			},
+			
 			reqSchList(name, alias, page){
 				var api = global_.school_list
 						+ '?page=' 
@@ -158,28 +165,96 @@
 				};
 
 				this.$http.post(api, data).then((resp)=>{
+			    	this.$store.commit('sign', this.mod_name);
+			    	this.$store.commit('setRowNumBefore', resp.body.total);
+			    	this.$store.commit('setRowNumAfter', resp.body.total);
+			    	this.$store.commit('setRowsPerPage', this.rowsPerPage);
+
 					this.tableData = resp.body._list;
 					this.totalPage = resp.body.total_page;
 					this.filterData(page);
+					layer.close(this.loading);
 
 				}, (err)=>{
 					Utils.lalert('请求学校列表失败');
+					layer.close(this.loading);
 					console.log(err);
 				});			
 			},
-
+			pageSizeChange(){
+				this.reqSchList(this.search_state,'',1);
+			},
 			filterData(page){
 				this.list = this.tableData;
 				this.curPage = page;
 			},
 
 			loadPage(page){
-				this.reqSchList('', '', page);
+				this.reqSchList(this.search_state, '', page);
+			},
+
+			editRow(row) {
+				this.$store.commit('sign', this.mod_name);
+				this.$store.commit('setEdit', true);
+				this.$store.commit('pickRow', row);
+				this.$store.commit('setCurPage', this.curPage);
+				this.$store.commit('setCurSearch', this.search_state);
+				this.$router.push('/schooledit');				
+			},
+
+			deleteRow(row) {
+				var _this = this;
+				Utils.lconfirm("确定删除学校？", function(){_this.delSchool(row)});
+			},
+
+			delSchool(row) {
+				var api = global_.school_delete;
+				let data = {
+					'id': row.id
+				}
+				this.$http.post(api, data).then((resp)=>{
+					Utils.lalert('删除学校成功');
+					this.loadPage(this.curPage);
+
+				}, (err)=>{
+					Utils.lalert('删除学校失败');
+					console.log(err);
+				});
 			}
 		},
 
+		beforeMount(){
+			this.loading = layer.load(1, {shade: false});
+		},
+
 		mounted(){
-			this.reqSchList('','',1);
+			// get saved state
+			var before = this.$store.state.row_num_before;
+			var after = this.$store.state.row_num_after;
+			var pagesize = this.$store.state.rows_per_page;
+			var keyword = this.$store.state.current_search;
+			var curpage = this.$store.state.current_page;
+			var name = this.$store.state.last_author;
+
+			if (pagesize > 0) {
+				this.rowsPerPage = pagesize;
+			}
+			if (keyword) {
+				this.search_state = keyword;
+			}
+
+			//item added: default append to list end
+			if(after > before) {
+				this.curPage = Math.ceil(after / this.rowsPerPage);
+			} else if(curpage > 0) {
+				this.curPage = curpage;
+			} 
+			//if state is saved by other module: init
+			if(!(name === this.mod_name)) {
+				this.curPage = 1;
+			}
+			
+			this.reqSchList(this.search_state,'', this.curPage);
 		}
 	}
 </script>

@@ -67,7 +67,7 @@
 					
 					this.$http.post(api, data).then((resp)=>{
 						//console.log(resp);
-						this.$router.push('/admin');
+						this.$router.push('/school');
 					}, (err)=>{
 						Utils.lalert('登陆失败');
 						console.log(err);

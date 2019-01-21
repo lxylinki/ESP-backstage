@@ -114,7 +114,7 @@
 	}
 </script>
 
-<style type="text/css">
+<style type="text/css" scoped>
 
 .texts {
 	width: 430px;

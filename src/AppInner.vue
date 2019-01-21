@@ -79,7 +79,7 @@
 	            			},
 	            			{
 	            				name: '校管理员',
-	            				url: "",
+	            				url: "/schooladmin",
 	            				isSubShow: false,
 	            				subItems:[]
 	            			}

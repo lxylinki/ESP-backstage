@@ -113,7 +113,6 @@
 	margin-left: 114px;
 }
 
-
 .redalert {
 	color: red;
 }
@@ -130,6 +129,10 @@
 .statustitle {
 	margin-left: 60px;
 	margin-right: 13px;
+}
+
+#obsolete + label::before {
+  margin-left: 20px;
 }
 
 </style>

@@ -33,4 +33,36 @@ export default {
 			});			
 		});
 	},
+
+	reqSchoolList(name, alias, page){
+		return new Promise((resolve, reject)=>{
+	    	var school_api = global_.school_list
+	     				  + '?page='
+	     				  + page;
+
+	     	let req_data = {
+	     		"search": {
+	     			"name": name,
+	     			"alias": alias
+	     		}
+	     	};
+
+	     	this.$http.post(school_api, req_data).then((resp)=>{
+	     		var total_school = resp.body.total;
+	     		var full_list_api = school_api + '&pagesize='+ total_school;
+
+	     		this.$http.post(full_list_api, req_data).then((resp)=>{
+	     			resolve(resp);
+	     			
+	     		}, (err)=>{
+		     		Utils.lalert('请求学校列表失败');
+		     		console.log(err);
+	     		});
+
+	     	}, (err)=>{
+	     		Utils.lalert('请求学校列表失败');
+	     		console.log(err);
+	     	});	     	 			
+		});
+	}
 }

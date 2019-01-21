@@ -12,6 +12,13 @@
 
 	const school_list = url_prefix + 'user/school/search';
 	const school_create = url_prefix + 'user/school/create';
+	const school_update = url_prefix + 'user/school/update';
+	const school_delete = url_prefix + 'user/school/delete';
+
+	const schadmin_list = url_prefix + 'user/school-admin/search';
+	const schadmin_create = url_prefix + 'user/school-admin/create';
+	const schadmin_update = url_prefix + 'user/school-admin/update';
+
 
 	export default {
 		url_prefix,
@@ -26,5 +33,11 @@
 		admin_delete,
 
 		school_list,
-		school_create
+		school_create,
+		school_update,
+		school_delete,
+
+		schadmin_list,
+		schadmin_create,
+		schadmin_update
 	}

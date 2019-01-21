@@ -198,9 +198,6 @@ input[type="radio"]:checked + label::before {
   padding: 4px;
 }
 
-#obsolete + label::before {
-  margin-left: 20px;
-}
 
 .goback, .goback:hover, .goback:active, .goback:focus{
   color: white;

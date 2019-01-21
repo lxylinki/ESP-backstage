@@ -1,14 +1,14 @@
 <template>
-	<div id="admin">
+	<div id="schooladmin">
 		<div style="width: 100%; height: 35px;">
 			<span style="color: #1890ff; font-weight: bold">|</span> 
-			后台用户
+			校管理员
 		</div>
 
 		<div class="selectclass">
 
 			<div class="addbtndiv">
-				<el-button class="addbtn" v-on:click="addAdmin()">添加</el-button>
+				<el-button class="addbtn" v-on:click="addSchAdmin()">添加</el-button>
 			</div>
 
 			<div class="searchwindow admin-searchwindow">
@@ -41,26 +41,29 @@
 		  <el-table
 		    :data="list"
 		    style="width: 100%;">
+
+		    <el-table-column
+		      prop="user_id"
+		      label="ID"
+		      min-width="100">
+		    </el-table-column>
+		    
+		    <el-table-column
+		      prop="school_name"
+		      label="学校名称"
+		      min-width="100">
+		    </el-table-column>
+		    		    
 		    <el-table-column
 		      prop="username"
 		      label="用户名"
 		      min-width="100">
 		    </el-table-column>
-		    
+
 		    <el-table-column
 		      prop="realname"
 		      label="真实姓名"
 		      min-width="100">
-		    </el-table-column>
-		    		    
-		    <el-table-column
-		      prop=""
-		      label="状态"
-		      min-width="100">
-		      <template slot-scope="scope">
-		      	<span v-if="scope.row.status == 1">启用</span>
-		      	<span class="notinuse" v-if="scope.row.status == 0">失效</span>
-		      </template>
 		    </el-table-column>
 
 		    <el-table-column
@@ -73,11 +76,10 @@
 		      	<el-button  class="op" type="text" @click="editRow(scope.row)">
 		      		<i class="iconfont">&#xe61a;</i>编辑
 		      	</el-button>
-		      	<!--<el-button type="text" @click="tableData.splice(scope.$index, 1)">-->
-		      	<!--<el-button class="op" type="text" @click="delRow(scope.$index)">-->
+		      	<!--
 		      	<el-button class="op" type="text" @click="deleteRow(scope.row)">
 		      		<i class="iconfont">&#xe7e0;</i>删除
-		      	</el-button>
+		      	</el-button> -->
 
 		      </template>
 		    </el-table-column>
@@ -90,8 +92,7 @@
    		<Pager 	v-bind:current_page='curPage' 
    				v-bind:pages='totalPage'
    		       	@setPage='loadPage'
-   		       	></Pager>
-
+   		       	></Pager>		
 	</div>
 </template>
 
@@ -107,7 +108,7 @@
 
 		data(){
 			return {
-				mod_name: 'admin',
+				mod_name: 'schadmin',
 				search_state: '',
 				list: [],
 				tableData: [],
@@ -147,63 +148,8 @@
 				}
 			},
 
-			addAdmin(){
-				this.$router.push('/adminadd');
-			},
-
-			deleteRow(row){
-				var _this = this;
-				Utils.lconfirm("确定删除后台用户？", function(){_this.delAdmin(row)});				
-			},
-
-			delAdmin(row){
-				var api = global_.admin_delete;
-				let data = {
-					'id': row.id
-				}
-				this.$http.post(api, data).then((resp)=>{
-					Utils.lalert('删除后台用户成功');
-					this.loadPage(this.curPage);
-
-				}, (err)=>{
-					Utils.lalert('删除后台用户失败');
-					console.log(err);
-				});
-			},
-
-			reqAdmList(username, realname, status, page){
-				var api = global_.admin_list
-						+ '?page=' 
-						+ page 
-						+ '&pagesize=' 
-						+ this.rowsPerPage;
-
-				let data = {
-					'status': status,
-					'search': {
-						'username': username,
-						'realname': realname
-					}
-				}
-
-				this.$http.post(api, data).then((resp)=>{
-			    	this.$store.commit('sign', this.mod_name);
-			    	this.$store.commit('setRowNumBefore', resp.body.total);
-			    	this.$store.commit('setRowNumAfter', resp.body.total);
-			    	this.$store.commit('setRowsPerPage', this.rowsPerPage);
-
-					//console.log(resp);
-					this.tableData = resp.body._list;
-					this.totalPage = resp.body.total_page;
-					this.filterData(page);
-					layer.close(this.loading);
-
-				}, (err)=>{
-					Utils.lalert('请求后台用户列表失败');
-					layer.close(this.loading);
-					console.log(err);
-				})
-
+			addSchAdmin(){
+				this.$router.push('/schadminadd');
 			},
 
 			editRow(row){
@@ -212,62 +158,82 @@
 				this.$store.commit('pickRow', row);
 				this.$store.commit('setCurPage', this.curPage);
 				this.$store.commit('setCurSearch', this.search_state);
-				this.$router.push('/adminedit');				
+				this.$router.push('/schadminedit');					
 			},
 
-			searchReq(){
-				this.reqAdmList('', this.search_state, null, 1);
+			reqMngList(usr_name, real_name, sch_name, page){
+				return new Promise((resolve, reject)=>{
+					var api = global_.schadmin_list
+							 + '?page=' 
+							 + page 
+							 + '&pagesize=' 
+							 + this.rowsPerPage;
+					// status null: all
+					let data = {
+						'status': this.status_value,
+						'gender': this.gender,
+						'search': {
+							'username': usr_name,
+							'realname': real_name,
+							'school_name':sch_name
+						}
+					}
+					this.$http.post(api, data).then((resp)=>{
+						//console.log(resp);
+						layer.close(this.loading);
+						resolve(resp);
+						
+					},(err)=>{
+						Utils.lalert('请求校管理员列表失败');
+						console.log(err);
+						layer.close(this.loading);
+					});
+				});
 			},
+
+			reqData(usr_name, real_name, sch_name, page){
+				asyncReq.call(this);
+				async function asyncReq(){
+					let resp = await this.reqMngList(usr_name, real_name, sch_name, page);
+
+					this.$store.commit('sign', this.mod_name);
+			    	this.$store.commit('setRowNumBefore', resp.body.total);
+			    	this.$store.commit('setRowNumAfter', resp.body.total);
+			    	this.$store.commit('setRowsPerPage', this.rowsPerPage);
+
+					this.tableData = resp.body._list;
+					this.totalPage = resp.body.total_page;
+					this.filterData(page);
+				}
+			},
+
+		    searchReq() {
+		    	this.reqData('', this.search_state, '', 1);
+		    },
+
+		    pageSizeChange(){
+		    	this.reqData('', this.search_state, '', 1);
+		    },
+
+		    loadPage(page) {
+		    	this.reqData('', this.search_state, '', page);
+		    },
 
 			filterData(page) {
 				this.list = this.tableData;
 				this.curPage = page;
 			},
-
-			loadPage(page) {
-				this.reqAdmList('', this.search_state, null, page);
-			},
-
-			pageSizeChange(){
-				this.reqAdmList('', this.search_state, null, 1);
-			}
 		},
 		beforeMount(){
 			this.loading = layer.load(1, {shade: false});
 		},
 		mounted(){
-			// get saved state
-			var before = this.$store.state.row_num_before;
-			var after = this.$store.state.row_num_after;
-			var pagesize = this.$store.state.rows_per_page;
-			var keyword = this.$store.state.current_search;
-			var curpage = this.$store.state.current_page;
-			var name = this.$store.state.last_author;
-
-			if (pagesize > 0) {
-				this.rowsPerPage = pagesize;
-			}
-			if (keyword) {
-				this.search_state = keyword;
-			}
-
-			//item added: default append to list end
-			if(after > before) {
-				this.curPage = Math.ceil(after / this.rowsPerPage);	
-			} else if(curpage > 0) {
-				this.curPage = curpage;
-			} 
-			//if state is saved by other module: init
-			if(!(name === this.mod_name)) {
-				this.curPage = 1;
-			}
-			this.reqAdmList('', this.search_state, null, this.curPage);
+			this.reqData('', '', '', this.curPage);
 		}
 	}
 </script>
 
 <style type="text/css" scoped>
-/*overwrite global setting*/
 .selectclass {
 	background: white;
 }
@@ -286,5 +252,4 @@
 .notinuse {
 	color: #a1a1a1;
 }
-
 </style>
