@@ -20,6 +20,11 @@ const SchAdmin = ()=> import('@/components/usermanage/schooladmin/SchoolAdmin.vu
 const SchAdminAdd = ()=> import('@/components/usermanage/schooladmin/SchAdminAdd.vue');
 const SchAdminEdit = ()=> import('@/components/usermanage/schooladmin/SchAdminEdit.vue');
 
+const ExpCatag = ()=> import('@/components/expmanage/expcatag/ExpCatagory.vue');
+const ExpCatagAdd = ()=> import('@/components/expmanage/expcatag/ExpCatagAdd.vue');
+
+const ExpList = ()=> import('@/components/expmanage/explist/ExpList.vue');
+
 //2. set route paths
 const myRoutes = [
 	{path: '/login', meta: {title: '登陆'}, component: Login},
@@ -38,7 +43,12 @@ const myRoutes = [
 
 	 	{path: '/schooladmin', meta: {title: '校管理员'}, component: SchAdmin},
 	 	{path: '/schadminadd', meta: {title: '校管理员'}, component: SchAdminAdd},
-	 	{path: '/schadminedit', meta: {title: '校管理员'}, component: SchAdminEdit}
+	 	{path: '/schadminedit', meta: {title: '校管理员'}, component: SchAdminEdit},
+
+	 	{path: '/expcatag', meta: {title: '实验管理'}, component: ExpCatag},
+	 	{path: '/expcatagadd', meta: {title: '实验管理'}, component: ExpCatagAdd},
+
+	 	{path: '/explist', meta: {title: '实验管理'}, component: ExpList}
 	 ]
 	},
 	{path: '*', redirect: '/login'}	/*default when no match*/

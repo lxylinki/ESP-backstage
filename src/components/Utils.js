@@ -11,6 +11,27 @@ export default {
 		layer.confirm(text, {title:'提示', area:['280px','190px']}, func);		
 	},
 
+	convTime(ntime) {
+		function add0(m){
+			return m<10?'0'+m:m 
+		}
+		var unixTime = new Date(ntime * 1000);
+		
+		var y = unixTime.getFullYear();
+		var m = unixTime.getMonth()+1;
+		var d = unixTime.getDate();
+		var h = unixTime.getHours();
+		var mn = unixTime.getMinutes();
+
+		var commonTime = y + '-'
+		               + add0(m) + '-'
+		               + add0(d) + ' '
+		               + add0(h) + ':' 
+		               + add0(mn);
+		               
+		return commonTime;
+	},
+
 	encrypt(pswd){
 		return new Promise((resolve, reject)=>{
 			let nonce, pk, ts, encrypt, epassword;

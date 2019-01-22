@@ -89,7 +89,20 @@
             			name: '实验管理',
             			url:"",
             			isSubShow: false,
-            			subItems:[]
+            			subItems:[
+            				{
+            					name: '实验分类',
+            					url: "/expcatag",
+            					isSubShow: false,
+            					subItems:[]
+            				},
+            				{
+            					name: '实验列表',
+            					url: "/explist",
+            					isSubShow: false,
+            					subItems:[]
+            				}
+            			]
             		},
             		{
             			name: '试题管理',

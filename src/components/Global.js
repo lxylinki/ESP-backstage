@@ -19,6 +19,9 @@
 	const schadmin_create = url_prefix + 'user/school-admin/create';
 	const schadmin_update = url_prefix + 'user/school-admin/update';
 
+	//const expcatag_list = url_prefix + 'esp_admin/experiment-category/admin-list';
+	const expcatag_list = url_prefix + 'esp_admin/experiment-category/list';
+
 
 	export default {
 		url_prefix,
@@ -39,5 +42,7 @@
 
 		schadmin_list,
 		schadmin_create,
-		schadmin_update
+		schadmin_update,
+
+		expcatag_list
 	}
