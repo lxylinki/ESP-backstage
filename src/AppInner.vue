@@ -5,7 +5,7 @@
 				<el-header style="background: #20222d; height: 100px; overflow: hidden;">
 					<img src="@/assets/esplogo.png" class="logo">
 					
-					<div class="welcometext">{{hellotext}}： 后台用户</div>
+					<div class="welcometext">{{hellotext}}： 超级管理员</div>
 
 					<div class='ctrl'>
 						<div class="setting">

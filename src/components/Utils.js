@@ -28,7 +28,7 @@ export default {
 		               + add0(d) + ' '
 		               + add0(h) + ':' 
 		               + add0(mn);
-		               
+		
 		return commonTime;
 	},
 

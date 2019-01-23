@@ -108,7 +108,7 @@
 
 		data(){
 			return {
-				mod_name: 'schadmin',
+				mod_name: 'sch-admin',
 				search_state: '',
 				list: [],
 				tableData: [],

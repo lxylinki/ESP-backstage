@@ -30,7 +30,7 @@
 			return {
 				catag_name: '',
 				id: '',
-				mod_name: 'expcatag'
+				mod_name: 'exp-catag'
 			}
 		},
 		methods: {

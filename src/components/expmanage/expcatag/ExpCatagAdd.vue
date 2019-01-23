@@ -71,7 +71,7 @@
 		store: store,
 		data(){
 			return {
-				mod_name: 'expcatag',
+				mod_name: 'exp-catag',
 				catag_name: '',
 				parent_value: '',
 				level_value: '',

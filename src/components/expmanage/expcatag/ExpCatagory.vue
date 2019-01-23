@@ -138,7 +138,7 @@
 				curPage: 1,
 				totalRow: 0,
 				rowsPerPage: 5,
-				mod_name: 'expcatag',
+				mod_name: 'exp-catag',
 				loading: null,
 				row_nums: [
 					{

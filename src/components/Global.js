@@ -28,6 +28,7 @@
 	const exp_list = url_prefix + 'esp_admin/experiment/list';
 
 
+
 	export default {
 		url_prefix,
 		password_encrypt,
@@ -52,5 +53,7 @@
 		expcatag_list,
 		expcatag_create,
 		expcatag_update,
-		expcatag_delete
+		expcatag_delete,
+
+		exp_list
 	}

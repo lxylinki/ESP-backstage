@@ -102,7 +102,7 @@
 				status: 0,
 				gender: 1,
 				school_options:[],
-				mod_name: 'schadmin',
+				mod_name: 'sch-admin',
 				school_value: ''
 			}
 		},
