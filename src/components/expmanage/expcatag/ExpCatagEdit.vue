@@ -29,7 +29,8 @@
 		data(){
 			return {
 				catag_name: '',
-				id: ''
+				id: '',
+				mod_name: 'expcatag'
 			}
 		},
 		methods: {

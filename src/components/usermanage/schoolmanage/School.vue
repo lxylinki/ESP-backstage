@@ -185,7 +185,6 @@
 				this.reqSchList(this.search_state,'',1);
 			},
 			filterData(page){
-				alert(page);
 				this.list = this.tableData;
 				this.curPage = page;
 			},
@@ -229,30 +228,30 @@
 		},
 
 		mounted(){
-			// get saved state
-			var before = this.$store.state.row_num_before;
-			var after = this.$store.state.row_num_after;
-			var pagesize = this.$store.state.rows_per_page;
-			var keyword = this.$store.state.current_search;
-			var curpage = this.$store.state.current_page;
 			var name = this.$store.state.last_author;
 
-			if (pagesize > 0) {
-				this.rowsPerPage = pagesize;
-			}
-			if (keyword) {
-				this.search_state = keyword;
-			}
+			if(name === this.mod_name) {
+				var before = this.$store.state.row_num_before,
+					after = this.$store.state.row_num_after,
+					pagesize = this.$store.state.rows_per_page,
+					keyword = this.$store.state.current_search,
+					curpage = this.$store.state.current_page;
 
-			//item added: default append to list end
-			if(after > before) {
-				this.curPage = Math.ceil(after / this.rowsPerPage);
-			} else if(curpage > 0) {
-				this.curPage = curpage;
-			} 
-			//if state is saved by other module: init
-			if(!(name === this.mod_name)) {
-				this.curPage = 1;
+				if (pagesize > 0) {
+					this.rowsPerPage = pagesize;
+				}
+
+				if (keyword) {
+					this.search_state = keyword;
+				}
+
+				//item added: default append to list end
+				if(after > before) {
+					this.curPage = Math.ceil(after / this.rowsPerPage);	
+
+				} else if(curpage > 0) {
+					this.curPage = curpage;
+				} 				
 			}
 			
 			this.reqSchList(this.search_state,'', this.curPage);

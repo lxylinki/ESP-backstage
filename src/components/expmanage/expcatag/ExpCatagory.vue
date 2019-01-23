@@ -99,17 +99,19 @@
 			</thead>
 		</table>
 
+		<!--<table style="table-layout: fixed; border-collapse:collapse;">-->
 		<RecTable v-bind:item_list="list"
 				  v-bind:mod_name="mod_name"
 				  v-bind:current_page="curPage"
 				  v-bind:search_state="search_state"
 				  @refreshPage='reqCatagList'></RecTable>
-
+			
+		<!--</table>-->
+	
 		<div style="height: 40px;"></div>
    		<Pager 	v-bind:current_page='curPage' 
    				v-bind:pages='totalPage'
-   		       	@setPage='filterSearchData'
-   		       	></Pager>	
+   		       	@setPage='filterSearchData'></Pager>	
 
 	</div>
 </template>
@@ -181,6 +183,11 @@
 					this.tableData = resp.body;
 					this.totalRow = resp.body.length;
 
+					this.$store.commit('sign', this.mod_name);
+			    	this.$store.commit('setRowNumBefore', this.totalRow);
+			    	this.$store.commit('setRowNumAfter', this.totalRow);
+			    	this.$store.commit('setRowsPerPage', this.rowsPerPage);
+
 					//this.tableData[1].sub_categories[0].created_at = 1548148931;
 					//this.tableData[1].sub_categories[0].updated_at = 1548149001;
 					/*
@@ -251,7 +258,35 @@
 		},
 
 		mounted(){
-			this.reqCatagList(1);
+			var name = this.$store.state.last_author;
+			console.log(name);
+
+			if(name === this.mod_name) {
+				var before = this.$store.state.row_num_before,
+					after = this.$store.state.row_num_after,
+					pagesize = this.$store.state.rows_per_page,
+					keyword = this.$store.state.current_search,
+					curpage = this.$store.state.current_page;
+				
+
+				if (pagesize > 0) {
+					this.rowsPerPage = pagesize;
+				}
+
+				if (keyword) {
+					this.search_state = keyword;
+				}
+
+				//item added: default append to list end
+				if(after > before) {
+					this.curPage = Math.ceil(after / this.rowsPerPage);	
+
+				} else if(curpage > 0) {
+					this.curPage = curpage;
+				} 				
+			}
+
+			this.reqCatagList(this.curPage);
 		}
 	}
 </script>

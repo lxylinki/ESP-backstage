@@ -1,6 +1,6 @@
 <template>
 	<div class="rectablerows">
-			<li class="recrow" v-for="(item, idx) in item_list">
+			<tr class="recrow" v-for="(item, idx) in item_list">
 				<div class="recrowcontent" >
 					<td class="name"><div class="nametext">{{item.name}}</div></td>
 					<td class="level">{{item.level}}</td> 
@@ -19,7 +19,7 @@
 				<RecTable v-if="item.hasOwnProperty('sub_categories')" 
 						  v-bind:item_list="item.sub_categories">
 				</RecTable>
-			</li>	
+			</tr>	
 	</div>
 </template>
 
@@ -76,19 +76,18 @@
 }
 
 td {
-	table-layout:fixed;
 	height: 42px;
 	text-align: center;
 	vertical-align: middle;
-	text-overflow: ellipsis !important;
-	overflow:hidden; 
-	white-space:nowrap;
 }
 
 .nametext {
 	width: 100px;
 	margin: 0 auto;
 	text-align: left;
+	text-overflow: ellipsis;
+	overflow: hidden; 
+	white-space: nowrap;
 }
 
 .edit, .delete {
@@ -114,9 +113,11 @@ td {
 .operation {
 	width: 200px;
 }
+
 .recrowcontent{
 	border-bottom: 1px solid rgba(215, 215, 215, 0.4);
 	color: #333333;
+	margin: 0;
 }
 .recrowcontent:hover {
 	background: #f7f8fc;
