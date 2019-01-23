@@ -21,6 +21,9 @@
 
 	//const expcatag_list = url_prefix + 'esp_admin/experiment-category/admin-list';
 	const expcatag_list = url_prefix + 'esp_admin/experiment-category/list';
+	const expcatag_create = url_prefix + 'esp_admin/experiment-category/create';
+	const expcatag_update = url_prefix + 'esp_admin/experiment-category/update';
+	const expcatag_delete = url_prefix + 'esp_admin/experiment-category/delete';
 
 
 	export default {
@@ -44,5 +47,8 @@
 		schadmin_create,
 		schadmin_update,
 
-		expcatag_list
+		expcatag_list,
+		expcatag_create,
+		expcatag_update,
+		expcatag_delete
 	}

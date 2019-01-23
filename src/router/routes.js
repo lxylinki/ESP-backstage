@@ -22,6 +22,7 @@ const SchAdminEdit = ()=> import('@/components/usermanage/schooladmin/SchAdminEd
 
 const ExpCatag = ()=> import('@/components/expmanage/expcatag/ExpCatagory.vue');
 const ExpCatagAdd = ()=> import('@/components/expmanage/expcatag/ExpCatagAdd.vue');
+const ExpCatagEdit = ()=> import('@/components/expmanage/expcatag/ExpCatagEdit.vue');
 
 const ExpList = ()=> import('@/components/expmanage/explist/ExpList.vue');
 
@@ -47,6 +48,7 @@ const myRoutes = [
 
 	 	{path: '/expcatag', meta: {title: '实验管理'}, component: ExpCatag},
 	 	{path: '/expcatagadd', meta: {title: '实验管理'}, component: ExpCatagAdd},
+	 	{path: '/expcatagedit', meta: {title: '实验管理'}, component: ExpCatagEdit},
 
 	 	{path: '/explist', meta: {title: '实验管理'}, component: ExpList}
 	 ]

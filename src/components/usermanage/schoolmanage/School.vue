@@ -185,6 +185,7 @@
 				this.reqSchList(this.search_state,'',1);
 			},
 			filterData(page){
+				alert(page);
 				this.list = this.tableData;
 				this.curPage = page;
 			},
