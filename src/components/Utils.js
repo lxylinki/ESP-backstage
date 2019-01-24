@@ -3,6 +3,10 @@ import Base from '@/assets/js/base64.js';
 import global_ from '@/components/Global.js';
 
 export default {
+	lalert(text) {
+		layer.alert(text, {title:'提示', area:['280px','190px']});
+	},
+
 	lconfirm(text, func) {
 		layer.confirm(text, {title:'提示', area:['280px','190px']}, func);		
 	},
@@ -11,9 +15,7 @@ export default {
 		function lalert(text) {
 			layer.alert(text, {title:'提示', area:['280px','190px']});
 		}
-
 		lalert(text);
-		
 		console.log(err);
 		if (err.body.error == -403 || err.status == 403) {
 			this.$router.push('/login');

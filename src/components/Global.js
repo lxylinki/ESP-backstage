@@ -26,6 +26,7 @@
 	const expcatag_delete = url_prefix + 'esp_admin/experiment-category/delete';
 
 	const exp_list = url_prefix + 'esp_admin/experiment/list';
+	const exp_create = url_prefix + 'esp_admin/experiment/create';
 
 
 
@@ -55,5 +56,6 @@
 		expcatag_update,
 		expcatag_delete,
 
-		exp_list
+		exp_list,
+		exp_create
 	}

@@ -10,8 +10,8 @@
 
 			<div class="statustitle">分类：</div>
 			
-			<div style="display: inline-block;">
-				  <el-select v-model="catag_value" placeholder="请选择" v-on:change="filterCatag()">
+			<!--<div style="display: inline-block;">
+				  <el-select v-model="catag_value" placeholder="请搜索实验分类名称" v-on:change="filterCatag()" filterable>
 				    <el-option
 				      v-for="item in catag_options"
 				      :key="item.id"
@@ -19,7 +19,30 @@
 				      :value="item.id">
 				    </el-option>
 				  </el-select>
-			</div>
+			</div>-->
+
+		    <div id="allcatags" style="display: inline-block;">
+		    	<div class="select-header select-header-normal" v-on:click="activate()">
+			    	<input type="text" class="select-header-text" placeholder="请搜索实验分类名称" v-model="catag_search_state"></input>
+					<i class="iconfont togglesign" v-on:click="toggleList()" v-show="!showToggle">&#xe607;</i>
+					<i class="iconfont togglesign" v-on:click="toggleList()" v-show="showToggle">&#xe608;</i>
+		    	</div>
+
+
+				<div class="select-list" v-show="showToggle" style="overflow-y: scroll; height: 190px;">
+			    	<RecSelect v-bind:item_list="catag_options"
+			    	           @makeChoice="makeChoice"></RecSelect>		
+				</div>
+		    </div>
+		    <!--
+		    <select>
+		    	<optgroup label="test">
+		    		<option value="A">A</option>
+		    		<option value="A">A</option>
+		    		<option value="A">A</option>
+		    		<option value="A">A</option>
+		    	</optgroup>
+		    </select>-->
 
 			<div class="searchwindow explist-searchwindow">
 
@@ -65,7 +88,7 @@
 		    </el-table-column>
 		    
 		    <el-table-column
-		      prop="id"
+		      prop="order"
 		      label="编号"
 		      min-width="100">
 		    </el-table-column>
@@ -79,13 +102,13 @@
 		     <el-table-column
 		      prop="create_time"
 		      label="创建时间"
-		      min-width="200">
+		      min-width="100">
 		    </el-table-column>
 
 		     <el-table-column
 		      prop="update_time"
 		      label="更新时间"
-		      min-width="200">
+		      min-width="100">
 		    </el-table-column>
 
 		    <el-table-column
@@ -116,8 +139,12 @@
 <script type="text/javascript">
 	import global_ from '@/components/Global.js';
 	import Utils from '@/components/Utils.js';
+	import RecSelect from './RecSelect.vue';
 
 	export default {
+		components: {
+			'RecSelect': RecSelect
+		},
 		data(){
 			return {
 				mod_name: 'exp-list',
@@ -129,6 +156,8 @@
 				search_state: '',
 				curPage: 1,
 				rowsPerPage: 10,
+				catag_search_state:'',
+				showToggle: false,
 				row_nums: [
 					{
 						label: '5',
@@ -155,6 +184,21 @@
 		},
 
 		methods: {
+			activate(){
+				$('.select-header').removeClass('select-header-normal').addClass('select-header-active');
+			},
+
+			toggleList(){
+				this.showToggle = !this.showToggle;
+			},
+
+			makeChoice(item){
+				this.catag_search_state = item.name;
+				this.catag_value = item.id;
+				this.filterCatag();
+				this.showToggle = false;
+			},
+
 			invokeSearch(e){
 				if(e.keyCode == 13) {
 					this.searchReq();
@@ -241,6 +285,12 @@
 		},
 
 		mounted(){
+
+			$(document).on('blur', '.select-header', function(){
+				$(this).removeClass('select-header-active').addClass('select-header-normal');
+			});
+
+
 			//Utils.check_status.call(this);
 			this.reqCatagList();
 			this.reqData(1);
@@ -268,4 +318,63 @@
 	top: 15px;
 	margin-top: 0px;
 }
+
+
+.select-header {
+	box-sizing: border-box;
+	font-size: 14px;
+	margin: auto;
+	margin-top: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	width: 200px;
+	height: 30px;
+	border-radius: 0px;
+}
+
+.select-header-normal {
+	border: 1px solid #cccccc;
+	/*box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);*/
+}
+
+.select-header-active {
+	border: 1px solid #619cde;
+	/*box-shadow: 0 1px 6px rgba(97, 156, 222, 0.2);*/
+}
+
+.select-list {
+	box-sizing: border-box;
+	background: #ffffff;
+	position: absolute;
+	z-index: 10;
+	margin: auto;
+	padding-left: 5px;
+	padding-right: 5px;
+	margin-top: 5px;
+	width: 200px;
+	height: 100%;
+	border: 1px solid #cccccc;
+	box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+}
+
+.togglesign {
+	float: right;
+	font-size: 12px;
+	color: #cccccc;
+	cursor: pointer;
+}
+
+.select-header-text, .togglesign {
+	display: inline-block;
+}
+
+.select-header-text {
+	border: none;
+}
+
+.select-header-text:focus {
+	outline: none;
+}
+
 </style>

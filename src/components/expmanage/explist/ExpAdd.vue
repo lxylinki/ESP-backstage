@@ -36,9 +36,9 @@
 
 				<div style="height: 30px;"></div>
 				<div> 实验编号： 
-					<input class="longinput" type="text" v-model="expid">
-					<span class="redalert" v-show="!expid">*</span>
-					<span class="whitedefault"v-show="expid">*</span>
+					<input class="longinput" type="text" v-model="exporder">
+					<span class="redalert" v-show="!exporder">*</span>
+					<span class="whitedefault"v-show="exporder">*</span>
 				</div>	
 				<div style="height: 30px;"></div>
 				<div> <span style="vertical-align: top;">实验概述：</span>
@@ -68,19 +68,36 @@
 </template>
 
 <script type="text/javascript">
+	import global_ from '@/components/Global.js';
+	import Utils from '@/components/Utils.js';
+	import store from '@/vuex/store.js';
+
 	export default {
 		data(){
 			return {
+				mod_name: 'exp-list',
 				ufile: null,
 				catag_value: '',
 				catag_options: [],
-				expid:'',
+				exporder:'',
 				expname: '',
 				expnote: ''
 			}
 		},
 
 		methods: {
+			reqCatagList(){
+				var api = global_.expcatag_list;
+				let data = {
+					'all': 1
+				}
+				this.$http.post(api, data).then((resp)=>{
+					this.catag_options = resp.body;
+				}, (err)=>{
+					Utils.err_process.call(this, err, '请求实验分类列表失败');
+				});				
+			},
+
 			upFile(event) {
 				$('#image').removeClass('emptyimg');
 		      	this.ufile = event.target.files[0];
@@ -91,11 +108,35 @@
 		    	if(!$('#image')[0].src) {
 		    		$('#image').addClass('emptyimg');
 		    	}
+		    },
+
+		    addCreate(){
+		    	var api = global_.exp_create;
+		    	var formData = new FormData();
+		    	formData.append('cid', this.catag_value);
+		    	formData.append('name', this.expname);
+		    	formData.append('note', this.expnote);
+		    	formData.append('img', this.ufile);
+		    	formData.append('order', this.exporder);
+		    	this.$http.post(api, formData).then((resp)=>{
+		    		Utils.lalert('创建实验成功');
+					this.$store.commit('sign', this.mod_name);
+					this.$store.commit('incRowNumAfter', 1);
+					this.$router.go(-1);
+
+		    	},(err)=>{
+		    		Utils.err_process.call(this, err, '创建实验失败');
+		    	});
+		    },
+
+		    goBack(){
+		    	this.$router.go(-1);
 		    }			
 		},
 
 		mounted(){
 			this.clearImgPlace();
+			this.reqCatagList();
 		}
 	}
 </script>
