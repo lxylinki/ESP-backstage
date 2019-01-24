@@ -166,8 +166,7 @@
 					this.loadPage(this.curPage);
 
 				}, (err)=>{
-					Utils.lalert('删除后台用户失败');
-					console.log(err);
+					Utils.err_process.call(this, err, '删除后台用户失败');
 				});
 			},
 
@@ -199,9 +198,8 @@
 					layer.close(this.loading);
 
 				}, (err)=>{
-					Utils.lalert('请求后台用户列表失败');
 					layer.close(this.loading);
-					console.log(err);
+					Utils.err_process.call(this, err, '请求后台用户列表失败');
 				})
 
 			},
@@ -236,6 +234,8 @@
 			this.loading = layer.load(1, {shade: false});
 		},
 		mounted(){
+			//Utils.check_status.call(this);
+			
 			var name = this.$store.state.last_author;
 
 			if(name === this.mod_name) {

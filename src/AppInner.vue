@@ -122,21 +122,6 @@
 		},
 
 		methods: {
-			check_status(){
-				var profile = global_.status_check;
-
-				this.$http.post(profile, {}).then((resp)=>{
-					//console.log(resp);
-
-				}, (err)=>{
-					layer.alert('请求登陆状态失败', 
-						{title:'提示', area:['280px','190px']});
-					console.log(err);
-					if (err.body.error == -403) {
-						this.$router.push('/login');
-					}
-				});
-			},	
 
 			setHelloText(){
 				var curTime = new Date();
@@ -171,7 +156,6 @@
 		},
 
 		mounted(){
-			this.check_status();
 			this.setHelloText();
 		}
 	}

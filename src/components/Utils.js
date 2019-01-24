@@ -3,12 +3,21 @@ import Base from '@/assets/js/base64.js';
 import global_ from '@/components/Global.js';
 
 export default {
-	lalert(text) {
-		layer.alert(text, {title:'提示', area:['280px','190px']});
-	},
-
 	lconfirm(text, func) {
 		layer.confirm(text, {title:'提示', area:['280px','190px']}, func);		
+	},
+
+	err_process(err, text){
+		function lalert(text) {
+			layer.alert(text, {title:'提示', area:['280px','190px']});
+		}
+
+		lalert(text);
+		
+		console.log(err);
+		if (err.body.error == -403 || err.status == 403) {
+			this.$router.push('/login');
+		}
 	},
 
 	convTime(ntime) {
@@ -31,6 +40,21 @@ export default {
 		
 		return commonTime;
 	},
+
+	check_status(){
+		var profile = global_.status_check;
+
+		this.$http.post(profile, {}).then((resp)=>{
+			console.log('check_status');
+
+		}, (err)=>{
+			lalert('请求登陆状态失败');
+			console.log(err);
+			if (err.body.error == -403 || err.status == 403) {
+				this.$router.push('/login');
+			}
+		});
+	},	
 
 	encrypt(pswd){
 		return new Promise((resolve, reject)=>{

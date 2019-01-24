@@ -203,9 +203,8 @@
 					layer.close(this.loading);
 
 				}, (err)=>{
-					Utils.lalert('请求实验分类列表失败');
 					layer.close(this.loading);
-					console.log(err);
+					Utils.err_process.call(this, err, '请求实验分类列表失败');
 				});
 			},
 
@@ -258,8 +257,9 @@
 		},
 
 		mounted(){
+			//Utils.check_status.call(this);
 			var name = this.$store.state.last_author;
-			console.log(name);
+			//console.log(name);
 
 			if(name === this.mod_name) {
 				var before = this.$store.state.row_num_before,

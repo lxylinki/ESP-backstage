@@ -69,8 +69,7 @@
 					this.$router.go(-1);
 
 				}, (err)=>{
-					Utils.lalert('创建学校失败');
-					console.log(err);
+					Utils.err_process.call(this, err, '创建学校失败');
 				});
 			}
 		}

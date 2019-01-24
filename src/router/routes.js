@@ -25,6 +25,7 @@ const ExpCatagAdd = ()=> import('@/components/expmanage/expcatag/ExpCatagAdd.vue
 const ExpCatagEdit = ()=> import('@/components/expmanage/expcatag/ExpCatagEdit.vue');
 
 const ExpList = ()=> import('@/components/expmanage/explist/ExpList.vue');
+const ExpAdd = ()=> import('@/components/expmanage/explist/ExpAdd.vue');
 
 //2. set route paths
 const myRoutes = [
@@ -50,7 +51,8 @@ const myRoutes = [
 	 	{path: '/expcatagadd', meta: {title: '实验管理'}, component: ExpCatagAdd},
 	 	{path: '/expcatagedit', meta: {title: '实验管理'}, component: ExpCatagEdit},
 
-	 	{path: '/explist', meta: {title: '实验管理'}, component: ExpList}
+	 	{path: '/explist', meta: {title: '实验管理'}, component: ExpList},
+	 	{path: '/expadd', meta: {title: '实验管理'}, component: ExpAdd}
 	 ]
 	},
 	{path: '*', redirect: '/login'}	/*default when no match*/

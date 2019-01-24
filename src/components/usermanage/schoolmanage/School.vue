@@ -176,9 +176,8 @@
 					layer.close(this.loading);
 
 				}, (err)=>{
-					Utils.lalert('请求学校列表失败');
 					layer.close(this.loading);
-					console.log(err);
+					Utils.err_process.call(this, err, '请求学校列表失败');
 				});			
 			},
 			pageSizeChange(){
@@ -228,6 +227,8 @@
 		},
 
 		mounted(){
+			//Utils.check_status.call(this);
+			
 			var name = this.$store.state.last_author;
 
 			if(name === this.mod_name) {

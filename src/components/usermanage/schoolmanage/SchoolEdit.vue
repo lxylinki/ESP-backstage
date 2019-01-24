@@ -68,9 +68,7 @@
 					this.$router.go(-1);
 
 				}, (err)=>{
-					Utils.lalert('编辑学校失败');
-					console.log(err);
-
+					Utils.err_process.call(this, err, '编辑学校失败');
 				});
 			}
 		},

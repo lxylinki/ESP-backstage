@@ -61,8 +61,7 @@
 					//this.loadPage(this.curPage);
 
 				}, (err)=>{
-					Utils.lalert('删除实验分类失败');
-					console.log(err);
+					Utils.err_process.call(this, err, '删除实验分类失败');
 				});
 			}
 

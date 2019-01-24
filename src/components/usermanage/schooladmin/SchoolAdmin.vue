@@ -184,9 +184,8 @@
 						resolve(resp);
 						
 					},(err)=>{
-						Utils.lalert('请求校管理员列表失败');
-						console.log(err);
 						layer.close(this.loading);
+						Utils.err_process.call(this, err, '请求校管理员列表失败');
 					});
 				});
 			},
@@ -228,6 +227,8 @@
 			this.loading = layer.load(1, {shade: false});
 		},
 		mounted(){
+			//Utils.check_status.call(this);
+			
 			var name = this.$store.state.last_author;
 
 			if(name === this.mod_name) {

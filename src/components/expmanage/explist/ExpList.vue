@@ -40,7 +40,7 @@
 
 		<div style="display: flex; justify-content: space-between; align-items: baseline;">
 			<div class="addbtndiv">
-				<el-button class="addbtn" v-on:click="addSchAdmin()">添加</el-button>
+				<el-button class="addbtn" v-on:click="addExp()">添加</el-button>
 			</div>
 
 			<div style="display: inline-block; float: right; margin: 10px;">
@@ -178,9 +178,8 @@
 						resolve(resp);
 
 					}, (err)=>{
-						Utils.lalert('请求实验列表失败');
 						layer.close(this.loading);
-						console.log(err);
+						Utils.err_process.call(this, err, '请求实验列表失败');
 					});
 				});
 			},
@@ -191,7 +190,6 @@
 					let resp = await this.reqExpList(page);
 
 					this.tableData = resp.body._list;
-					this.catag_options = resp.body.categories;
 
 					var catags = resp.body.categories;			
 					for(let i in this.tableData) {
@@ -206,13 +204,35 @@
 				}
 			},
 
+			reqCatagList(){
+				var api = global_.expcatag_list;
+				let data = {
+					'all': 1
+				}
+				this.$http.post(api, data).then((resp)=>{
+					this.catag_options = resp.body;
+					this.catag_options.unshift({'id': null, 'name': '全部分类'});
+					this.catag_value = null;
+				}, (err)=>{
+					Utils.err_process.call(this, err, '请求实验分类列表失败');
+				});				
+			},
+
+			addExp(){
+				this.$router.push('/expadd');
+			},
+
 			filterData(page){
 				this.list = this.tableData;
 				this.curPage = page;
 			},
 
 			filterCatag(){
-				this.list = this.tableData.filter(item => item.cid === this.catag_value);
+				if(!this.catag_value) {
+					this.list = this.tableData;
+				} else {
+					this.list = this.tableData.filter(item => item.cid === this.catag_value);
+				}
 			}
 		},
 
@@ -221,6 +241,8 @@
 		},
 
 		mounted(){
+			//Utils.check_status.call(this);
+			this.reqCatagList();
 			this.reqData(1);
 		}
 	}

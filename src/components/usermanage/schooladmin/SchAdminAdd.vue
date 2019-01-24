@@ -82,7 +82,7 @@
 					<el-button class="confirm" v-on:click="addCreate()">确定</el-button>
 					<el-button class="goback" v-on:click="goBack()">返回</el-button>
 				</div>
-			</div>
+			</div> <!--texts-->
 		</div>
 	</div>
 </template>
@@ -144,8 +144,7 @@
 						this.$router.go(-1);
 
 					}, (err)=>{
-						Utils.lalert('添加校管理员失败');
-						console.log(err);
+						Utils.err_process.call(this, err, '添加校管理员失败');
 					});
 				}
 			}

@@ -110,8 +110,7 @@
 					this.$router.go(-1);
 
 				}, (err)=>{
-					Utils.lalert('实验分类创建失败');
-					console.log(err);
+					Utils.err_process.call(this, err, '实验分类创建失败');
 				});
 			},
 
@@ -125,8 +124,7 @@
 					this.catag_options = resp.body;
 
 				}, (err)=>{
-					Utils.lalert('请求实验分类列表失败');
-					console.log(err);
+					Utils.err_process.call(this, err, '请求实验分类列表失败');
 				});
 			},
 

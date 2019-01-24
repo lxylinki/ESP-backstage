@@ -19,10 +19,9 @@ a {
   font-family: "Microsoft YaHei";
 }
 
-select {
+select, textarea {
   border-color: #d7d7d7;
 }
-
 
 /* operations text buttons */
 .op{
