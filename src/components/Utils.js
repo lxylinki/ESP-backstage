@@ -111,5 +111,28 @@ export default {
 	     		console.log(err);
 	     	});	     	 			
 		});
-	}
+	},
+
+	reqExpList() {
+		return new Promise((resolve, reject)=>{
+			var api = global_.exp_list + '?page=1';
+			this.$http.post(api, {}).then((resp)=>{
+				var total_exp = resp.body.total;
+				var full_list_api = api + '&pagesize='+ total_exp;
+
+				this.$http.post(full_list_api, {}).then((resp)=>{
+					layer.close(this.loading);
+					resolve(resp);
+
+				}, (err)=>{
+					layer.close(this.loading);
+					Utils.err_process.call(this, err, '请求实验列表失败');
+				});
+
+			}, (err)=>{
+				layer.close(this.loading);
+				Utils.err_process.call(this, err, '请求实验列表失败');						
+			});
+		});				
+	},
 }

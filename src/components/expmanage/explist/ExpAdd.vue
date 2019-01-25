@@ -1,7 +1,7 @@
 <template>
 	<div id="expadd">
 		<div style="width: 100%; height: 35px;">
-			<span style="color: #1281b2; font-weight: bold">|</span> 
+			<span style="color: #1890ff; font-weight: bold">|</span> 
 			实验列表
 		</div>
 		<div style="height: 20px;"></div>

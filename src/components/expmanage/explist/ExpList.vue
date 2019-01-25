@@ -1,7 +1,7 @@
 <template>
 	<div id="explist">
 		<div style="width: 100%; height: 35px;">
-			<span style="color: #1281b2; font-weight: bold; font-size: 20px;">|</span> 
+			<span style="color: #1890ff; font-weight: bold">|</span>  
 			<!--<span class="pagetitle">实验列表</span>-->
 			实验列表
 		</div>
@@ -224,38 +224,14 @@
 				this.filterSearchData(1);
 			},
 
-			reqExpList() {
-				return new Promise((resolve, reject)=>{
-					var api = global_.exp_list + '?page=1';
-					this.$http.post(api, {}).then((resp)=>{
-						var total_exp = resp.body.total;
-						var full_list_api = api + '&pagesize='+ total_exp;
-
-						this.$http.post(full_list_api, {}).then((resp)=>{
-							layer.close(this.loading);
-							resolve(resp);
-
-						}, (err)=>{
-							layer.close(this.loading);
-							Utils.err_process.call(this, err, '请求实验列表失败');
-						});
-
-					}, (err)=>{
-						layer.close(this.loading);
-						Utils.err_process.call(this, err, '请求实验列表失败');						
-					});
-				});				
-			},
-
 			reqData() {
 				asyncReq.call(this);
 				async function asyncReq(){
-					let resp = await this.reqExpList();
+					let resp = await Utils.reqExpList.call(this);
 
 					this.tableData = resp.body._list;
 					
 					var catags = resp.body.categories;
-
 					for(let i in this.tableData) {
 						let item = this.tableData[i];
 						item.catagory = catags[item.cid].name;
@@ -323,9 +299,29 @@
 				this.$store.commit('sign', this.mod_name);
 				this.$store.commit('setEdit', true);
 				this.$store.commit('pickRow', row);
-				this.$store.commit('setCurPage', this.current_page);
+				this.$store.commit('setCurPage', this.curPage);
 				this.$store.commit('setCurSearch', this.search_state);
+
 				this.$router.push('/expedit');
+			},
+
+			deleteRow(row){
+				var _this = this;
+				Utils.lconfirm("确定删除实验？", function(){_this.delExp(row)});
+			},
+			delExp(row) {
+				var api = global_.exp_delete;
+				let data = {
+					'id': row.id
+				}
+				this.$http.post(api, data).then((resp)=>{
+					Utils.lalert('删除实验成功');
+					this.reqData();
+					//this.filterSearchData(this.curPage);
+
+				}, (err)=>{
+					Utils.err_process.call(this, err, '删除实验失败');
+				});				
 			}
 		},
 
@@ -356,7 +352,7 @@
 					keyword = this.$store.state.current_search,
 					curpage = this.$store.state.current_page;
 
-				console.log(curpage);
+				//console.log(curpage);
 				
 				if (pagesize > 0) {
 					this.rowsPerPage = pagesize;

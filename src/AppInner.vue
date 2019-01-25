@@ -108,7 +108,14 @@
             			name: '试题管理',
             			url:"",
             			isSubShow: false,
-            			subItems:[]
+            			subItems:[
+            				{
+	            				name: '试题管理',
+	            				url: "/quesmng",
+	            				isSubShow: false,
+	            				subItems: []           					
+            				}
+            			]
             		},
             		{
             			name: '考核管理',

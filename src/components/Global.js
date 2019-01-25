@@ -28,6 +28,7 @@
 	const exp_list = url_prefix + 'esp_admin/experiment/list';
 	const exp_create = url_prefix + 'esp_admin/experiment/create';
 	const exp_update = url_prefix + 'esp_admin/experiment/update';
+	const exp_delete = url_prefix + 'esp_admin/experiment/delete';
 
 
 
@@ -59,5 +60,6 @@
 
 		exp_list,
 		exp_create,
-		exp_update
+		exp_update,
+		exp_delete
 	}
