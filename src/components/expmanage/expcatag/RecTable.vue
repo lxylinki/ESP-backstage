@@ -6,7 +6,7 @@
 					<td class="level">{{item.level}}</td> 
 					<td class="created_at">{{tconv(item.created_at)}}</td>
 					<td class="updated_at">{{tconv(item.updated_at)}}</td>
-					<td class="cid">{{item.id}}</td>
+					<!--<td class="cid">{{item.id}}</td>-->
 					<td class="operation">
 				      	<el-button  class="op edit" type="text" @click="editRow(item)">
 				      		<i class="iconfont">&#xe61a;</i>编辑
@@ -129,7 +129,7 @@ td {
 }
 
 .recrow .recrow .recrowcontent {
-	color: #cccccc;
+	color: #757575;
 }
 
 </style>

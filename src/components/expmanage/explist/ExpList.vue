@@ -21,9 +21,9 @@
 				</el-select>
 			</div>-->
 
-		    <div id="allcatags" style="display: inline-block;">
-		    	<div class="select-header select-header-normal" v-on:click="activate()">
-			    	<input type="text" class="select-header-text" placeholder="请搜索实验分类名称" v-on:focus="showToggle=true" v-model="catag_search_state"></input>
+		    <div class="allcatags" style="display: inline-block;">
+		    	<div class="select-header select-header-normal">
+			    	<input type="text" class="select-header-text" placeholder="请搜索实验分类名称"  v-on:click="activate()" v-on:focus="showToggle=true" v-model="catag_search_state"></input>
 					<i class="iconfont togglesign" v-on:click="toggleList()" v-show="!showToggle">&#xe607;</i>
 					<i class="iconfont togglesign" v-on:click="toggleList()" v-show="showToggle">&#xe608;</i>
 		    	</div>
@@ -298,8 +298,10 @@
 
 		mounted(){
 
+			var _this = this;
 			$(document).on('blur', '.select-header', function(){
 				$(this).removeClass('select-header-active').addClass('select-header-normal');
+				_this.showToggle = false;
 			});
 
 			this.reqCatagList();
