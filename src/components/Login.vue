@@ -73,6 +73,9 @@
 					});
 				}
 			},
+		},
+		mounted(){
+			document.querySelector('.usrid').focus();
 		}
 	}
 </script>

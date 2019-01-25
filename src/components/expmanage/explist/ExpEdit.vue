@@ -37,8 +37,8 @@
 						</div>
 				    </div>
 						
-					<span class="redalert" v-show="!catag_value">*</span>
-					<span class="whitedefault"v-show="catag_value">*</span>
+					<span class="redalert" v-show="!catag_value && !catag_search_state">*</span>
+					<span class="whitedefault"v-show="catag_value || catag_search_state">*</span>
 				</div>	
 
 				<div style="height: 30px;"></div>
@@ -61,7 +61,7 @@
 				</div>
 				<div style="height: 30px;"></div>
 				<div class="btn-group">
-					<el-button class="confirm" v-on:click="addCreate()">确定</el-button>
+					<el-button class="confirm" v-on:click="saveEdit()">确定</el-button>
 					<el-button class="goback" v-on:click="goBack()">返回</el-button>
 				</div>
 
@@ -91,6 +91,7 @@
 			return {
 				mod_name: 'exp-list',
 				ufile: null,
+				expid: '',
 				catag_value: '',
 				catag_options: [],
 				filtered_catags: [],
@@ -149,10 +150,11 @@
 		    	}
 		    },
 
-		    addCreate(){
-		    	var api = global_.exp_create;
+		    saveEdit(){
+		    	var api = global_.exp_update;
 		    	var formData = new FormData();
 		    	
+		    	formData.append('id', this.expid);
 		    	formData.append('cid', this.catag_value);
 		    	formData.append('name', this.expname);
 		    	formData.append('note', this.expnote);
@@ -160,12 +162,12 @@
 		    	formData.append('order', this.exporder);
 
 		    	this.$http.post(api, formData).then((resp)=>{
-		    		Utils.lalert('创建实验成功');
+		    		Utils.lalert('编辑实验成功');
 					this.$store.commit('sign', this.mod_name);
 					this.$router.go(-1);
 
 		    	},(err)=>{
-		    		Utils.err_process.call(this, err, '创建实验失败');
+		    		Utils.err_process.call(this, err, '编辑实验失败');
 		    	});
 		    },
 
@@ -208,10 +210,29 @@
 		},		
 
 		mounted(){
-			this.inactivate();
-			this.decorFileInp();
-			this.clearImgPlace();
-			this.reqCatagList();
+			var edit = this.$store.state.edit;
+			
+			if(!edit) {
+				this.$router.go(-1);
+
+			} else {
+				var row = this.$store.state.row;
+				//console.log(row);
+
+				this.expid = row.id;
+				this.catag_search_state = row.catagory;
+				this.catag_value = row.cid;
+				this.expname = row.name;
+				this.exporder = row.order;
+				this.expnote = row.note;
+				this.ufile = row.img;
+				document.querySelector('#image').setAttribute('src', global_.url_prefix + row.img);
+
+				this.inactivate();
+				this.decorFileInp();
+				this.clearImgPlace();
+				this.reqCatagList();
+			}
 		}
 	}
 </script>
@@ -271,7 +292,7 @@
 	background: #f7f7f7;
 }
 
-/*
+
 #image::after {
     content: "";
     height: 100%;
@@ -280,7 +301,7 @@
     left: 0;
     top: 0;
     background: #ffffff;
-}*/
+}
 
 #uploadfile {
  	position: relative;

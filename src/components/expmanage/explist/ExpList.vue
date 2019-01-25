@@ -123,17 +123,24 @@
 		  </el-table>
 		</template>
 
+		<div style="height: 40px;"></div>
+   		<Pager 	v-bind:current_page='curPage' 
+   				v-bind:pages='totalPage'
+   		       	@setPage='filterSearchData'></Pager>
+
 	</div>
 </template>
 
 <script type="text/javascript">
 	import global_ from '@/components/Global.js';
 	import Utils from '@/components/Utils.js';
-	import RecSelect from './RecSelect.vue';
+	//import RecSelect from './RecSelect.vue';
+	import Pager from '@/components/Pager.vue';
 
 	export default {
 		components: {
-			'RecSelect': RecSelect
+			//'RecSelect': RecSelect
+			'Pager': Pager
 		},
 		data(){
 			return {
@@ -146,6 +153,7 @@
 				search_state: '',
 				curPage: 1,
 				rowsPerPage: 10,
+				totalRow: 0,
 				filtered_catags: [],
 				catag_search_state:'',
 				showToggle: false,
@@ -186,47 +194,68 @@
 			makeChoice(item){
 				this.catag_search_state = item.name;
 				this.catag_value = item.id;
-				this.filterCatag();
+				this.filterSearchData(this.curPage);
 				this.showToggle = false;
 			},
 
 			invokeSearch(e){
 				if(e.keyCode == 13) {
-					this.searchReq();
+					this.filterSearchData(1);
 				}
 			},
 
-			searchReq(){
-				//TODO: fetch full list and filter?
+			searchReq(data){
+				var result = [];
+
+				if(!this.search_state) {
+					result = data;
+
+				} else {
+					result = data.filter( item => item.name.indexOf(this.search_state) != -1 );
+				}
+
+				this.totalRow = result.length;
+				return result;
 			},
 
-			reqExpList(page){
-				return new Promise((resolve, reject)=>{
-					var api = global_.exp_list
-							 + '?page=' 
-							 + page 
-							 + '&pagesize=' 
-							 + this.rowsPerPage;
+			pageSizeChange(){
+				this.$store.commit('sign', this.mod_name);
+				this.$store.commit('setRowsPerPage', this.rowsPerPage);
+				this.filterSearchData(1);
+			},
 
+			reqExpList() {
+				return new Promise((resolve, reject)=>{
+					var api = global_.exp_list + '?page=1';
 					this.$http.post(api, {}).then((resp)=>{
-						layer.close(this.loading);
-						resolve(resp);
+						var total_exp = resp.body.total;
+						var full_list_api = api + '&pagesize='+ total_exp;
+
+						this.$http.post(full_list_api, {}).then((resp)=>{
+							layer.close(this.loading);
+							resolve(resp);
+
+						}, (err)=>{
+							layer.close(this.loading);
+							Utils.err_process.call(this, err, '请求实验列表失败');
+						});
 
 					}, (err)=>{
 						layer.close(this.loading);
-						Utils.err_process.call(this, err, '请求实验列表失败');
+						Utils.err_process.call(this, err, '请求实验列表失败');						
 					});
-				});
+				});				
 			},
 
-			reqData(page) {
+			reqData() {
 				asyncReq.call(this);
 				async function asyncReq(){
-					let resp = await this.reqExpList(page);
+					let resp = await this.reqExpList();
 
 					this.tableData = resp.body._list;
+					
+					var catags = resp.body.categories;
 
-					var catags = resp.body.categories;			
 					for(let i in this.tableData) {
 						let item = this.tableData[i];
 						item.catagory = catags[item.cid].name;
@@ -234,8 +263,8 @@
 						item.update_time = Utils.convTime(item.updated_at);
 					}
 
-					this.totalPage = resp.body.total_page;
-					this.filterData(this.curPage);
+					this.totalRow = resp.body.total;
+					this.filterSearchData(this.curPage);
 				}
 			},
 
@@ -268,17 +297,41 @@
 				this.$router.push('/expadd');
 			},
 
-			filterData(page){
-				this.list = this.tableData;
+			filterSearchData(page){
+				var search_res = this.searchReq(this.tableData);
+
+				if(!this.catag_value) {
+					this.list = search_res.slice(this.rowsPerPage*(page-1), this.rowsPerPage*page);
+
+				} else {
+					var	search_catag_res = search_res.filter(item => item.cid === this.catag_value);
+					this.list = search_catag_res.slice(this.rowsPerPage*(page-1), this.rowsPerPage*page);
+					this.totalRow = search_catag_res.length;
+				}
 				this.curPage = page;
 			},
 
-			filterCatag(){
-				if(!this.catag_value) {
-					this.list = this.tableData;
-				} else {
-					this.list = this.tableData.filter(item => item.cid === this.catag_value);
-				}
+			inactivate(){
+				var _this = this;
+				$(document).on('blur', '.select-header', function(){
+					$(this).removeClass('select-header-active').addClass('select-header-normal');
+					_this.showToggle = false;
+				});				
+			},
+
+			editRow(row){
+				this.$store.commit('sign', this.mod_name);
+				this.$store.commit('setEdit', true);
+				this.$store.commit('pickRow', row);
+				this.$store.commit('setCurPage', this.current_page);
+				this.$store.commit('setCurSearch', this.search_state);
+				this.$router.push('/expedit');
+			}
+		},
+
+		computed: {
+			totalPage(){
+				return Math.ceil(this.totalRow / this.rowsPerPage);
 			}
 		},
 		
@@ -297,15 +350,30 @@
 		},
 
 		mounted(){
+			var name = this.$store.state.last_author;
+			if(name === this.mod_name) {
+				var	pagesize = this.$store.state.rows_per_page,
+					keyword = this.$store.state.current_search,
+					curpage = this.$store.state.current_page;
 
-			var _this = this;
-			$(document).on('blur', '.select-header', function(){
-				$(this).removeClass('select-header-active').addClass('select-header-normal');
-				_this.showToggle = false;
-			});
+				console.log(curpage);
+				
+				if (pagesize > 0) {
+					this.rowsPerPage = pagesize;
+				}
 
+				if (keyword) {
+					this.search_state = keyword;
+				}
+
+				if(curpage > 0) {
+					this.curPage = curpage;
+				} 				
+			}
+
+			this.inactivate();
 			this.reqCatagList();
-			this.reqData(1);
+			this.reqData();
 		}
 	}
 </script>
@@ -330,7 +398,6 @@
 	top: 15px;
 	margin-top: 0px;
 }
-
 
 .select-header {
 	box-sizing: border-box;
@@ -390,6 +457,7 @@
 }
 
 .select-item {
+	cursor: pointer !important;
 	font-size: 14px;
 	margin: 5px;
 	height: 30px;

@@ -1,12 +1,12 @@
 <template>
 	<div class="recselect">
-		<li class="select-item" v-for="item in item_list">
+		<tr class="select-item" v-for="item in item_list">
 			<div class="select-text" v-on:click="selectCatag(item)">{{item.name}}</div>
 
-			<!--<RecSelect v-show="item.hasOwnProperty('sub_categories')"
+			<RecSelect v-show="item.hasOwnProperty('sub_categories')"
 			           v-bind:item_list="item.sub_categories" >
-			</RecSelect>-->
-		</li>
+			</RecSelect>
+		</tr>
 	</div>
 </template>
 
