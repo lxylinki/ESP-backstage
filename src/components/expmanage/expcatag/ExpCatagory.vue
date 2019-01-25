@@ -87,17 +87,14 @@
 
 		<div style="height: 45px;"></div>
 
-		<table class="tableheader">
-			<thead >
-			<tr>
-				<th class="coltitle" style="width: 200px;">实验名称</th>
-				<th class="coltitle" style="width: 200px;">级别</th>
-				<th class="coltitle" style="width: 300px;">创建时间</th>
-				<th class="coltitle" style="width: 300px;">更新时间</th>
-				<th class="coltitle" style="width: 200px;">操作</th>
-			</tr>
-			</thead>
-		</table>
+
+		<div class="tableheader">
+			<div class="coltitle" style="width: 400px;">实验名称</div>
+			<div class="coltitle" style="width: 400px;">级别</div>
+			<div class="coltitle" style="width: 400px;">创建时间</div>
+			<div class="coltitle" style="width: 400px;">更新时间</div>
+			<div class="coltitle" style="width: 400px;">操作</div>
+		</div>
 
 		<!--<table style="table-layout: fixed; border-collapse:collapse;">-->
 		<RecTable v-bind:item_list="list"
@@ -292,6 +289,9 @@
 </script>
 
 <style type="text/css" scoped>
+.coltitle {
+	text-align: center;
+}
 /*overwrite global setting*/
 .selectclass {
 	background: white;
@@ -303,15 +303,15 @@
 }
 
 .tableheader {
-	font-size: 14px;
-	display: block;
-	height: 40px;
 	width: 100%;
+	display: flex;
+	font-size: 14px;
+	font-weight: bold;
+	height: 40px;
 	background: #f7f7f7;
 }
 
 .coltitle {
 	line-height: 35px;
 }
-
 </style>

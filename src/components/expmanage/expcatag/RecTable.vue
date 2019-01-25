@@ -77,14 +77,17 @@
 
 td {
 	height: 42px;
-	text-align: center;
 	vertical-align: middle;
+	text-align: center;
+}
+
+.name {
+	text-align: left !important;
+	padding-left: 20px;
 }
 
 .nametext {
-	width: 100px;
-	margin: 0 auto;
-	text-align: left;
+	width: 120px;
 	text-overflow: ellipsis;
 	overflow: hidden; 
 	white-space: nowrap;
@@ -92,13 +95,6 @@ td {
 
 .edit, .delete {
 	display: inline-block;
-}
-
-.name {
-	-webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-	width: 200px;
 }
 
 .level {
@@ -125,11 +121,20 @@ td {
 
 /*sub item*/
 .recrow .recrow .recrowcontent .name{
-	padding-left: 30px;
+	padding-left: 20px;
+}
+
+.recrow .recrow .recrowcontent .name .nametext {
+	width: 100px;
+	padding-left: 20px;
 }
 
 .recrow .recrow .recrowcontent {
 	color: #757575;
+}
+
+.op {
+	bottom: 0px;
 }
 
 </style>

@@ -353,6 +353,9 @@
 }
 
 .select-item {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 	cursor: pointer !important;
 	font-size: 14px;
 	margin: 5px;

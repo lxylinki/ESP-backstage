@@ -184,7 +184,7 @@
 
 .ctrl {
 	position: relative;
-	top: 10px;
+	top: 0px;
 	width: 100%;
 	height: 100%;
 	text-align: right;
