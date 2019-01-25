@@ -1,12 +1,12 @@
 <template>
 	<div class="recselect">
-		<tr class="select-item" v-for="item in item_list" v-on:click="makeChoice(item)">
-			<div class="select-text">{{item.name}}</div>
-			
-			<RecSelect v-if="item.hasOwnProperty('sub_categories')"
+		<li class="select-item" v-for="item in item_list">
+			<div class="select-text" v-on:click="selectCatag(item)">{{item.name}}</div>
+
+			<!--<RecSelect v-show="item.hasOwnProperty('sub_categories')"
 			           v-bind:item_list="item.sub_categories" >
-			</RecSelect>
-		</tr>
+			</RecSelect>-->
+		</li>
 	</div>
 </template>
 
@@ -15,8 +15,8 @@
 		name: 'RecSelect',
 		props:['item_list'],
 		methods: {
-			makeChoice(item) {
-				this.$emit('makeChoice', item);
+			selectCatag(item) {
+				this.$emit('makechoice', item);
 			}
 		},
 		mounted() {

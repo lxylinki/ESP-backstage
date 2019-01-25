@@ -92,7 +92,15 @@
 					'all': 1
 				}
 				this.$http.post(api, data).then((resp)=>{
-					this.catag_options = resp.body;
+					//this.catag_options = resp.body;
+					for(let i in resp.body) {
+						this.catag_options.push(resp.body[i]);
+						if(resp.body[i].hasOwnProperty('sub_categories')) {
+							for(let j in resp.body[i].sub_categories) {
+								this.catag_options.push(resp.body[i].sub_categories[j]);
+							}
+						}
+					}
 				}, (err)=>{
 					Utils.err_process.call(this, err, '请求实验分类列表失败');
 				});				
