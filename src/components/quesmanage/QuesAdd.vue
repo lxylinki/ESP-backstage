@@ -760,9 +760,6 @@
 		mounted(){			
 			this.type = 1;
 			this.fillExpSelect();
-			//get exam_id from prev page
-			//this.exam_id = this.$store.state.exam_id;
-			//console.log(this.exam_id);
 		}
 	}
 </script>

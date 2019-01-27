@@ -768,7 +768,7 @@
 			} else {
 				this.fillExpSelect();
 				var row = this.$store.state.row;
-				console.log(row);
+				//console.log(row);
 				this.id = row.id;
 				this.type = row.type;
 				this.exp_value = row.eid;
