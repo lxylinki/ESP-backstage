@@ -30,6 +30,7 @@ const ExpEdit = ()=> import('@/components/expmanage/explist/ExpEdit.vue');
 
 const QuesManage = ()=> import('@/components/quesmanage/QuesManage.vue');
 const QuesAdd = ()=> import('@/components/quesmanage/QuesAdd.vue');
+const QuesEdit = ()=> import('@/components/quesmanage/QuesEdit.vue');
 
 //2. set route paths
 const myRoutes = [
@@ -60,7 +61,8 @@ const myRoutes = [
 	 	{path: '/expedit', meta: {title: '实验管理'}, component: ExpEdit},
 
 	 	{path: '/quesmng', meta: {title: '试题管理'}, component: QuesManage},
-	 	{path: '/quesadd', meta: {title: '试题管理'}, component: QuesAdd}
+	 	{path: '/quesadd', meta: {title: '试题管理'}, component: QuesAdd},
+	 	{path: '/quesedit', meta: {title: '试题管理'}, component: QuesEdit}
 	 ]
 	},
 	{path: '*', redirect: '/login'}	/*default when no match*/

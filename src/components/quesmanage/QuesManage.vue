@@ -296,6 +296,34 @@
 				}
 				this.curPage = page;
 			},
+
+			editRow(row){
+				this.$store.commit('sign', this.mod_name);
+				this.$store.commit('setEdit', true);
+				this.$store.commit('pickRow', row);
+				this.$store.commit('setCurPage', this.curPage);
+				this.$store.commit('setCurSearch', this.search_state);
+				this.$router.push('/quesedit');				
+			},
+
+			deleteRow(row){
+				var _this = this;
+				Utils.lconfirm("确定删除试题？", function(){_this.delQues(row)});
+			},
+
+			delQues(row){
+				var api = global_.ques_delete;
+				let data = {
+					'id': row.id
+				}
+				this.$http.post(api, data).then((resp)=>{
+					this.reqQuesList(this.curPage);
+					Utils.lalert('删除试题成功');
+
+				}, (err)=>{
+					Utils.err_process.call(this, err, '删除试题失败');
+				});					
+			}
 		},
 		
 		computed: {

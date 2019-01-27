@@ -32,6 +32,8 @@
 
 	const ques_list = url_prefix + 'esp_admin/questions-bank/list';
 	const ques_create = url_prefix + 'esp_admin/questions-bank/create';
+	const ques_update = url_prefix + 'esp_admin/questions-bank/update';
+	const ques_delete = url_prefix + 'esp_admin/questions-bank/delete';
 
 
 	export default {
@@ -66,5 +68,7 @@
 		exp_delete,
 
 		ques_list,
-		ques_create
+		ques_create,
+		ques_update,
+		ques_delete
 	}
