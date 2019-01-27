@@ -126,19 +126,31 @@
 		  </el-table>
 		</template>
 
+		<div style="height: 40px;"></div>
+   		<Pager 	v-bind:current_page='curPage' 
+   				v-bind:pages='totalPage'
+   		       	@setPage='filterSearchData'></Pager>
+
 	</div>
 </template>
 
 <script type="text/javascript">
 	import Utils from '@/components/Utils.js';
 	import global_ from '@/components/Global.js';
+	import Pager from '@/components/Pager.vue';
 
 	export default {
+		components: {
+			'Pager': Pager
+		},
+
 		data(){
 			return {
 				mod_name: 'ques-manage',
 				loading: null,
 				rowsPerPage: 10,
+				totalRow: 0,
+				curPage: 1,
 				search_state:'',
 				exp_value:'',
 				qtype_value:'',
@@ -195,7 +207,7 @@
 			},
 
 			pageSizeChange(){
-
+				this.filterSearchData(1);
 			},
 
 			reqQuesList(page){
@@ -224,7 +236,7 @@
 								item.create_time = Utils.convTime(item.created_at);
 								item.update_time = Utils.convTime(item.updated_at);
 							}
-							this.filterData(this.curPage);
+							this.filterSearchData(this.curPage);
 							layer.close(this.loading);
 			     			
 			     		}, (err)=>{
@@ -250,21 +262,14 @@
 				return null;
 			},
 
-			filterData(page) {
-				this.list = this.tableData;
-				this.curPage = page;
-			},
-
 			searchReq(data){
 				var result = [];
-
 				if(!this.search_state) {
 					result = data;
 
 				} else {
 					result = data.filter( item => item.question.indexOf(this.search_state) != -1 );
 				}
-
 				this.totalRow = result.length;
 				return result;
 			},
@@ -291,6 +296,12 @@
 				}
 				this.curPage = page;
 			},
+		},
+		
+		computed: {
+			totalPage(){
+				return Math.ceil(this.totalRow / this.rowsPerPage);
+			}
 		},
 
 		beforeMount(){
