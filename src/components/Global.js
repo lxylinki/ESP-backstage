@@ -30,6 +30,8 @@
 	const exp_update = url_prefix + 'esp_admin/experiment/update';
 	const exp_delete = url_prefix + 'esp_admin/experiment/delete';
 
+	const ques_list = url_prefix + 'esp_admin/questions-bank/list';
+	const ques_create = url_prefix + 'esp_admin/questions-bank/create';
 
 
 	export default {
@@ -61,5 +63,8 @@
 		exp_list,
 		exp_create,
 		exp_update,
-		exp_delete
+		exp_delete,
+
+		ques_list,
+		ques_create
 	}

@@ -42,7 +42,7 @@
 						  placeholder="请搜索实验名称">
 				</input>
 
-				<div class="searchbtn explist-searchbtn" v-on:click="searchReq()">
+				<div class="searchbtn explist-searchbtn" v-on:click="filterSearchData(1)">
 					<i class="el-icon-search" ></i>
 				</div>
 
@@ -318,7 +318,6 @@
 					Utils.lalert('删除实验成功');
 					this.reqData();
 					//this.filterSearchData(this.curPage);
-
 				}, (err)=>{
 					Utils.err_process.call(this, err, '删除实验失败');
 				});				

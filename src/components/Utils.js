@@ -2,24 +2,27 @@ import RSAKey from '@/assets/js/rsa.min.js';
 import Base from '@/assets/js/base64.js';
 import global_ from '@/components/Global.js';
 
+
+function lalert(text) {
+	layer.alert(text, {title:'提示', area:['280px','190px']});
+}
+
+function err_process(err, text){
+	lalert(text);
+	console.log(err);
+	if (err.body.error == -403 || err.status == 403 || err.status == 401) {
+		this.$router.push('/login');
+	}
+}
+
+
 export default {
-	lalert(text) {
-		layer.alert(text, {title:'提示', area:['280px','190px']});
-	},
+	lalert: lalert,
+	
+	err_process: err_process,
 
 	lconfirm(text, func) {
 		layer.confirm(text, {title:'提示', area:['280px','190px']}, func);		
-	},
-
-	err_process(err, text){
-		function lalert(text) {
-			layer.alert(text, {title:'提示', area:['280px','190px']});
-		}
-		lalert(text);
-		console.log(err);
-		if (err.body.error == -403 || err.status == 403) {
-			this.$router.push('/login');
-		}
 	},
 
 	convTime(ntime) {
@@ -102,12 +105,12 @@ export default {
 	     			resolve(resp);
 	     			
 	     		}, (err)=>{
-		     		Utils.lalert('请求学校列表失败');
+		     		err_process.call(this, err, '请求学校列表失败');
 		     		console.log(err);
 	     		});
 
 	     	}, (err)=>{
-	     		Utils.lalert('请求学校列表失败');
+	     		err_process.call(this, err, '请求学校列表失败');
 	     		console.log(err);
 	     	});	     	 			
 		});
@@ -126,12 +129,12 @@ export default {
 
 				}, (err)=>{
 					layer.close(this.loading);
-					Utils.err_process.call(this, err, '请求实验列表失败');
+					err_process.call(this, err, '请求实验列表失败');
 				});
 
 			}, (err)=>{
 				layer.close(this.loading);
-				Utils.err_process.call(this, err, '请求实验列表失败');						
+				err_process.call(this, err, '请求实验列表失败');						
 			});
 		});				
 	},

@@ -155,7 +155,7 @@ select, textarea {
   -webkit-border-bottom-right-radius: 20px;
 }
 
-/*radio style*/
+/*hide radio, checkbox*/
 input[type="radio"] {
   position: absolute;
   clip: rect(0, 0, 0, 0);
@@ -196,7 +196,6 @@ input[type="radio"]:checked + label::before {
   box-sizing: border-box;
   padding: 4px;
 }
-
 
 .goback, .goback:hover, .goback:active, .goback:focus{
   color: white;
