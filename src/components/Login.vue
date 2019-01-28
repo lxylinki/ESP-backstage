@@ -74,7 +74,9 @@
 				}
 			},
 		},
+		
 		mounted(){
+			Utils.check_status.call(this);
 			document.querySelector('.usrid').focus();
 		}
 	}

@@ -32,6 +32,11 @@ const QuesManage = ()=> import('@/components/quesmanage/QuesManage.vue');
 const QuesAdd = ()=> import('@/components/quesmanage/QuesAdd.vue');
 const QuesEdit = ()=> import('@/components/quesmanage/QuesEdit.vue');
 
+const Exam = ()=> import('@/components/exammanage/Exam.vue');
+const ExamAdd =()=> import('@/components/exammanage/ExamAdd.vue');
+const ExamEdit = ()=> import('@/components/exammanage/ExamEdit.vue');
+
+
 //2. set route paths
 const myRoutes = [
 	{path: '/login', meta: {title: '登陆'}, component: Login},
@@ -62,7 +67,11 @@ const myRoutes = [
 
 	 	{path: '/quesmng', meta: {title: '试题管理'}, component: QuesManage},
 	 	{path: '/quesadd', meta: {title: '试题管理'}, component: QuesAdd},
-	 	{path: '/quesedit', meta: {title: '试题管理'}, component: QuesEdit}
+	 	{path: '/quesedit', meta: {title: '试题管理'}, component: QuesEdit},
+
+	 	{path: '/exam', meta: {title: '考核管理'}, component: Exam},
+	 	{path: '/examadd', meta: {title: '考核管理'}, component: ExamAdd},
+	 	{path: '/examedit', meta: {title: '考核管理'}, component: ExamEdit}
 	 ]
 	},
 	{path: '*', redirect: '/login'}	/*default when no match*/

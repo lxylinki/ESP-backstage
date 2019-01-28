@@ -35,6 +35,11 @@
 	const ques_update = url_prefix + 'esp_admin/questions-bank/update';
 	const ques_delete = url_prefix + 'esp_admin/questions-bank/delete';
 
+	const exam_list = url_prefix + 'esp_admin/examine/admin-list';
+	const exam_create = url_prefix + 'esp_admin/examine/create';
+	const exam_update = url_prefix + 'esp_admin/examine/update';
+	const exam_delete = url_prefix + 'esp_admin/examine/delete';
+
 
 	export default {
 		url_prefix,
@@ -70,5 +75,10 @@
 		ques_list,
 		ques_create,
 		ques_update,
-		ques_delete
+		ques_delete,
+
+		exam_list,
+		exam_create,
+		exam_update,
+		exam_delete
 	}

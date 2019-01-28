@@ -375,7 +375,7 @@
 
 <style type="text/css" scoped>
 .selectclass {
-	background: white;
+	background: #ffffff;
 }
 
 .addbtndiv {
@@ -395,6 +395,7 @@
 }
 
 .select-header {
+	background: #ffffff;
 	box-sizing: border-box;
 	font-size: 14px;
 	margin: auto;

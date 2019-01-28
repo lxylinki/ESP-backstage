@@ -1,8 +1,8 @@
 <template>
-	<div id="quesmanage">
+	<div id="exam">
 		<div style="width: 100%; height: 35px;">
 			<span style="color: #1890ff; font-weight: bold">|</span> 
-			试题管理
+			考核管理
 		</div>
 		<div style="height: 20px;"></div>
 
@@ -20,11 +20,11 @@
 				  </el-select>		
 			</div>
 			<div style="display: inline-block; width: 20px;"></div>
-			<div class="pickquestype">题型： </div>
+			<div class="pickquestype">类型： </div>
 			<div style="display: inline-block;">
-				  <el-select v-model="qtype_value" placeholder="请选择题型" v-on:change="filterSearchData(1)">
+				  <el-select v-model="type_value" placeholder="请选择考核类型" v-on:change="filterSearchData(1)">
 				    <el-option
-				      v-for="item in qtype_options"
+				      v-for="item in type_options"
 				      :key="item.value"
 				      :label="item.label"
 				      :value="item.value">
@@ -37,7 +37,7 @@
 				<input class="searchinput" 
 						  v-model="search_state"
 						  v-on:keydown="invokeSearch($event)"
-						  placeholder="请搜索试题名称">
+						  placeholder="请搜索考核名称">
 				</input>
 
 				<div class="searchbtn quesmng-searchbtn" v-on:click="filterSearchData(1)">
@@ -49,7 +49,7 @@
 
 		<div style="display: flex; justify-content: space-between; align-items: baseline;">
 			<div class="addbtndiv">
-				<el-button class="addbtn" v-on:click="addQues()">添加</el-button>
+				<el-button class="addbtn" v-on:click="addExam()">添加</el-button>
 			</div>
 
 			<div style="display: inline-block; float: right; margin: 10px;">
@@ -70,18 +70,19 @@
 		    :data="list"
 		    style="width: 100%;">
 		    <el-table-column
-		      prop="question"
-		      label="试题名称"
+		      prop="name"
+		      label="考核名称"
 		      min-width="100"
 		      :show-overflow-tooltip="true">
 		    </el-table-column>
 		    
 		    <el-table-column
-		      prop="exp_catag"
-		      label="实验分类"
+		      prop="experiment_name"
+		      label="所属实验"
 		      min-width="100">
 		    </el-table-column>
-		    		    
+		    
+		    <!--		    
 		     <el-table-column
 		      prop="type"
 		      label="题型"
@@ -90,7 +91,7 @@
 		      	<span v-if="scope.row.type == 1">单选</span>
 		      	<span class="notinuse" v-if="scope.row.type == 2">多选</span>
 		      </template>
-		    </el-table-column>
+		    </el-table-column>-->
 
 		     <el-table-column
 		      prop="create_time"
@@ -104,18 +105,21 @@
 		      min-width="100">
 		    </el-table-column>
 
-		    <!--<el-table-column
-		      prop=""
-		      label="作者"
+		     <el-table-column
+		      prop="count"
+		      label="题数限制"
 		      min-width="100">
-		    </el-table-column>-->
+		    </el-table-column>
 
 		    <el-table-column
 		      prop="operation"
 		      label="操作"
-		      min-width="100">
+		      min-width="150">
 
 		      <template slot-scope="scope">
+		      	<el-button  class="op" type="text" @click="">
+		      		配置试题
+		      	</el-button>
 		      	<el-button  class="op" type="text" @click="editRow(scope.row)">
 		      		<i class="iconfont">&#xe61a;</i>编辑
 		      	</el-button>
@@ -131,47 +135,44 @@
 		<div style="height: 40px;"></div>
    		<Pager 	v-bind:current_page='curPage' 
    				v-bind:pages='totalPage'
-   		       	@setPage='filterSearchData'></Pager>
+   		       	@setPage='filterSearchData'></Pager>		
 
 	</div>
 </template>
 
 <script type="text/javascript">
 	import Utils from '@/components/Utils.js';
-	import global_ from '@/components/Global.js';
 	import Pager from '@/components/Pager.vue';
+	import global_ from '@/components/Global.js';
 
 	export default {
 		components: {
 			'Pager': Pager
 		},
-
 		data(){
 			return {
-				mod_name: 'ques-manage',
-				loading: null,
+				list: [],
+				tableData: [],
+				exp_value: '',
+				type_value: '',
+				search_state: '',
+				exp_options: [],
 				rowsPerPage: 10,
 				totalRow: 0,
 				curPage: 1,
-				search_state:'',
-				exp_value:'',
-				qtype_value:'',
-				list:[],
-				tableData:[],
-				exp_options:[],
-				qtype_options:[
+				type_options: [
 					{
-						label: '全部',
+						label:'全部',
 						value: null
 					},
 					{
-						label: '单选',
+						label: '考核',
 						value: 1
 					},
 					{
-						label: '多选',
+						label: '抢救治疗',
 						value: 2
-					}				
+					}
 				],
 				row_nums: [
 					{
@@ -199,75 +200,56 @@
 		},
 
 		methods: {
-			invokeSearch(e) {
-				if(e.keyCode == 13) {
-					this.filterSearchData(1);
-				}
-			},
-			addQues(){
-				this.$router.push('/quesadd');
-			},
-
-			pageSizeChange(){
-				this.filterSearchData(1);
-			},
-
-			reqQuesList(page){
+			fillExpSelect(){
 				asyncReq.call(this);
 				async function asyncReq(){
 					let resp = await Utils.reqExpList.call(this);
 					this.exp_options = resp.body._list;
 					this.exp_options.unshift({'name': '所有实验', 'id': null});
-
-					//fetch all then slice
-					var api = global_.ques_list + '?page=1'; 
-
-					this.$http.post(api, {}).then((resp)=>{
-						var total_exp = resp.body.total;
-						this.totalRow = resp.body.total;
-						var full_list_api = api + '&pagesize='+ total_exp;
-
-			     		this.$http.post(full_list_api, {}).then((resp)=>{
-							
-							this.tableData = resp.body._list;
-
-							for(let i in this.tableData) {
-								let item = this.tableData[i];
-								item.exp_catag = this.findExp(this.exp_options, item.eid).name;
-								item.create_time = Utils.convTime(item.created_at);
-								item.update_time = Utils.convTime(item.updated_at);
-							}
-
-							this.$store.commit('sign', this.mod_name);
-					    	this.$store.commit('setRowNumBefore', total_exp);
-					    	this.$store.commit('setRowNumAfter', total_exp);
-					    	this.$store.commit('setRowsPerPage', this.rowsPerPage);
-
-					    	//cut page here
-							this.filterSearchData(page);
-							layer.close(this.loading);
-			     			
-			     		}, (err)=>{
-			     			layer.close(this.loading);
-			     			Utils.err_process.call(this, err, '请求试题列表失败');
-				     		console.log(err);
-			     		});						
-
-					}, (err)=>{
-						Utils.err_process.call(this, err, '请求试题列表失败');
-						layer.close(this.loading);
-						console.log(err);
-					});
 				}
 			},
 
-			findExp(exp_list, eid){
-				for (let i in exp_list) {
-					if(exp_list[i].id === eid) {
-						return exp_list[i];
-					}
+			reqExamList(page){
+				var api = global_.exam_list + '?page=1';
+				this.$http.post(api, {}).then((resp)=>{
+					this.totalRow = resp.body.total;
+					var full_list_api = api + '&pagesize='+ this.totalRow;
+
+					this.$http.post(full_list_api, {}).then((resp)=>{
+				    	this.$store.commit('sign', this.mod_name);
+				    	this.$store.commit('setRowNumBefore', resp.body.total);
+				    	this.$store.commit('setRowNumAfter', resp.body.total);
+						this.tableData = resp.body._list;
+						for(let i in this.tableData) {
+							let item = this.tableData[i];
+							item.create_time = Utils.convTime(item.created_at);
+							item.update_time = Utils.convTime(item.updated_at);
+						}
+
+						this.filterSearchData(page);
+						layer.close(this.loading);
+
+					}, (err)=>{
+						layer.close(this.loading);
+						Utils.err_process.call(this, err, '请求考核列表失败');
+						console.log(err);
+					});
+				}, (err)=>{
+					layer.close(this.loading);
+					Utils.err_process.call(this, err, '请求考核列表失败');
+					console.log(err);
+				});			
+			},
+
+			invokeSearch(e) {
+				if(e.keyCode == 13) {
+					this.filterSearchData(1);
 				}
-				return null;
+			},
+
+			pageSizeChange(){
+				this.$store.commit('setRowsPerPage', this.rowsPerPage);
+				this.filterSearchData(1);
 			},
 
 			searchReq(data){
@@ -276,7 +258,7 @@
 					result = data;
 
 				} else {
-					result = data.filter( item => item.question.indexOf(this.search_state) != -1 );
+					result = data.filter( item => item.name.indexOf(this.search_state) != -1 );
 				}
 				//this.totalRow = result.length;
 				return result;
@@ -285,12 +267,12 @@
 			filterSearchData(page){
 				var search_res;
 
-				//filter by qtype
-				if (!this.qtype_value) {
+				//filter by type
+				if (!this.type_value) {
 					search_res = this.searchReq(this.tableData);
 
 				} else {
-					search_res = this.searchReq(this.tableData).filter(item => item.type == this.qtype_value);
+					search_res = this.searchReq(this.tableData).filter(item => item.type == this.type_value);
 				}
 				this.totalRow = search_res.length;
 
@@ -306,41 +288,45 @@
 				this.curPage = page;
 			},
 
+			addExam(){
+				this.$router.push('/examadd');
+			},
+
 			editRow(row){
 				this.$store.commit('sign', this.mod_name);
 				this.$store.commit('setEdit', true);
 				this.$store.commit('pickRow', row);
 				this.$store.commit('setCurPage', this.curPage);
 				this.$store.commit('setCurSearch', this.search_state);
-				this.$router.push('/quesedit');				
+				this.$router.push('/examedit');
 			},
 
 			deleteRow(row){
 				var _this = this;
-				Utils.lconfirm("确定删除试题？", function(){_this.delQues(row)});
+				Utils.lconfirm("确定删除考核？", function(){_this.delExam(row)});
 			},
 
-			delQues(row){
-				var api = global_.ques_delete;
+			delExam(row){
+				var api = global_.exam_delete;
 				let data = {
 					'id': row.id
 				}
 				this.$http.post(api, data).then((resp)=>{
-					this.reqQuesList(this.curPage);
-					Utils.lalert('删除试题成功');
+					Utils.lalert('删除考核成功');
+					this.reqExamList(this.curPage);
 
 				}, (err)=>{
-					Utils.err_process.call(this, err, '删除试题失败');
-				});					
+					Utils.err_process.call(this, err, '删除考核失败');
+				});				
 			}
 		},
-		
+
 		computed: {
 			totalPage(){
 				return Math.ceil(this.totalRow / this.rowsPerPage);
 			}
 		},
-
+		
 		beforeMount(){
 			this.loading = layer.load(1, {shade: false});
 		},
@@ -354,7 +340,7 @@
 					pagesize = this.$store.state.rows_per_page,
 					keyword = this.$store.state.current_search,
 					curpage = this.$store.state.current_page;
-				
+
 				if (pagesize > 0) {
 					this.rowsPerPage = pagesize;
 				}
@@ -371,7 +357,9 @@
 					this.curPage = curpage;
 				} 				
 			}
-			this.reqQuesList(this.curPage);
+			//console.log(before, after, pagesize, keyword, curpage);
+			this.fillExpSelect();
+			this.reqExamList(this.curPage);
 		}
 	}
 </script>

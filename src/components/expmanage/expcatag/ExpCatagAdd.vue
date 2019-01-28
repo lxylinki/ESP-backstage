@@ -12,13 +12,14 @@
 				<span class="whitedefault"v-show="catag_name">*</span>
 			</div>
 			<div style="height: 30px;"></div>
-			<div> 父类别： 
+			<div class="parentinp"> 父类别： 
 				<template>
 				  <el-select class="longselect"
 				  			 v-model="parent_value" 
 				  			 placeholder="请搜索实验父类别"
 				  			 filterable
-				  			 v-on:change="decidePar()">
+				  			 v-on:change="decidePar()"
+				  			 v-on:visible-change="setTagTitle()">
 				    <el-option
 				      v-for="item in catag_options"
 				      :key="item.id"
@@ -90,6 +91,14 @@
 			}
 		},
 		methods: {
+			setTagTitle() {
+		        var tagTextList = document.querySelector('.parentinp').querySelectorAll('.el-select-dropdown__item>span');
+		        console.log(tagTextList);
+		        tagTextList.forEach( (item) => {
+		          item.setAttribute('title', item.innerText)
+		        })
+			},
+
 			goBack(){
 				this.$router.go(-1);
 			},
@@ -148,6 +157,9 @@
 </script>
 
 <style type="text/css" scoped>
+.el-select-dropdown__item {
+	width: 300px;
+}
 
 .longselect /deep/ .el-input__inner {
 	height: 34px;
@@ -168,8 +180,10 @@
 .redalert {
 	color: red;
 }
+
 .whitedefault {
 	/*same with bg color*/
 	color: #ffffff;
 }
+
 </style>

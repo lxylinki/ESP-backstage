@@ -50,14 +50,10 @@ export default {
 		var profile = global_.status_check;
 
 		this.$http.post(profile, {}).then((resp)=>{
-			console.log('check_status');
+			this.$router.push('/school');
 
 		}, (err)=>{
-			lalert('请求登陆状态失败');
-			console.log(err);
-			if (err.body.error == -403 || err.status == 403) {
-				this.$router.push('/login');
-			}
+			err_process(err, '请求登陆状态失败');
 		});
 	},	
 
