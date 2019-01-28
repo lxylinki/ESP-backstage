@@ -35,6 +35,7 @@ const QuesEdit = ()=> import('@/components/quesmanage/QuesEdit.vue');
 const Exam = ()=> import('@/components/exammanage/Exam.vue');
 const ExamAdd =()=> import('@/components/exammanage/ExamAdd.vue');
 const ExamEdit = ()=> import('@/components/exammanage/ExamEdit.vue');
+const ExamConfig = ()=> import('@/components/exammanage/ExamConfig.vue');
 
 
 //2. set route paths
@@ -71,7 +72,8 @@ const myRoutes = [
 
 	 	{path: '/exam', meta: {title: '考核管理'}, component: Exam},
 	 	{path: '/examadd', meta: {title: '考核管理'}, component: ExamAdd},
-	 	{path: '/examedit', meta: {title: '考核管理'}, component: ExamEdit}
+	 	{path: '/examedit', meta: {title: '考核管理'}, component: ExamEdit},
+	 	{path: '/examconfig', meta: {title: '考核管理'}, component: ExamConfig}
 	 ]
 	},
 	{path: '*', redirect: '/login'}	/*default when no match*/

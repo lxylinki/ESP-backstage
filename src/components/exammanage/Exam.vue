@@ -117,7 +117,7 @@
 		      min-width="150">
 
 		      <template slot-scope="scope">
-		      	<el-button  class="op" type="text" @click="">
+		      	<el-button  class="op" type="text" @click="configRow(scope.row)">
 		      		配置试题
 		      	</el-button>
 		      	<el-button  class="op" type="text" @click="editRow(scope.row)">
@@ -290,6 +290,15 @@
 
 			addExam(){
 				this.$router.push('/examadd');
+			},
+
+			configRow(row) {
+				this.$store.commit('sign', this.mod_name);
+				this.$store.commit('setEdit', true);
+				this.$store.commit('pickRow', row);
+				this.$store.commit('setCurPage', this.curPage);
+				this.$store.commit('setCurSearch', this.search_state);
+				this.$router.push('/examconfig');				
 			},
 
 			editRow(row){
