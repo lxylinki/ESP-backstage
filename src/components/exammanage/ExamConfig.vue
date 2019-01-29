@@ -305,6 +305,8 @@
 				],
 				type_value: '',	
 				focus_qids: [],	
+				limit: 0,
+				current_count: 0
 			}
 		},
 
@@ -320,6 +322,11 @@
 
 		methods: {
 			selectRow(qrow){
+				console.log(this.current_count, this.limit);
+				if(this.current_count === this.limit) {
+					Utils.lalert('已达到最大题数限制');
+					return;
+				} 
 				var api = global_.exam_ques_create;
 				let data = {
 					'exam_id': this.exam_id,
@@ -328,6 +335,7 @@
 				this.$http.post(api, data).then((resp)=>{
 					this.focus_qids.push(qrow.id);
 					qrow.new_id = resp.body.id;
+					this.current_count += 1;
 					this.reqEquesList(1);
 
 				}, (err)=>{
@@ -407,6 +415,8 @@
 
 				this.$http.post(api, data).then((resp)=>{
 					this.tableData = resp.body._list;
+					this.current_count = this.tableData.length;
+					console.log(this.current_count);
 
 					for(let i in this.tableData) {
 						let item = this.tableData[i];
@@ -596,6 +606,8 @@
 			} else {
 				var row = this.$store.state.row;
 				this.exam_id = row.id;
+				this.limit = Number(row.count);
+				console.log(this.limit);
 				this.reqEquesList(1);
 				this.reqQuesList(1);
 				this.inactivate();

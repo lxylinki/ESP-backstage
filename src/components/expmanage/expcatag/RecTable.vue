@@ -76,14 +76,17 @@
 }
 
 td {
-	height: 42px;
+	box-sizing: border-box;
+	height: 43px;
 	vertical-align: middle;
 	text-align: center;
+	/*border: 1px solid;*/
 }
 
 .name {
+	width: 240px;
 	text-align: left !important;
-	padding-left: 20px;
+	padding-left: 30px;
 }
 
 .nametext {
@@ -101,13 +104,13 @@ td {
 	width: 200px;
 }
 .created_at {
-	width: 300px;
+	width: 240px;
 }
 .updated_at {
-	width: 300px;
+	width: 240px;
 }
 .operation {
-	width: 200px;
+	width: 240px;
 }
 
 .recrowcontent{
@@ -126,7 +129,7 @@ td {
 
 .recrow .recrow .recrowcontent .name .nametext {
 	width: 100px;
-	padding-left: 20px;
+	padding-left: 30px;
 }
 
 .recrow .recrow .recrowcontent {
