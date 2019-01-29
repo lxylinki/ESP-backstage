@@ -322,7 +322,7 @@
 
 		methods: {
 			selectRow(qrow){
-				console.log(this.current_count, this.limit);
+				//console.log(this.current_count, this.limit);
 				if(this.current_count === this.limit) {
 					Utils.lalert('已达到最大题数限制');
 					return;
@@ -416,7 +416,7 @@
 				this.$http.post(api, data).then((resp)=>{
 					this.tableData = resp.body._list;
 					this.current_count = this.tableData.length;
-					console.log(this.current_count);
+					//console.log(this.current_count);
 
 					for(let i in this.tableData) {
 						let item = this.tableData[i];

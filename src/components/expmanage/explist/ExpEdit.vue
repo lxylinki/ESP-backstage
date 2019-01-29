@@ -145,9 +145,11 @@
 		    },
 
 		    clearImgPlace(){
-		    	if(!$('#image')[0].src) {
+
+		    	if($('#image')[0].src.split('/').pop() == 'null') {
 		    		$('#image').addClass('emptyimg');
 		    	}
+
 		    },
 
 		    saveEdit(){
@@ -290,6 +292,7 @@
 .emptyimg {
 	width: 300px;
 	background: #f7f7f7;
+	border: 1px solid #cccccc;
 }
 
 
@@ -300,7 +303,7 @@
     position: absolute;
     left: 0;
     top: 0;
-    background: #ffffff;
+    background: #f7f7f7;
 }
 
 #uploadfile {

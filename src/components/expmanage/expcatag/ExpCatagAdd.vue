@@ -93,7 +93,7 @@
 		methods: {
 			setTagTitle() {
 		        var tagTextList = document.querySelector('.parentinp').querySelectorAll('.el-select-dropdown__item>span');
-		        console.log(tagTextList);
+		        //console.log(tagTextList);
 		        tagTextList.forEach( (item) => {
 		          item.setAttribute('title', item.innerText)
 		        })

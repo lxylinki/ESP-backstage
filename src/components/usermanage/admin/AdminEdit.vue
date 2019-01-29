@@ -144,4 +144,7 @@
 	margin-right: 8px;
 }
 
+#obsolete + label::before {
+  margin-left: 20px;
+}
 </style>
