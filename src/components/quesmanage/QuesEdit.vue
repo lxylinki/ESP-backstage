@@ -372,7 +372,8 @@
 
 				exp_options:[],
 				exp_value: '',
-				id: ''
+				id: '',
+				given_answer:''
 			}
 		},
 
@@ -789,6 +790,23 @@
 					this.showE = true;
 				}
 
+				this.given_answer = row.answer;
+				//console.log(this.given_answer);
+				if(this.given_answer.indexOf('A') != -1) {
+					document.querySelector('#aCheck').checked = true;
+				}
+				if(this.given_answer.indexOf('B') != -1) {
+					document.querySelector('#bCheck').checked = true;
+				}
+				if(this.given_answer.indexOf('C') != -1) {
+					document.querySelector('#cCheck').checked = true;
+				}
+				if(this.given_answer.indexOf('D') != -1) {
+					document.querySelector('#dCheck').checked = true;
+				}
+				if(this.given_answer.indexOf('E') != -1) {
+					document.querySelector('#eCheck').checked = true;
+				}
 			}
 		}
 	}
@@ -915,6 +933,7 @@ div>.mchoice input {
 
 #tp {
 	display: inline-block;
+	margin-left: 36px;
 }
 
 #ques {

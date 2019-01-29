@@ -132,7 +132,7 @@
 						<i class="iconfont togglesign" v-on:click="toggleTypeList()" v-show="showTypeToggle">&#xe608;</i>
 			    	</div>
 
-					<div class="select-list" v-show="showTypeToggle" style="overflow-y: scroll; height: 190px;">
+					<div class="select-list" v-show="showTypeToggle" style="height: 120px;">
 						<li class="select-item" v-for="item in type_options" v-on:click="makeTypeChoice(item)">{{item.label}}</li>	
 					</div>
 			    </div>

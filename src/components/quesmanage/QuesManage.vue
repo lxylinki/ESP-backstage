@@ -227,13 +227,17 @@
 						this.totalRow = resp.body.total;
 						var full_list_api = api + '&pagesize='+ total_ques;
 
-			     		this.$http.post(full_list_api, {}).then((resp)=>{
+						let data = {
+							"withOption": true
+						}
+
+			     		this.$http.post(full_list_api, data).then((resp)=>{
 							
 							this.tableData = resp.body._list;
 
 							for(let i in this.tableData) {
 								let item = this.tableData[i];
-								console.log(item);
+								//console.log(item);
 								item.exp_belong = this.findExp(this.exp_options, item.eid).name;
 								item.create_time = Utils.convTime(item.created_at);
 								item.update_time = Utils.convTime(item.updated_at);

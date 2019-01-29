@@ -885,6 +885,7 @@ div>.mchoice input {
 
 #tp {
 	display: inline-block;
+	margin-left: 36px;
 }
 
 #ques {
