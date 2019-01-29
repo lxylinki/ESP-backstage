@@ -77,8 +77,8 @@
 		    </el-table-column>
 		    
 		    <el-table-column
-		      prop="exp_catag"
-		      label="实验分类"
+		      prop="exp_belong"
+		      label="所属实验"
 		      min-width="100">
 		    </el-table-column>
 		    		    
@@ -88,7 +88,7 @@
 		      min-width="100">
 		      <template slot-scope="scope">
 		      	<span v-if="scope.row.type == 1">单选</span>
-		      	<span class="notinuse" v-if="scope.row.type == 2">多选</span>
+		      	<span v-if="scope.row.type == 2">多选</span>
 		      </template>
 		    </el-table-column>
 
@@ -223,9 +223,9 @@
 					var api = global_.ques_list + '?page=1'; 
 
 					this.$http.post(api, {}).then((resp)=>{
-						var total_exp = resp.body.total;
+						var total_ques = resp.body.total;
 						this.totalRow = resp.body.total;
-						var full_list_api = api + '&pagesize='+ total_exp;
+						var full_list_api = api + '&pagesize='+ total_ques;
 
 			     		this.$http.post(full_list_api, {}).then((resp)=>{
 							
@@ -233,14 +233,15 @@
 
 							for(let i in this.tableData) {
 								let item = this.tableData[i];
-								item.exp_catag = this.findExp(this.exp_options, item.eid).name;
+								console.log(item);
+								item.exp_belong = this.findExp(this.exp_options, item.eid).name;
 								item.create_time = Utils.convTime(item.created_at);
 								item.update_time = Utils.convTime(item.updated_at);
 							}
 
 							this.$store.commit('sign', this.mod_name);
-					    	this.$store.commit('setRowNumBefore', total_exp);
-					    	this.$store.commit('setRowNumAfter', total_exp);
+					    	this.$store.commit('setRowNumBefore', total_ques);
+					    	this.$store.commit('setRowNumAfter', total_ques);
 					    	this.$store.commit('setRowsPerPage', this.rowsPerPage);
 
 					    	//cut page here

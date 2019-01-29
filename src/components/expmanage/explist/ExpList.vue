@@ -214,7 +214,7 @@
 					result = data.filter( item => item.name.indexOf(this.search_state) != -1 );
 				}
 
-				this.totalRow = result.length;
+				//this.totalRow = result.length;
 				return result;
 			},
 
@@ -275,6 +275,7 @@
 
 			filterSearchData(page){
 				var search_res = this.searchReq(this.tableData);
+				this.totalRow = search_res.length;
 
 				if(!this.catag_value) {
 					this.list = search_res.slice(this.rowsPerPage*(page-1), this.rowsPerPage*page);

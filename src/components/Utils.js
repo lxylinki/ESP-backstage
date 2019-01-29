@@ -8,11 +8,13 @@ function lalert(text) {
 }
 
 function err_process(err, text){
-	lalert(text);
-	console.log(err);
+	if(text) {
+		lalert(text);
+	}
 	if (err.body.error == -403 || err.status == 403 || err.status == 401) {
 		this.$router.push('/login');
 	}
+	console.log(err);
 }
 
 
@@ -53,7 +55,7 @@ export default {
 			this.$router.push('/school');
 
 		}, (err)=>{
-			err_process(err, '请求登陆状态失败');
+			err_process(err, '');
 		});
 	},	
 

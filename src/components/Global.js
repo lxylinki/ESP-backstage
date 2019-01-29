@@ -41,6 +41,7 @@
 	const exam_delete = url_prefix + 'esp_admin/examine/delete';
 
 	const exam_ques_list = url_prefix + 'esp_admin/examine-questions/list';
+	const exam_ques_delete = url_prefix + 'esp_admin/examine-questions/delete';
 
 
 	export default {
@@ -84,5 +85,6 @@
 		exam_update,
 		exam_delete,
 
-		exam_ques_list
+		exam_ques_list,
+		exam_ques_delete
 	}
