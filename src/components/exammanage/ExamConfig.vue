@@ -106,7 +106,7 @@
    				v-bind:pages='totalPage'
    		       	@setPage='filterSearchData'></Pager>
 
-   		<div id="show-quesbank" v-show="true">
+   		<div id="show-quesbank" v-show="false">
 			<div class="selectclass">
 				<div style="display: inline-block; width: 20px;"></div>
 				<div class="pickexptitle">实验： </div>
@@ -138,19 +138,17 @@
 			    </div>
 
 				<div class="searchwindow quesmng-searchwindow">
-
 					<input class="searchinput" 
-							  v-model="search_state"
-							  v-on:keydown=""
+							  v-model="ques_search_state"
+							  v-on:keydown="invokeQSearch($event)"
 							  placeholder="请搜索试题名称">
 					</input>
-
 					<div class="searchbtn quesmng-searchbtn" v-on:click="filterSearchData(1)">
 						<i class="el-icon-search" ></i>
 					</div>
-
 				</div>
-			</div><!--selectclass-->  
+			</div><!--selectclass-->
+
 			<div style="height: 20px;"></div>
 			<template>
 			  <el-table
@@ -203,11 +201,11 @@
 			      min-width="100">
 
 			      <template slot-scope="scope">
-			      	<el-button  class="op" type="text" @click="">
-			      		<i class="iconfont">&#xe61a;</i>选题
+			      	<el-button v-show="!contains(focus_qids, scope.row.id)" class="op selectbtn" type="text" @click="selectRow(scope.row)">
+			      		+选题
 			      	</el-button>
-			      	<el-button class="op" type="text" @click="">
-			      		<i class="iconfont">&#xe7e0;</i>移除
+			      	<el-button v-show="contains(focus_qids, scope.row.id)" class="op removebtn" type="text" @click="removeRow(scope.row)">
+			      		-移除
 			      	</el-button>
 			      </template>
 			    </el-table-column>
@@ -235,7 +233,7 @@
 		},
 		data(){
 			return {
-				id: '',
+				exam_id: '',
 				exp_value: '',
 				qtype_value: '',
 				search_state:'',
@@ -287,6 +285,7 @@
 				],
 				exp_search_state: '',
 				type_search_state: '',
+				ques_search_state: '',
 				filtered_exp: [],
 				showToggle: false,
 				showTypeToggle: false,	
@@ -304,7 +303,8 @@
 						value: 2
 					}				
 				],
-				type_value: ''			
+				type_value: '',	
+				focus_qids: [],	
 			}
 		},
 
@@ -315,10 +315,69 @@
 				} else {
 					this.filtered_exp = this.exp_options.filter( item => item.name.indexOf(this.exp_search_state) != -1);
 				}
-			}
+			},
 		},
 
 		methods: {
+			selectRow(qrow){
+				var api = global_.exam_ques_create;
+				let data = {
+					'exam_id': this.exam_id,
+					'question_id': qrow.id
+				}
+				this.$http.post(api, data).then((resp)=>{
+					this.focus_qids.push(qrow.id);
+					qrow.new_id = resp.body.id;
+					this.reqEquesList(1);
+
+				}, (err)=>{
+					Utils.err_process.call(this, err, '添加考核试题失败');
+				});
+			},
+
+			contains(arr, item) {
+				for(let i in arr) {
+					if (arr[i] === item) {
+						return true;
+					}
+				}
+				return false;
+			},
+
+			remove(arr, item) {
+				for(let i in arr) {
+					if (arr[i] === item) {
+						arr.splice(i, 1);
+					}
+				}
+			},
+
+			removeRow(qrow){
+				var _this = this;
+				Utils.lconfirm("确定删除考核试题？", function(){_this.delQrow(qrow)});
+			},
+
+			delQrow(qrow) {
+				var api = global_.exam_ques_delete;
+				let data = {
+					'id': qrow.new_id
+				}
+				this.$http.post(api, data).then((resp)=>{
+					this.remove(this.focus_qids, qrow.id);
+					this.reqEquesList(this.curPage);
+					Utils.lalert('删除考核试题成功');
+
+				}, (err)=>{
+					Utils.err_process.call(this, err, '删除考核试题失败');
+				});						
+			},
+
+			invokeQSearch(e) {
+				if(e.keyCode == 13) {
+					this.filterQSearchData(1);
+				}
+			},
+			
 			inactivate(){
 				$(document).on('click', '.select-header', function(){
 					$(this).removeClass('select-header-normal').addClass('select-header-active');
@@ -343,7 +402,7 @@
 			reqEquesList(page){
 				var api = global_.exam_ques_list;
 				let data = {
-					"exam_id": this.id
+					"exam_id": this.exam_id
 				}
 
 				this.$http.post(api, data).then((resp)=>{
@@ -420,13 +479,13 @@
 				}
 			},
 
-			searchReq(data){
+			searchReq(data, keyword){
 				var result = [];
-				if(!this.search_state) {
+				if(!keyword) {
 					result = data;
 
 				} else {
-					result = data.filter( item => item.question && item.question.indexOf(this.search_state) != -1 );
+					result = data.filter( item => item.question && item.question.indexOf(keyword) != -1 );
 				}
 				return result;
 			},
@@ -436,7 +495,7 @@
 			},
 
 			filterSearchData(page) {
-				var search_res = this.searchReq(this.tableData);
+				var search_res = this.searchReq(this.tableData, this.search_state);
 				this.list = search_res.slice(this.rowsPerPage*(page-1), this.rowsPerPage*page);
 				this.totalRow = search_res.length;
 				this.curPage = page;
@@ -445,14 +504,13 @@
 			filterQSearchData(page) {
 				var search_res;
 				if(!this.type_value) {
-					search_res = this.searchReq(this.tableQData);
+					search_res = this.searchReq(this.tableQData, this.ques_search_state);
 
 				} else {
-					search_res = this.searchReq(this.tableQData).filter(item => item.type == this.type_value);
+					search_res = this.searchReq(this.tableQData, this.ques_search_state).filter(item => item.type == this.type_value);
 				}
 
 				this.totalQRow = search_res.length;
-
 				if(!this.exp_value) {
 					this.qlist = search_res.slice(this.qRowsPerPage*(page-1), this.qRowsPerPage*page);
 
@@ -465,6 +523,7 @@
 			},
 
 			deleteRow(row){
+				console.log(row);
 				var _this = this;
 				Utils.lconfirm("确定删除考核试题？", function(){_this.delEques(row)});
 			},
@@ -536,7 +595,7 @@
 
 			} else {
 				var row = this.$store.state.row;
-				this.id = row.id;
+				this.exam_id = row.id;
 				this.reqEquesList(1);
 				this.reqQuesList(1);
 				this.inactivate();
@@ -546,6 +605,10 @@
 </script>
 
 <style type="text/css" scoped>
+#show-quesbank {
+	padding: 20px;
+	height: 100%;
+}
 .selectclass {
 	background: white;
 }
@@ -647,5 +710,4 @@
 .select-text {
 	width: 100%;
 }
-
 </style>
