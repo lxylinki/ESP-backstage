@@ -186,6 +186,7 @@
 				});		    	
 		    },
 
+
 		    decorFileInp(){
 				var upbtn = document.querySelector(".uploadbtn"),
 				    upfile = document.querySelector("#uploadfile");

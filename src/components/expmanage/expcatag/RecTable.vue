@@ -84,7 +84,7 @@ td {
 }
 
 .name {
-	width: 240px;
+	width: 400px;
 	text-align: left !important;
 	padding-left: 30px;
 }
@@ -101,16 +101,16 @@ td {
 }
 
 .level {
-	width: 200px;
+	width: 400px;
 }
 .created_at {
-	width: 240px;
+	width: 400px;
 }
 .updated_at {
-	width: 240px;
+	width: 400px;
 }
 .operation {
-	width: 240px;
+	width: 400px;
 }
 
 .recrowcontent{
