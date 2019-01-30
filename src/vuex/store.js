@@ -32,6 +32,16 @@ var mutations = {
 
 	sign(state, name) {
 		state.last_author = name;
+		/*
+		state.user_group = 0;
+		state.row = {};
+		state.exam_id = '';
+		state.exp_id = '';
+		state.row_num_before = 0;
+		state.row_num_after = 0;
+		state.rows_per_page = 0;
+		state.current_page = 0;
+		state.current_search = '';*/
 	},
 
 	//must have state as arg

@@ -55,7 +55,7 @@ export default {
 			this.$router.push('/school');
 
 		}, (err)=>{
-			err_process(err, '');
+			err_process.call(this, err, '');
 		});
 	},	
 

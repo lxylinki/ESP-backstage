@@ -74,7 +74,8 @@
 		    <el-table-column
 		      prop="name"
 		      label="实验名称"
-		      min-width="100">
+		      min-width="100"
+		      :show-overflow-tooltip="true">
 		    </el-table-column>
 		    
 		    <el-table-column
@@ -86,7 +87,8 @@
 		     <el-table-column
 		      prop="catagory"
 		      label="所属分类"
-		      min-width="100">
+		      min-width="100"
+		      :show-overflow-tooltip="true">
 		    </el-table-column>
 
 		     <el-table-column
@@ -302,6 +304,7 @@
 				this.$store.commit('pickRow', row);
 				this.$store.commit('setCurPage', this.curPage);
 				this.$store.commit('setCurSearch', this.search_state);
+				this.$store.commit('setRowsPerPage', this.rowsPerPage);
 
 				this.$router.push('/expedit');
 			},
@@ -352,7 +355,7 @@
 					keyword = this.$store.state.current_search,
 					curpage = this.$store.state.current_page;
 
-				//console.log(curpage);
+				console.log(name, pagesize, keyword, curpage);
 				
 				if (pagesize > 0) {
 					this.rowsPerPage = pagesize;

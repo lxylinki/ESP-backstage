@@ -298,6 +298,7 @@
 				this.$store.commit('pickRow', row);
 				this.$store.commit('setCurPage', this.curPage);
 				this.$store.commit('setCurSearch', this.search_state);
+				this.$store.commit('setRowsPerPage', this.rowsPerPage);
 				this.$router.push('/examconfig');				
 			},
 
@@ -307,6 +308,7 @@
 				this.$store.commit('pickRow', row);
 				this.$store.commit('setCurPage', this.curPage);
 				this.$store.commit('setCurSearch', this.search_state);
+				this.$store.commit('setRowsPerPage', this.rowsPerPage);
 				this.$router.push('/examedit');
 			},
 
