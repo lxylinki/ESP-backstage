@@ -54,7 +54,7 @@
 			</div>
 			<div style="height: 30px;"></div>
 			<div class="btn-group">
-				<el-button class="confirm" v-on:click="addCreate()">确定</el-button>
+				<el-button class="confirm" v-on:click="preCheck()">确定</el-button>
 				<el-button class="goback" v-on:click="goBack()">返回</el-button>
 			</div>		
 		</div>
@@ -101,6 +101,17 @@
 
 			goBack(){
 				this.$router.go(-1);
+			},
+
+			preCheck(){
+				if(!this.catag_name) {
+					Utils.lalert('请输入分类名称');
+					return;
+				} else if(!this.level_value) {
+					Utils.lalert('请选择实验级别');
+				} else {
+					this.addCreate();
+				}
 			},
 
 			addCreate(){

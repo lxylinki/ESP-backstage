@@ -230,12 +230,12 @@
 				asyncReq.call(this);
 				async function asyncReq(){
 					let resp = await Utils.reqExpList.call(this);
-					console.log(resp);
+					//console.log(resp);
 
 					this.tableData = resp.body._list;
 					
 					var catags = resp.body.categories;
-					console.log(catags);
+					//console.log(catags);
 					for(let i in this.tableData) {
 						let item = this.tableData[i];
 						//catagory can be deleted and nonexist
@@ -363,7 +363,7 @@
 					keyword = this.$store.state.current_search,
 					curpage = this.$store.state.current_page;
 
-				console.log(name, pagesize, keyword, curpage);
+				//console.log(name, pagesize, keyword, curpage);
 				
 				if (pagesize > 0) {
 					this.rowsPerPage = pagesize;

@@ -108,7 +108,8 @@
 						   class="checkbox"
 						   id="aCheck"
 						   v-on:change="checkA()" 
-						   type="checkbox"><label for="aCheck"></label>
+						   type="checkbox"
+						   v-model="aCorrect"><label for="aCheck"></label>
 				</div>
 				
 				<!--move up-->
@@ -158,7 +159,8 @@
 						   class="checkbox" 
 						   type="checkbox"
 						   id="bCheck"
-						   v-on:change="checkB()"><label for="bCheck"></label>
+						   v-on:change="checkB()"
+						   v-model="bCorrect"><label for="bCheck"></label>
 				</div>
 				<!--move up-->
 				<div style="display: inline-block;">
@@ -202,7 +204,8 @@
 						   class="checkbox" 
 						   type="checkbox"
 						   id="cCheck"
-						   v-on:change="checkC()"><label for="cCheck"></label>
+						   v-on:change="checkC()"
+						   v-model="cCorrect"><label for="cCheck"></label>
 				</div>
 				<!--move up-->
 				<div style="display: inline-block;">
@@ -248,7 +251,8 @@
 						   class="checkbox" 
 						   type="checkbox"
 						   id="dCheck" 
-						   v-on:change="checkD()"><label for="dCheck"></label>
+						   v-on:change="checkD()"
+						   v-model="dCorrect"><label for="dCheck"></label>
 				</div>
 				
 				<!--move up-->
@@ -293,7 +297,8 @@
 						   class="checkbox" 
 						   type="checkbox"
 						   id="eCheck"
-						   v-on:change="checkE()"><label for="eCheck"></label>
+						   v-on:change="checkE()"
+						   v-model="eCorrect"><label for="eCheck"></label>
 				</div>
 				<!--move up-->
 				<div style="display: inline-block;">
@@ -320,7 +325,7 @@
 		
 		
 		<div class="btn-group">
-			<el-button class="confirm" v-on:click="addCreate()">确定</el-button>
+			<el-button class="confirm" v-on:click="preCheck()">确定</el-button>
 			<el-button class="goback" v-on:click="goBack()">返回</el-button>
 			<div style="height: 40px;"></div>
 		</div>
@@ -399,10 +404,15 @@
 				if(opta.checked && this.type == 1){
 
 					this.answer = 'a';
+					this.bCorrect = false;
+					this.cCorrect = false;
+					this.dCorrect = false;
+					this.eCorrect = false;
+					/*
 					document.querySelector('#bCheck').checked = false;
 					document.querySelector('#cCheck').checked = false;
 					document.querySelector('#dCheck').checked = false;
-					document.querySelector('#eCheck').checked = false;
+					document.querySelector('#eCheck').checked = false;*/
 					
 					// when multi-choice and A is checked
 				} else if(opta.checked && this.type == 2){
@@ -698,7 +708,28 @@
 				this.dval = e;
 			},
 
-			addCreate(){
+			preCheck(){
+				if(!this.exp_value) {
+					Utils.lalert('请选择所属实验');
+					return;
+
+				} else if(!this.question) {
+					Utils.lalert('请输入题干');
+					return;
+
+				} else if((!this.aval) || (!this.bval)) {
+					Utils.lalert('请输入选项');
+					return;
+
+				} else if(!(this.aCorrect || this.bCorrect || this.cCorrect || this.dCorrect || this.eCorrect)) {
+					Utils.lalert('请选择正确选项');
+					return;
+				} else {
+					this.saveEdit();
+				}
+			},			
+
+			saveEdit(){
 				var api = global_.ques_update;
 				var ans;
 				if (this.type == 1) {
@@ -794,19 +825,24 @@
 				this.given_answer = row.answer;
 				//console.log(this.given_answer);
 				if(this.given_answer.indexOf('A') != -1) {
-					document.querySelector('#aCheck').checked = true;
+					this.aCorrect = true;
+					//document.querySelector('#aCheck').checked = true;
 				}
 				if(this.given_answer.indexOf('B') != -1) {
-					document.querySelector('#bCheck').checked = true;
+					this.bCorrect = true;
+					//document.querySelector('#bCheck').checked = true;
 				}
 				if(this.given_answer.indexOf('C') != -1) {
-					document.querySelector('#cCheck').checked = true;
+					this.cCorrect = true;
+					//document.querySelector('#cCheck').checked = true;
 				}
 				if(this.given_answer.indexOf('D') != -1) {
-					document.querySelector('#dCheck').checked = true;
+					this.dCorrect = true;
+					//document.querySelector('#dCheck').checked = true;
 				}
 				if(this.given_answer.indexOf('E') != -1) {
-					document.querySelector('#eCheck').checked = true;
+					this.eCorrect = true;
+					//document.querySelector('#eCheck').checked = true;
 				}
 			}
 		}

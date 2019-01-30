@@ -54,7 +54,8 @@
 			<div id="quesbody">
 				<el-input type="textarea" 
 						  class="questionbody" 
-						  v-model="question"></el-input>
+						  v-model="question"
+						  placeholder="必填"></el-input>
 			</div>
 		</div>
 
@@ -77,7 +78,7 @@
 
 				<!--input-->
 				<div style="display: inline-block; margin-right: 20px;">
-					<input class="longinput" type="text" v-model="aval">
+					<input class="longinput" type="text" v-model="aval" placeholder="必填">
 				</div>
 				
 				<!--add-->
@@ -108,6 +109,7 @@
 						   class="checkbox"
 						   id="aCheck"
 						   v-on:change="checkA()" 
+						   v-model="aCorrect"
 						   type="checkbox"><label for="aCheck"></label>
 				</div>
 				
@@ -129,7 +131,7 @@
 
 				<!--input-->
 				<div style="display: inline-block; margin-right: 20px;">
-					<input class="longinput" type="text" v-model="bval">
+					<input class="longinput" type="text" v-model="bval" placeholder="必填">
 				</div>
 				<!--add-->
 				<div style="display: inline-block;">
@@ -158,7 +160,8 @@
 						   class="checkbox" 
 						   type="checkbox"
 						   id="bCheck"
-						   v-on:change="checkB()"><label for="bCheck"></label>
+						   v-on:change="checkB()"
+						   v-model="bCorrect"><label for="bCheck"></label>
 				</div>
 				<!--move up-->
 				<div style="display: inline-block;">
@@ -202,7 +205,8 @@
 						   class="checkbox" 
 						   type="checkbox"
 						   id="cCheck"
-						   v-on:change="checkC()"><label for="cCheck"></label>
+						   v-on:change="checkC()"
+						   v-model="cCorrect"><label for="cCheck"></label>
 				</div>
 				<!--move up-->
 				<div style="display: inline-block;">
@@ -248,7 +252,8 @@
 						   class="checkbox" 
 						   type="checkbox"
 						   id="dCheck" 
-						   v-on:change="checkD()"><label for="dCheck"></label>
+						   v-on:change="checkD()"
+						   v-model="dCorrect"><label for="dCheck"></label>
 				</div>
 				
 				<!--move up-->
@@ -293,7 +298,8 @@
 						   class="checkbox" 
 						   type="checkbox"
 						   id="eCheck"
-						   v-on:change="checkE()"><label for="eCheck"></label>
+						   v-on:change="checkE()"
+						   v-model="eCorrect"><label for="eCheck"></label>
 				</div>
 				<!--move up-->
 				<div style="display: inline-block;">
@@ -320,7 +326,7 @@
 		
 		
 		<div class="btn-group">
-			<el-button class="confirm" v-on:click="addCreate()">确定</el-button>
+			<el-button class="confirm" v-on:click="preCheck()">确定</el-button>
 			<el-button class="goback" v-on:click="goBack()">返回</el-button>
 			<div style="height: 40px;"></div>
 		</div>
@@ -694,6 +700,27 @@
 				var e = this.eval;
 				this.eval = this.dval;
 				this.dval = e;
+			},
+
+			preCheck(){
+				if(!this.exp_value) {
+					Utils.lalert('请选择所属实验');
+					return;
+
+				} else if(!this.question) {
+					Utils.lalert('请输入题干');
+					return;
+
+				} else if((!this.aval) || (!this.bval)) {
+					Utils.lalert('请输入选项');
+					return;
+
+				} else if(!(this.aCorrect || this.bCorrect || this.cCorrect || this.dCorrect || this.eCorrect)) {
+					Utils.lalert('请选择正确选项');
+					return;
+				} else {
+					this.addCreate();
+				}
 			},
 
 			addCreate(){

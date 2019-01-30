@@ -37,8 +37,8 @@
 						</div>
 				    </div>
 						
-					<span class="redalert" v-show="!catag_value && !catag_search_state">*</span>
-					<span class="whitedefault"v-show="catag_value || catag_search_state">*</span>
+					<span class="redalert" v-show="!catag_value || !catag_search_state">*</span>
+					<span class="whitedefault"v-show="catag_value && catag_search_state">*</span>
 				</div>	
 
 				<div style="height: 30px;"></div>
@@ -61,7 +61,7 @@
 				</div>
 				<div style="height: 30px;"></div>
 				<div class="btn-group">
-					<el-button class="confirm" v-on:click="saveEdit()">确定</el-button>
+					<el-button class="confirm" v-on:click="preCheck()">确定</el-button>
 					<el-button class="goback" v-on:click="goBack()">返回</el-button>
 				</div>
 
@@ -145,11 +145,24 @@
 		    },
 
 		    clearImgPlace(){
-
 		    	if($('#image')[0].src.split('/').pop() == 'null') {
 		    		$('#image').addClass('emptyimg');
 		    	}
+		    },
 
+		    preCheck(){
+		    	if(!this.catag_search_state) {
+		    		Utils.lalert('请选择所属分类');
+
+		    	} else if(!this.expname) {
+		    		Utils.lalert('请输入实验名称');
+
+		    	} else if(!this.exporder) {
+		    		Utils.lalert('请输入实验编号');
+
+		    	} else {
+		    		this.saveEdit();
+		    	}
 		    },
 
 		    saveEdit(){
@@ -169,7 +182,13 @@
 					this.$router.go(-1);
 
 		    	},(err)=>{
-		    		Utils.err_process.call(this, err, '编辑实验失败');
+		    		if(err.body.error.hasOwnProperty('name')) {
+		    			if(err.body.error.name == 4) {
+		    				Utils.lalert('实验名称已被占用');
+		    			}
+		    		} else {
+		    			Utils.err_process.call(this, err, '编辑实验失败');
+		    		}
 		    	});
 		    },
 

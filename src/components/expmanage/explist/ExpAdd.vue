@@ -61,7 +61,7 @@
 				</div>
 				<div style="height: 30px;"></div>
 				<div class="btn-group">
-					<el-button class="confirm" v-on:click="addCreate()">确定</el-button>
+					<el-button class="confirm" v-on:click="preCheck()">确定</el-button>
 					<el-button class="goback" v-on:click="goBack()">返回</el-button>
 				</div>
 
@@ -149,6 +149,21 @@
 		    	}
 		    },
 
+		    preCheck(){
+		    	if(!this.catag_search_state) {
+		    		Utils.lalert('请选择所属分类');
+
+		    	} else if(!this.expname) {
+		    		Utils.lalert('请输入实验名称');
+
+		    	} else if(!this.exporder) {
+		    		Utils.lalert('请输入实验编号');
+
+		    	} else {
+		    		this.addCreate();
+		    	}
+		    },
+
 		    addCreate(){
 		    	var api = global_.exp_create;
 		    	var formData = new FormData();
@@ -165,7 +180,13 @@
 					this.$router.go(-1);
 
 		    	},(err)=>{
-		    		Utils.err_process.call(this, err, '创建实验失败');
+		    		if(err.body.error.hasOwnProperty('cid')) {
+		    			if (err.body.error.cid == 2) {
+		    				Utils.lalert('实验类别错误');
+		    			}
+		    		} else {
+		    			Utils.err_process.call(this, err, '创建实验失败');
+		    		}	
 		    	});
 		    },
 
