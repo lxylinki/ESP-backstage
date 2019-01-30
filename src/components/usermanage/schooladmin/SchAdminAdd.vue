@@ -37,13 +37,6 @@
 					<!---->
 				</div>
 				<div style="height: 30px;"></div>
-				<div> 密码： 
-					<input class="longinput" type="password" v-model="password">
-					<!--<el-input class="usrenter" v-model="password" placeholder=""></el-input>-->
-					<span class="redalert" v-show="!password">*</span>
-					<span class="whitedefault" v-show="password">*</span>
-				</div>
-				<div style="height: 30px;"></div>
 				<div> 姓名： 
 					<input class="longinput" type="text" v-model="realname">
 					<!--<el-input class="usrenter" v-model="name" placeholder=""></el-input>-->
@@ -51,6 +44,15 @@
 					<span class="whitedefault" v-show="realname">*</span>
 				</div>
 				<div style="height: 30px;"></div>
+				<div> 密码： 
+					<input class="longinput" type="password" v-model="password">
+					<!--<el-input class="usrenter" v-model="password" placeholder=""></el-input>-->
+					<span class="redalert" v-show="password.split('').length<6">*</span>
+					<span class="whitedefault" v-show="password.split('').length>=6">*</span>
+				</div>
+				<div style="height: 30px;"></div>
+				
+
 
 				<!--
 				<div class="genderdiv">
@@ -79,7 +81,7 @@
 				<div style="height: 30px;"></div>
 				-->
 				<div class="btn-group">
-					<el-button class="confirm" v-on:click="addCreate()">确定</el-button>
+					<el-button class="confirm" v-on:click="preCheck()">确定</el-button>
 					<el-button class="goback" v-on:click="goBack()">返回</el-button>
 				</div>
 			</div> <!--texts-->
@@ -122,6 +124,26 @@
 	     		}			
 			},
 
+			preCheck(){
+				if(!this.school_value) {
+					Utils.lalert('请选择学校名称');
+					return;
+
+				} else if(!this.username) {
+					Utils.lalert('请输入用户名');
+					return;
+
+				} else if(!this.password) {
+					Utils.lalert('请输入密码');
+
+				} else if(!this.realname) {
+					Utils.lalert('请输入真实姓名');
+
+				} else {
+					this.addCreate();
+				}
+			},
+
 			addCreate(){
 				asyncReq.call(this);
 				async function asyncReq(){
@@ -144,13 +166,21 @@
 						this.$router.go(-1);
 
 					}, (err)=>{
-						Utils.err_process.call(this, err, '添加校管理员失败');
+						//400
+						if(err.body.error.hasOwnProperty('username')) {
+							if(err.body.error.username == 4) {
+								Utils.lalert('用户名已被占用');
+							}
+						} else {
+							Utils.err_process.call(this, err, '添加校管理员失败');
+						}
 					});
 				}
 			}
 		},
 
 		mounted(){
+			Utils.page_check_status.call(this);
 			this.reqSchoolData('','',1);
 		}
 	}

@@ -18,8 +18,8 @@
 			<div> 密码： 
 				<input class="longinput" type="password" v-model="password">
 				<!--<el-input class="usrenter" v-model="password" placeholder=""></el-input>-->
-				<span class="redalert" v-show="!password">*</span>
-				<span class="whitedefault" v-show="password">*</span>
+				<span class="redalert" v-show="password.split('').length<6">*</span>
+				<span class="whitedefault" v-show="password.split('').length>=6">*</span>
 			</div>
 			<div style="height: 30px;"></div>
 			<div> 姓名： 
@@ -40,7 +40,7 @@
 			</div>
 			<div style="height: 30px;"></div>
 			<div class="btn-group">
-				<el-button class="confirm" v-on:click="saveEdit()">确定</el-button>
+				<el-button class="confirm" v-on:click="preCheck()">确定</el-button>
 				<el-button class="goback" v-on:click="goBack()">取消</el-button>
 			</div>	
 		</div>		
@@ -71,6 +71,24 @@
 				this.$router.go(-1);
 			},
 
+			preCheck(){
+				if(!this.username) {
+					Utils.lalert('请输入用户名');
+
+				} else if (!this.realname) {
+					Utils.lalert('请输入真实姓名');
+
+				} else if (!this.password) {
+					Utils.lalert('请输入密码');
+
+				} else if (this.password.split('').length < 6) {
+					Utils.lalert('密码最小长度为6位');
+					
+				}else {
+					this.saveEdit();
+				}
+			},
+
 			saveEdit(){
 				asyncReq.call(this);
 				async function asyncReq(){
@@ -79,7 +97,7 @@
 					var api = global_.admin_update;
 					let data = {
 						'id': this.id,
-						'username': this.username,
+						//'username': this.username,
 						'password': this.epassword,
 						'realname': this.realname,
 						'status': this.status,
@@ -97,6 +115,7 @@
 		},
 
 		mounted(){
+			Utils.page_check_status.call(this);
 			var edit = this.$store.state.edit;
 			
 			if(!edit) {

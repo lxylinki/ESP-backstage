@@ -72,7 +72,7 @@
 	            				subItems:[]
 	            			},
 	            			{
-	            				name:'后台用户',
+	            				name:'超管用户',
 	            				url: "/admin",
 	            				isSubShow: false,
 	            				subItems:[]

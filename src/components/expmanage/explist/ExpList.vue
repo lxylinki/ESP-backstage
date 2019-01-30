@@ -230,13 +230,19 @@
 				asyncReq.call(this);
 				async function asyncReq(){
 					let resp = await Utils.reqExpList.call(this);
+					console.log(resp);
 
 					this.tableData = resp.body._list;
 					
 					var catags = resp.body.categories;
+					console.log(catags);
 					for(let i in this.tableData) {
 						let item = this.tableData[i];
-						item.catagory = catags[item.cid].name;
+						//catagory can be deleted and nonexist
+						if(catags[item.cid]) {
+							item.catagory = catags[item.cid].name;
+						}
+						
 						item.create_time = Utils.convTime(item.created_at);
 						item.update_time = Utils.convTime(item.updated_at);
 					}
@@ -349,6 +355,8 @@
 		},
 
 		mounted(){
+			Utils.page_check_status.call(this);
+			
 			var name = this.$store.state.last_author;
 			if(name === this.mod_name) {
 				var	pagesize = this.$store.state.rows_per_page,

@@ -119,7 +119,14 @@
 					this.$router.go(-1);
 
 				}, (err)=>{
-					Utils.err_process.call(this, err, '实验分类创建失败');
+					if(err.body.error.hasOwnProperty('pid')) {
+						if(err.body.error.pid == 2){
+							Utils.lalert('父类别错误：无法创建子类');
+						}
+						
+					} else {
+						Utils.err_process.call(this, err, '实验分类创建失败');
+					}
 				});
 			},
 
@@ -151,6 +158,7 @@
 		},
 
 		mounted(){
+			Utils.page_check_status.call(this);
 			this.reqCatagList();
 		}
 	}

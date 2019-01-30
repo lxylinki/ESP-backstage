@@ -228,7 +228,7 @@
 			this.loading = layer.load(1, {shade: false});
 		},
 		mounted(){
-			//Utils.check_status.call(this);
+			Utils.page_check_status.call(this);
 			
 			var name = this.$store.state.last_author;
 

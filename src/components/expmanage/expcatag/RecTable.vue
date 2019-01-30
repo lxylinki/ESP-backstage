@@ -18,7 +18,8 @@
 				</div>
 
 				<RecTable v-if="item.hasOwnProperty('sub_categories')" 
-						  v-bind:item_list="item.sub_categories">
+						  v-bind:item_list="item.sub_categories"
+						  v-bind:current_page="current_page">
 				</RecTable>
 			</tr>	
 	</div>
@@ -28,6 +29,7 @@
 	import Utils from '@/components/Utils.js';
 	import store from '@/vuex/store.js';
 	import global_ from '@/components/Global.js';
+	import Bus from './Bus.js';
 
 	export default {
 		name: 'RecTable',
@@ -57,8 +59,8 @@
 					'id': row.id
 				}
 				this.$http.post(api, data).then((resp)=>{
+					Bus.$emit('refreshPage', this.current_page);
 					Utils.lalert('删除实验分类成功');
-					this.$emit('refreshPage', this.current_page);
 					//this.loadPage(this.curPage);
 
 				}, (err)=>{

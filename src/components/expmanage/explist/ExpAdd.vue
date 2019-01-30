@@ -208,6 +208,7 @@
 		},		
 
 		mounted(){
+			Utils.page_check_status.call(this);
 			this.inactivate();
 			this.decorFileInp();
 			this.clearImgPlace();

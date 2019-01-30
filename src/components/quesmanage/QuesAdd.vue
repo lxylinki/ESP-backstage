@@ -757,7 +757,8 @@
 				}				
 			}
 		},
-		mounted(){			
+		mounted(){		
+			Utils.page_check_status.call(this);	
 			this.type = 1;
 			this.fillExpSelect();
 		}

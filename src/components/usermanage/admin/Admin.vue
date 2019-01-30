@@ -44,7 +44,8 @@
 		    <el-table-column
 		      prop="username"
 		      label="用户名"
-		      min-width="100">
+		      min-width="100"
+		      :show-overflow-tooltip="true">
 		    </el-table-column>
 		    
 		    <el-table-column
@@ -235,7 +236,7 @@
 			this.loading = layer.load(1, {shade: false});
 		},
 		mounted(){
-			//Utils.check_status.call(this);
+			Utils.page_check_status.call(this);
 			
 			var name = this.$store.state.last_author;
 

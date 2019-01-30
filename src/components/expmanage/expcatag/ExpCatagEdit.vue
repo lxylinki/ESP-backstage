@@ -45,7 +45,15 @@
 					this.$router.go(-1);
 					
 				}, (err)=>{
-					Utils.err_process.call(this, err, '编辑实验类别失败');
+					//400
+					if(err.body.error.hasOwnProperty('pid') &&
+						err.body.error.hasOwnProperty('level') &&
+						err.body.error.hasOwnProperty('name')) {
+						Utils.lalert('实验类别重复');
+					
+					} else {
+						Utils.err_process.call(this, err, '编辑实验类别失败');
+					}
 				});
 			},
 			goBack(){
@@ -53,6 +61,7 @@
 			}
 		},
 		mounted(){
+			Utils.page_check_status.call(this);
 			var edit = this.$store.state.edit;
 			
 			if(!edit) {

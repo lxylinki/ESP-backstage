@@ -599,6 +599,8 @@
 		},
 
 		mounted(){
+			Utils.page_check_status.call(this);
+
 			var edit = this.$store.state.edit;
 			if(!edit) {
 				this.$router.go(-1);
@@ -607,7 +609,6 @@
 				var row = this.$store.state.row;
 				this.exam_id = row.id;
 				this.limit = Number(row.count);
-				console.log(this.limit);
 				this.reqEquesList(1);
 				this.reqQuesList(1);
 				this.inactivate();

@@ -343,6 +343,7 @@
 		},
 
 		mounted(){
+			Utils.page_check_status.call(this);
 			var name = this.$store.state.last_author;
 
 			if(name === this.mod_name) {

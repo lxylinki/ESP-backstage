@@ -100,8 +100,7 @@
 		<RecTable v-bind:item_list="list"
 				  v-bind:mod_name="mod_name"
 				  v-bind:current_page="curPage"
-				  v-bind:search_state="search_state"
-				  @refreshPage='reqCatagList'></RecTable>
+				  v-bind:search_state="search_state"></RecTable>
 			
 		<!--</table>-->
 	
@@ -118,6 +117,7 @@
 	import Utils from '@/components/Utils.js';
 	import RecTable from './RecTable.vue';
 	import Pager from '@/components/Pager.vue';
+	import Bus from './Bus.js';
 
 	export default {
 		components: {
@@ -134,7 +134,7 @@
 				search_state:'',
 				curPage: 1,
 				totalRow: 0,
-				rowsPerPage: 5,
+				rowsPerPage: 10,
 				mod_name: 'exp-catag',
 				loading: null,
 				row_nums: [
@@ -165,7 +165,6 @@
 		methods: {
 			invokeSearch(e){
 				if(e.keyCode == 13) {
-					//this.list = this.searchReq(this.tableData);
 					this.filterSearchData(1);
 				}
 			},
@@ -175,7 +174,6 @@
 				let data = {
 					'all': 1
 				}
-
 				this.$http.post(api, data).then((resp)=>{
 					this.tableData = resp.body;
 					this.totalRow = resp.body.length;
@@ -187,6 +185,7 @@
 
 					//this.tableData[1].sub_categories[0].created_at = 1548148931;
 					//this.tableData[1].sub_categories[0].updated_at = 1548149001;
+					
 					/*
 					for(var i in this.tableData) {
 						if(this.tableData[i].hasOwnProperty('sub_categories')) {
@@ -196,7 +195,6 @@
 						}
 					}*/
 					this.filterSearchData(page);
-					//console.log(resp.body);
 					layer.close(this.loading);
 
 				}, (err)=>{
@@ -254,7 +252,7 @@
 		},
 
 		mounted(){
-			//Utils.check_status.call(this);
+			Utils.page_check_status.call(this);
 			var name = this.$store.state.last_author;
 			//console.log(name);
 
@@ -284,6 +282,7 @@
 			}
 
 			this.reqCatagList(this.curPage);
+			Bus.$on('refreshPage', this.reqCatagList);
 		}
 	}
 </script>

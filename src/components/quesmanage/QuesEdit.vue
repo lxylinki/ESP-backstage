@@ -760,7 +760,8 @@
 				}				
 			}
 		},
-		mounted(){			
+		mounted(){	
+			Utils.page_check_status.call(this);		
 			var edit = this.$store.state.edit;
 			
 			if(!edit) {

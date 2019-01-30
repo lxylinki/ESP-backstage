@@ -8,13 +8,14 @@ function lalert(text) {
 }
 
 function err_process(err, text){
+	//console.log(err);
 	if(text) {
 		lalert(text);
 	}
+
 	if (err.body.error == -403 || err.status == 403 || err.status == 401) {
 		this.$router.push('/login');
 	}
-	console.log(err);
 }
 
 
@@ -53,6 +54,16 @@ export default {
 
 		this.$http.post(profile, {}).then((resp)=>{
 			this.$router.push('/school');
+
+		}, (err)=>{
+			err_process.call(this, err, '');
+		});
+	},	
+
+	page_check_status(){
+		var profile = global_.status_check;
+
+		this.$http.post(profile, {}).then((resp)=>{
 
 		}, (err)=>{
 			err_process.call(this, err, '');

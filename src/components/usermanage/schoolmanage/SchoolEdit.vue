@@ -27,7 +27,7 @@
 			</div>
 			<div style="height: 30px;"></div>
 			<div class="btn-group">
-				<el-button class="confirm" v-on:click="saveEdit()">确定</el-button>
+				<el-button class="confirm" v-on:click="preCheck()">确定</el-button>
 				<el-button class="goback" v-on:click="goBack()">取消</el-button>
 			</div>	
 
@@ -55,6 +55,24 @@
 				this.$router.go(-1);
 			},
 
+			preCheck(){
+				if(!this.schname) {
+					Utils.lalert('请输入学校名称');
+					return;
+
+				} else if(!this.alias) {
+					Utils.lalert('请输入学校简称');
+					return;
+
+				} else if(!this.visits || this.visits <= 0) {
+					Utils.lalert('请输入访问人数');
+					return;
+					
+				} else {
+					this.saveEdit();
+				}
+			},
+
 			saveEdit(){
 				var api = global_.school_update;
 				let data = {
@@ -73,6 +91,8 @@
 			}
 		},
 		mounted(){
+			Utils.page_check_status.call(this);
+			
 			var edit = this.$store.state.edit;
 			
 			if(!edit) {
