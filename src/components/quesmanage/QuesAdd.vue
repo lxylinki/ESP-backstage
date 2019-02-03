@@ -400,13 +400,25 @@
 			checkA(){
 				//when single choice and A is checked
 				var opta = document.querySelector('#aCheck');
+
+				if(!this.aval && opta.checked) {
+					this.aCorrect = false;
+					Utils.lalert('请输入选项');
+					return;
+				}
+
 				if(opta.checked && this.type == 1){
 
 					this.answer = 'a';
+					this.bCorrect = false;
+					this.cCorrect = false;
+					this.dCorrect = false;
+					this.eCorrect = false;
+					/*
 					document.querySelector('#bCheck').checked = false;
 					document.querySelector('#cCheck').checked = false;
 					document.querySelector('#dCheck').checked = false;
-					document.querySelector('#eCheck').checked = false;
+					document.querySelector('#eCheck').checked = false;*/
 					
 					// when multi-choice and A is checked
 				} else if(opta.checked && this.type == 2){
@@ -420,13 +432,25 @@
 			},
 			checkB(){
 				var optb = document.querySelector('#bCheck');
+
+				if(!this.bval && optb.checked) {
+					this.bCorrect = false;
+					Utils.lalert('请输入选项');
+					return;
+				}
+
 				if(optb.checked && this.type == 1){
 
 					this.answer = 'b';
+					this.aCorrect = false;
+					this.cCorrect = false;
+					this.dCorrect = false;
+					this.eCorrect = false;
+					/*
 					document.querySelector('#aCheck').checked = false;
 					document.querySelector('#cCheck').checked = false;
 					document.querySelector('#dCheck').checked = false;
-					document.querySelector('#eCheck').checked = false;
+					document.querySelector('#eCheck').checked = false;*/
 
 				} else if(optb.checked && this.type == 2) {
 					this.answers.push('b');
@@ -437,12 +461,24 @@
 			},
 			checkC(){
 				var optc = document.querySelector('#cCheck');
+
+				if(!this.cval && optc.checked) {
+					this.cCorrect = false;
+					Utils.lalert('请输入选项');
+					return;
+				}
+
 				if(optc.checked && this.type == 1) {
 					this.answer = 'c';
+					this.aCorrect = false;
+					this.bCorrect = false;
+					this.dCorrect = false;
+					this.eCorrect = false;
+					/*
 					document.querySelector('#aCheck').checked = false;
 					document.querySelector('#bCheck').checked = false;
 					document.querySelector('#dCheck').checked = false;
-					document.querySelector('#eCheck').checked = false;
+					document.querySelector('#eCheck').checked = false;*/
 
 				} else if(optc.checked && this.type == 2) {
 					this.answers.push('c');
@@ -453,12 +489,24 @@
 			},
 			checkD(){
 				var optd = document.querySelector('#dCheck');
+
+				if(!this.dval && optd.checked) {
+					this.dCorrect = false;
+					Utils.lalert('请输入选项');
+					return;
+				}
+
 				if(optd.checked && this.type == 1) {
 					this.answer = 'd';
+					this.aCorrect = false;
+					this.bCorrect = false;
+					this.cCorrect = false;
+					this.eCorrect = false;
+					/*
 					document.querySelector('#aCheck').checked = false;
 					document.querySelector('#bCheck').checked = false;
 					document.querySelector('#cCheck').checked = false;
-					document.querySelector('#eCheck').checked = false;	
+					document.querySelector('#eCheck').checked = false;*/	
 
 				}else if(optd.checked && this.type == 2) {
 					this.answers.push('d');
@@ -469,12 +517,24 @@
 			},
 			checkE(){
 				var opte = document.querySelector('#eCheck');
-				if(opte.checked && this.type == 1) {
 
+				if(!this.eval && opte.checked) {
+					this.eCorrect = false;
+					Utils.lalert('请输入选项');
+					return;
+				}
+
+				if(opte.checked && this.type == 1) {
+					this.answer = 'e';
+					this.aCorrect = false;
+					this.bCorrect = false;
+					this.cCorrect = false;
+					this.dCorrect = false;
+					/*
 					document.querySelector('#aCheck').checked = false;
 					document.querySelector('#bCheck').checked = false;
 					document.querySelector('#cCheck').checked = false;
-					document.querySelector('#dCheck').checked = false;	
+					document.querySelector('#dCheck').checked = false;*/	
 
 				} else if (opte.checked && this.type == 2) {
 					this.answers.push('e');
@@ -817,12 +877,10 @@
 	background-repeat: no-repeat;
 }
 
-
 .longselect /deep/ .el-input__inner {
 	height: 34px;
 	width: 300px;
 }
-
 
 .redalert {
 	color: red;
@@ -836,7 +894,7 @@
 	margin-top: 15px;
 	margin-right: 15px;
 	position: relative;
-	left: 32px;
+	left: 0px;
 }
 
 .btn-group {
@@ -852,7 +910,7 @@
 .opts {
 	background: #ffffff;
 	position: relative;
-	left: -150px;
+	left: -10%;
 	width: 800px;
 	margin-bottom: 30px;
 	text-align: right;
@@ -924,6 +982,8 @@ div>.mchoice input {
 
 #quesbody {
 	display: inline-block;
+	position: relative;
+	left: 10px;
 }
 
 .expbelong {
