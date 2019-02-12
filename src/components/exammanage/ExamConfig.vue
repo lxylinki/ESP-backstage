@@ -201,10 +201,10 @@
 			      min-width="100">
 
 			      <template slot-scope="scope">
-			      	<el-button v-show="!contains(focus_qids, scope.row.id)" class="op selectbtn" type="text" @click="selectRow(scope.row)">
+			      	<el-button v-show="!focus_qids.includes(scope.row.id)" class="op selectbtn" type="text" @click="selectRow(scope.row)">
 			      		+选题
 			      	</el-button>
-			      	<el-button v-show="contains(focus_qids, scope.row.id)" class="op removebtn" type="text" @click="removeRow(scope.row)">
+			      	<el-button v-show="focus_qids.includes(scope.row.id)" class="op removebtn" type="text" @click="removeRow(scope.row)">
 			      		-移除
 			      	</el-button>
 			      </template>
@@ -343,6 +343,7 @@
 				});
 			},
 
+			/*
 			contains(arr, item) {
 				for(let i in arr) {
 					if (arr[i] === item) {
@@ -350,7 +351,7 @@
 					}
 				}
 				return false;
-			},
+			},*/
 
 			remove(arr, item) {
 				for(let i in arr) {
@@ -463,7 +464,10 @@
 
 							for(let i in this.tableQData) {
 								let item = this.tableQData[i];
-								item.exp_belong = this.findExp(this.exp_options, item.eid).name;
+								let exp = this.findExp(this.exp_options, item.eid);
+								if(exp) {
+									item.exp_belong = exp.name; 
+								}
 							}
 					    	//cut page here
 							this.filterQSearchData(page);

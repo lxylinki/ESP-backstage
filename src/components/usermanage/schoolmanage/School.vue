@@ -217,7 +217,11 @@
 					this.loadPage(this.curPage);
 
 				}, (err)=>{
-					Utils.lalert('删除学校失败');
+					if(err.body.error.hasOwnProperty('id')){
+						Utils.lalert('所选学校已有用户');
+					} else {
+						Utils.lalert('删除学校失败');
+					}
 					console.log(err);
 				});
 			}

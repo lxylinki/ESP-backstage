@@ -8,18 +8,15 @@
 
 		<div class="texts">
 			<div> 用户名： 
-				<input class="longinput" type="text" v-model="username">
-				<!--<el-input class="usrenter" v-model="usrid" placeholder=""></el-input>-->
+				<input disabled class="longinput" type="text" v-model="username">
 				<span class="redalert" v-show="!username">*</span>
 				<span class="whitedefault"v-show="username">*</span>
-				<!---->
 			</div>
 			<div style="height: 30px;"></div>
 			<div> 密码： 
 				<input class="longinput" type="password" v-model="password">
 				<!--<el-input class="usrenter" v-model="password" placeholder=""></el-input>-->
-				<span class="redalert" v-show="password.split('').length<6">*</span>
-				<span class="whitedefault" v-show="password.split('').length>=6">*</span>
+				<span class="whitedefault">*</span>
 			</div>
 			<div style="height: 30px;"></div>
 			<div> 姓名： 
@@ -72,19 +69,19 @@
 			},
 
 			preCheck(){
+				/*
 				if(!this.username) {
 					Utils.lalert('请输入用户名');
 
-				} else if (!this.realname) {
+				}*/
+
+				if (!this.realname) {
 					Utils.lalert('请输入真实姓名');
 
-				} else if (!this.password) {
-					Utils.lalert('请输入密码');
-
-				} else if (this.password.split('').length < 6) {
+				} else if (this.password && this.password.split('').length < 6) {
 					Utils.lalert('密码最小长度为6位');
 					
-				}else {
+				} else {
 					this.saveEdit();
 				}
 			},
@@ -93,15 +90,20 @@
 				asyncReq.call(this);
 				async function asyncReq(){
 					//this.epassword = await this.encrypt(this.password);
-					this.epassword = await Utils.encrypt.call(this, this.password);
 					var api = global_.admin_update;
 					let data = {
 						'id': this.id,
 						//'username': this.username,
-						'password': this.epassword,
+						//'password': this.epassword,
 						'realname': this.realname,
 						'status': this.status,
 					}
+
+					//add password field
+					if(this.password) {
+						data.password = await Utils.encrypt.call(this, this.password);
+					}
+
 					//var schid = await this.getSchId.call(this);					
 					this.$http.post(api, data).then((resp)=>{
 						Utils.lalert('编辑管理员成功');
@@ -109,6 +111,7 @@
 
 					}, (err)=>{
 						Utils.err_process.call(this, err, '编辑管理员失败');
+						console.log(err);
 					});
 				}
 			}

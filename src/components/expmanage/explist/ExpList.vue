@@ -194,6 +194,7 @@
 			},
 
 			makeChoice(item){
+				//alert('Clicked!');
 				this.catag_search_state = item.name;
 				this.catag_value = item.id;
 				this.filterSearchData(this.curPage);
@@ -296,13 +297,14 @@
 				this.curPage = page;
 			},
 
+			/*
 			inactivate(){
 				var _this = this;
-				$(document).on('blur', '.select-header', function(){
+				$(document).on('blur', '.select-list', function(){
 					$(this).removeClass('select-header-active').addClass('select-header-normal');
 					_this.showToggle = false;
-				});				
-			},
+				});			
+			},*/
 
 			editRow(row){
 				this.$store.commit('sign', this.mod_name);
@@ -378,7 +380,7 @@
 				} 				
 			}
 
-			this.inactivate();
+			//this.inactivate();
 			this.reqCatagList();
 			this.reqData();
 		}

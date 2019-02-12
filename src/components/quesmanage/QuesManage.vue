@@ -238,7 +238,11 @@
 							for(let i in this.tableData) {
 								let item = this.tableData[i];
 								//console.log(item);
-								item.exp_belong = this.findExp(this.exp_options, item.eid).name;
+								if(!this.findExp(this.exp_options, item.eid)) {
+									item.exp_belong = null;
+								} else {
+									item.exp_belong = this.findExp(this.exp_options, item.eid).name;
+								}
 								item.create_time = Utils.convTime(item.created_at);
 								item.update_time = Utils.convTime(item.updated_at);
 							}

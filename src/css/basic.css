@@ -50,6 +50,7 @@ select, textarea {
 .el-main{
 	/*background: #f7f7f7;*/
   border: 60px solid #f0f2f5;
+  height: 1000px;
 }
 
 .el-input__inner{

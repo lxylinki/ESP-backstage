@@ -197,7 +197,7 @@
 		    // init select
 		    inactivate(){
 				var _this = this;
-				$(document).on('blur', '.select-header', function(){
+				$(document).on('blur', '.select-list', function(){
 					$(this).removeClass('select-header-active').addClass('select-header-normal');
 					_this.showToggle = false;
 				});		    	

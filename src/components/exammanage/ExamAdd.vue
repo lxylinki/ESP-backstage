@@ -51,7 +51,7 @@
 			<div style="height: 30px;"></div>
 
 			<div class="btn-group">
-				<el-button class="confirm" v-on:click="addCreate()">确定</el-button>
+				<el-button class="confirm" v-on:click="preCheck()">确定</el-button>
 				<el-button class="goback" v-on:click="goBack()">取消</el-button>
 			</div>						
 		</div>
@@ -83,6 +83,23 @@
 				}				
 			},
 
+			preCheck(){
+				if(!this.exp_value) {
+					Utils.lalert('请选择所属实验');
+					return;			
+
+				} else if(!this.exam_name){
+					Utils.lalert('请输入考核名称');
+					return;
+
+				} else if(!this.count) {
+					Utils.lalert('请输入题数限制');
+
+				} else {
+					this.addCreate();
+				}
+			},
+
 			addCreate(){
 				var api = global_.exam_create;
 				let data = {
@@ -98,7 +115,11 @@
 					this.$router.go(-1);
 
 				}, (err)=>{
-					Utils.err_process.call(this, err, '创建考核失败');
+					if(err.body.error.hasOwnProperty('type')) {
+						Utils.lalert('所选实验已有抢救治疗');
+					} else {
+						Utils.err_process.call(this, err, '创建考核失败');
+					}
 				});
 			},
 
