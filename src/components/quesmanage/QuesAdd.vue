@@ -27,7 +27,7 @@
 
 		<div class="expbelong">所属实验： 
 			<template>
-			  <el-select class="longselect"
+			  <el-select class="longselect exp-belong-input"
 			  			 v-model="exp_value" 
 			  			 placeholder="请搜索实验名称"
 			  			 v-on:change="">
@@ -72,17 +72,18 @@
 
 
 		<div class="opts">
+			<div class="opts-div">
 <!------------------------------------------------------------------------------------------------------------------------>
 			<div class="answera" v-show="showA">
-				<div style="display: inline-block; margin-left: 30px; margin-right: 20px;">选项A</div>
+				<div style="display: inline-block; margin-left: 0px; margin-right: 20px;" class="opt-label">选项A</div>
 
 				<!--input-->
-				<div style="display: inline-block; margin-right: 20px;">
+				<div style="display: inline-block; margin-right: 20px;" class="opt-input">
 					<input class="longinput" type="text" v-model="aval" placeholder="必填">
 				</div>
 				
 				<!--add-->
-				<div style="display: inline-block;">
+				<div style="display: inline-block;" class="opt-add">
 					<i style="color: #333333; font-size: 150%;" 
 					   class="iconfont" 
 					   v-on:click="aAddNewOpt()"
@@ -93,7 +94,7 @@
 				</div>
 				
 				<!--del-->
-				<div style="display: inline-block;">
+				<div style="display: inline-block;" class="opt-del">
 					<i style="color: #333333; font-size: 150%; margin-right: 20px;" 
 					   class="iconfont" 
 					   v-on:click="delA()"
@@ -104,7 +105,7 @@
 				</div>
 				
 				<!--correct one-->
-				<div class="checkicon" style="display: inline-block;">
+				<div class="checkicon opt-correct" style="display: inline-block;">
 					<input style="height: 24px; width: 24px; margin-right: 20px; margin-left: 30px;" 
 						   class="checkbox"
 						   id="aCheck"
@@ -114,12 +115,12 @@
 				</div>
 				
 				<!--move up-->
-				<div style="display: inline-block;">
+				<div style="display: inline-block;" class="opt-mvup">
 					<i style="color: #333333; font-size: 170%; margin-left: 20px;" class="iconfont">&#xe7c6;</i>
 				</div>
 
 				<!--move down-->
-				<div style="display: inline-block;">
+				<div style="display: inline-block;" class="opt-mvdown">
 					<i style="color: #333333; font-size: 170%;" class="iconfont" v-on:click="mvDownA()">&#xe8ed;</i>
 				</div>
 				<div style="height: 20px;"></div>
@@ -127,7 +128,7 @@
 <!----------------------------------------------------------------------------------------------------------------------->
 			<div class="answerb" v-show="showB">
 				<!--title-->
-				<div style="display: inline-block; margin-left: 30px; margin-right: 20px;">选项B</div>
+				<div style="display: inline-block; margin-left: 0px; margin-right: 20px;">选项B</div>
 
 				<!--input-->
 				<div style="display: inline-block; margin-right: 20px;">
@@ -143,6 +144,7 @@
 					</i>
 					<i style="color: #ffffff; font-size: 150%;" class="iconfont" v-show="showE">&#xe62d;</i>
 				</div>
+
 				<!--del-->
 				<div style="display: inline-block;" >
 					<i style="color: #333333; font-size: 150%; margin-right: 20px;" 
@@ -177,7 +179,7 @@
 <!-------------------------------------------------------------------------------------------------------------------------->
 			<div class="answerc" v-show="showC">
 				<!--title-->
-				<div style="display: inline-block; margin-left: 30px; margin-right: 20px;">选项C</div>
+				<div style="display: inline-block; margin-left: 0px; margin-right: 20px;">选项C</div>
 
 				<!--input-->
 				<div style="display: inline-block; margin-right: 20px;">
@@ -223,7 +225,7 @@
 <!-------------------------------------------------------------------------------------------------------------------------->
 			<div class="answerd" v-show="showD">
 				<!--title-->
-				<div style="display: inline-block; margin-left: 30px; margin-right: 20px;">选项D</div>
+				<div style="display: inline-block; margin-left: 0px; margin-right: 20px;">选项D</div>
 
 				<!--input-->
 				<div style="display: inline-block; margin-right: 20px;">
@@ -273,7 +275,7 @@
 <!----------------------------------------------------------------------------------------------------------------------------->
 			<div class="answere" v-show="showE">
 				<!--title-->
-				<div style="display: inline-block; margin-left: 30px; margin-right: 20px;">选项E</div>
+				<div style="display: inline-block; margin-left: 0px; margin-right: 20px;">选项E</div>
 				<!--input-->
 				<div style="display: inline-block; margin-right: 20px;">
 					<input class="longinput" type="text" v-model="eval">
@@ -311,6 +313,7 @@
 				</div>
 				<div style="height: 20px;"></div>
 			</div>
+		</div>
 
 			
 
@@ -894,13 +897,15 @@
 	margin-top: 15px;
 	margin-right: 15px;
 	position: relative;
-	left: 0px;
+}
+
+.analysisbody {
+	margin-left: 5px;
 }
 
 .btn-group {
 	position: relative;
-	left: -410px;
-	top: -60px;
+	margin-left: 95px;
 }
 
 .iconfont {
@@ -910,10 +915,9 @@
 .opts {
 	background: #ffffff;
 	position: relative;
-	left: -10%;
 	width: 800px;
 	margin-bottom: 30px;
-	text-align: right;
+	text-align: left;
 }
 
 .checkbox {
@@ -921,15 +925,16 @@
 }
 
 .answers {
+	position: relative;
 	height: 40px;
 	background: #f7f7f7;
 }
 
 .ansopt {
 	display: inline-block;
-	margin-right: 325px;
+	margin-right: 320px;
 	margin-top: 8px;
-	margin-left: 10px;
+	margin-left: 20px;
 }
 
 .adddel {
@@ -942,12 +947,6 @@
 }
 .mvupdown {
 	display: inline-block;
-}
-
-input .questionbody{
-	width: 300px;
-	height: 30px;
-	border: 1px solid #d7d7d7;
 }
 
 div>.schoice input {
@@ -971,23 +970,43 @@ div>.mchoice input {
 
 #tp {
 	display: inline-block;
-	margin-left: 36px;
+	margin-left: 38px;
+	margin-right: 5px;
 }
 
 #ques {
+	position: relative;
 	vertical-align: top;
 	display: inline-block;
 	margin-left: 36px;
 }
 
+#anls {
+	margin-left: 5px;
+}
+
 #quesbody {
 	display: inline-block;
 	position: relative;
-	left: 10px;
+	left: 0px;
 }
 
 .expbelong {
 	margin-left: 5px;
+}
+
+.questionbody {
+	margin-left: 10px;
+}
+
+.exp-belong-input {
+	margin-left: 10px;
+}
+
+.opts-div {
+	text-align: right;
+	width: 650px;
+	padding-left: 5px;
 }
 
 </style>
