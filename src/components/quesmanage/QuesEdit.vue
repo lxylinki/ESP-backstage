@@ -379,8 +379,7 @@
 
 				exp_options:[],
 				exp_value: '',
-				id: '',
-				given_answer:''
+				id: ''
 			}
 		},
 
@@ -392,12 +391,14 @@
 			},
 
 			getAnswers(answers){
+				/*
 				var ans = '';
 				for(var i in answers) {
 					ans += answers[i];
 				}
 				//console.log(ans);
-				return ans;
+				return ans;*/
+				return answers.reduce((a, b)=> a+b);
 			},
 
 			checkA(){
@@ -526,7 +527,7 @@
 					return;
 				}
 				if(opte.checked && this.type == 1) {
-					this.anser = 'e';
+					this.answer = 'e';
 					this.aCorrect = false;
 					this.bCorrect = false;
 					this.cCorrect = false;
@@ -823,8 +824,6 @@
 				this.$http.post(api, data).then((resp)=>{
 					//console.log(resp);
 					layer.alert('试题编辑成功', {title:'提示', area:['280px','190px']});
-					this.$store.commit('sign', this.mod_name);
-					this.$store.commit('incRowNumAfter', 1);
 					this.$router.go(-1);
 
 				}, (err)=>{
@@ -863,6 +862,7 @@
 				this.question = row.question;
 				this.aval = row.option_a;
 				this.bval = row.option_b;
+				
 				if(row.option_c) {
 					this.cval = row.option_c;
 					this.showC = true;
@@ -877,25 +877,32 @@
 					this.showE = true;
 				}
 
-				this.given_answer = row.answer;
+				//this.given_answer = row.answer;
+				//console.log(row.answer);
+				if(row.type == 1) {
+					this.answer = row.answer;
+
+				} else if(row.type == 2){
+					this.answers = row.answer.split('');
+				}
 				//console.log(this.given_answer);
-				if(this.given_answer.indexOf('A') != -1) {
+				if(row.answer.indexOf('A') != -1) {
 					this.aCorrect = true;
 					//document.querySelector('#aCheck').checked = true;
 				}
-				if(this.given_answer.indexOf('B') != -1) {
+				if(row.answer.indexOf('B') != -1) {
 					this.bCorrect = true;
 					//document.querySelector('#bCheck').checked = true;
 				}
-				if(this.given_answer.indexOf('C') != -1) {
+				if(row.answer.indexOf('C') != -1) {
 					this.cCorrect = true;
 					//document.querySelector('#cCheck').checked = true;
 				}
-				if(this.given_answer.indexOf('D') != -1) {
+				if(row.answer.indexOf('D') != -1) {
 					this.dCorrect = true;
 					//document.querySelector('#dCheck').checked = true;
 				}
-				if(this.given_answer.indexOf('E') != -1) {
+				if(row.answer.indexOf('E') != -1) {
 					this.eCorrect = true;
 					//document.querySelector('#eCheck').checked = true;
 				}
