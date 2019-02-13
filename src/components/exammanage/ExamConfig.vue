@@ -395,7 +395,7 @@
 				$(document).on('click', '.select-header-2', function(){
 					$(this).removeClass('select-header-normal').addClass('select-header-active');
 				});
-
+				/*
 				var _this = this;
 				$(document).on('blur', '.select-header', function(){
 					$(this).removeClass('select-header-active').addClass('select-header-normal');
@@ -405,7 +405,7 @@
 				$(document).on('blur', '.select-header-2', function(){
 					$(this).removeClass('select-header-active').addClass('select-header-normal');
 					_this.showTypeToggle = false;
-				});				
+				});*/				
 			},
 
 			reqEquesList(page){

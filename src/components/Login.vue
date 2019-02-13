@@ -67,8 +67,15 @@
 					this.$http.post(api, data).then((resp)=>{
 						//console.log(resp);
 						this.$router.push('/school');
+						
 					}, (err)=>{
-						Utils.lalert('登陆失败');
+						if(err.body.error.hasOwnProperty('username')) {
+							Utils.lalert('用户名错误');
+						} else if(err.body.error.hasOwnProperty('password')){
+							Utils.lalert('密码错误');
+						} else {
+							Utils.lalert('登陆失败');
+						}
 						console.log(err);
 					});
 				}

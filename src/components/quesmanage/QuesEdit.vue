@@ -391,13 +391,6 @@
 			},
 
 			getAnswers(answers){
-				/*
-				var ans = '';
-				for(var i in answers) {
-					ans += answers[i];
-				}
-				//console.log(ans);
-				return ans;*/
 				return answers.reduce((a, b)=> a+b);
 			},
 
@@ -412,17 +405,11 @@
 				}
 
 				if(opta.checked && this.type == 1){
-
 					this.answer = 'a';
 					this.bCorrect = false;
 					this.cCorrect = false;
 					this.dCorrect = false;
 					this.eCorrect = false;
-					/*
-					document.querySelector('#bCheck').checked = false;
-					document.querySelector('#cCheck').checked = false;
-					document.querySelector('#dCheck').checked = false;
-					document.querySelector('#eCheck').checked = false;*/
 					
 					//when multi-choice and A is checked
 				} else if(opta.checked && this.type == 2){
@@ -444,17 +431,11 @@
 				}
 
 				if(optb.checked && this.type == 1){
-
 					this.answer = 'b';
 					this.aCorrect = false;
 					this.cCorrect = false;
 					this.dCorrect = false;
 					this.eCorrect = false;
-					/*
-					document.querySelector('#aCheck').checked = false;
-					document.querySelector('#cCheck').checked = false;
-					document.querySelector('#dCheck').checked = false;
-					document.querySelector('#eCheck').checked = false;*/
 
 				} else if(optb.checked && this.type == 2) {
 					this.answers.push('b');
@@ -478,11 +459,6 @@
 					this.bCorrect = false;
 					this.dCorrect = false;
 					this.eCorrect = false;
-					/*
-					document.querySelector('#aCheck').checked = false;
-					document.querySelector('#bCheck').checked = false;
-					document.querySelector('#dCheck').checked = false;
-					document.querySelector('#eCheck').checked = false;*/
 
 				} else if(optc.checked && this.type == 2) {
 					this.answers.push('c');
@@ -506,11 +482,6 @@
 					this.bCorrect = false;
 					this.cCorrect = false;
 					this.eCorrect = false;
-					/*
-					document.querySelector('#aCheck').checked = false;
-					document.querySelector('#bCheck').checked = false;
-					document.querySelector('#cCheck').checked = false;
-					document.querySelector('#eCheck').checked = false;*/
 
 				}else if(optd.checked && this.type == 2) {
 					this.answers.push('d');
@@ -532,11 +503,6 @@
 					this.bCorrect = false;
 					this.cCorrect = false;
 					this.dCorrect = false;
-					/*
-					document.querySelector('#aCheck').checked = false;
-					document.querySelector('#bCheck').checked = false;
-					document.querySelector('#cCheck').checked = false;
-					document.querySelector('#dCheck').checked = false;*/	
 
 				} else if (opte.checked && this.type == 2) {
 					this.answers.push('e');
@@ -906,6 +872,7 @@
 					this.eCorrect = true;
 					//document.querySelector('#eCheck').checked = true;
 				}
+				this.analyze = row.analysis;
 			}
 		}
 	}
