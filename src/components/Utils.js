@@ -49,6 +49,7 @@ export default {
 		return commonTime;
 	},
 
+	//login check status
 	check_status(){
 		var profile = global_.status_check;
 
@@ -56,7 +57,8 @@ export default {
 			this.$router.push('/school');
 
 		}, (err)=>{
-			err_process.call(this, err, '');
+			//stay at login
+			//err_process.call(this, err, '');
 		});
 	},	
 
