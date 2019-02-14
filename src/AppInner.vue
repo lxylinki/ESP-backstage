@@ -101,6 +101,12 @@
             					url: "/explist",
             					isSubShow: false,
             					subItems:[]
+            				},
+            				{
+            					name: '实验分配',
+            					url: "/expassignlist",
+            					isSubShow: false,
+            					subItems:[]
             				}
             			]
             		},

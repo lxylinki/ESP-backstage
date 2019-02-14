@@ -28,6 +28,10 @@ const ExpList = ()=> import('@/components/expmanage/explist/ExpList.vue');
 const ExpAdd = ()=> import('@/components/expmanage/explist/ExpAdd.vue');
 const ExpEdit = ()=> import('@/components/expmanage/explist/ExpEdit.vue');
 
+const ExpAssignList = ()=> import('@/components/expmanage/expassign/ExpAssignList.vue');
+const ExpAssign = ()=> import('@/components/expmanage/expassign/ExpAssign.vue');
+
+
 const QuesManage = ()=> import('@/components/quesmanage/QuesManage.vue');
 const QuesAdd = ()=> import('@/components/quesmanage/QuesAdd.vue');
 const QuesEdit = ()=> import('@/components/quesmanage/QuesEdit.vue');
@@ -65,6 +69,9 @@ const myRoutes = [
 	 	{path: '/explist', meta: {title: '实验管理'}, component: ExpList},
 	 	{path: '/expadd', meta: {title: '实验管理'}, component: ExpAdd},
 	 	{path: '/expedit', meta: {title: '实验管理'}, component: ExpEdit},
+
+	 	{path: '/expassignlist', meta: {title: '实验分配'}, component: ExpAssignList},
+	 	{path: '/expassign', meta: {title: '实验分配'}, component: ExpAssign},
 
 	 	{path: '/quesmng', meta: {title: '试题管理'}, component: QuesManage},
 	 	{path: '/quesadd', meta: {title: '试题管理'}, component: QuesAdd},

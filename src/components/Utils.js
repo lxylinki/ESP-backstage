@@ -49,24 +49,27 @@ export default {
 		return commonTime;
 	},
 
-	//login check status
-	check_status(){
+	//login check status: must be super admin
+	login_check_status(){
 		var profile = global_.status_check;
-
 		this.$http.post(profile, {}).then((resp)=>{
-			this.$router.push('/school');
-
+			if(resp.body.group == global_.super_admin_group) {
+				this.$router.push('/school');
+			}
 		}, (err)=>{
 			//stay at login
 			//err_process.call(this, err, '');
 		});
 	},	
 
+	//must be super admin
 	page_check_status(){
 		var profile = global_.status_check;
 
 		this.$http.post(profile, {}).then((resp)=>{
-
+			if(resp.body.group != global_.super_admin_group) {
+				this.$router.push('/login');
+			}
 		}, (err)=>{
 			err_process.call(this, err, '');
 		});
@@ -94,7 +97,7 @@ export default {
 			});			
 		});
 	},
-
+	//page is useless here
 	reqSchoolList(name, alias, page){
 		return new Promise((resolve, reject)=>{
 	    	var school_api = global_.school_list
@@ -149,4 +152,27 @@ export default {
 			});
 		});				
 	},
+
+	obj_equal(obj1, obj2) {
+		var result = true;
+		for (var i in obj1) {
+			if(obj1[i] != obj2[i]){
+				result = false;
+				break;
+			}
+		}
+		return result;
+	},
+
+	contains_obj(list, item) {
+		var result = false;
+		for(var i in list) {
+			if(this.obj_equal(list[i], item)) {
+				result = true;
+				break;
+			}
+		}
+		return result;
+	},
+
 }

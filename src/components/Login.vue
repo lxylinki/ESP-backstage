@@ -83,7 +83,7 @@
 		},
 		
 		mounted(){
-			Utils.check_status.call(this);
+			Utils.login_check_status.call(this);
 			document.querySelector('.usrid').focus();
 		}
 	}

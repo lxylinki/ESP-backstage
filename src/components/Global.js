@@ -30,6 +30,8 @@
 	const exp_update = url_prefix + 'esp_admin/experiment/update';
 	const exp_delete = url_prefix + 'esp_admin/experiment/delete';
 
+	const exp_assign_list = url_prefix + 'esp_admin/experiment-assign/assign-list';
+
 	const ques_list = url_prefix + 'esp_admin/questions-bank/list';
 	const ques_create = url_prefix + 'esp_admin/questions-bank/create';
 	const ques_update = url_prefix + 'esp_admin/questions-bank/update';
@@ -44,8 +46,11 @@
 	const exam_ques_delete = url_prefix + 'esp_admin/examine-questions/delete';
 	const exam_ques_create = url_prefix + 'esp_admin/examine-questions/create';
 
+	const super_admin_group = 0;
+
 
 	export default {
+		super_admin_group,
 		url_prefix,
 		password_encrypt,
 		status_check,
@@ -75,6 +80,8 @@
 		exp_create,
 		exp_update,
 		exp_delete,
+
+		exp_assign_list,
 
 		ques_list,
 		ques_create,
