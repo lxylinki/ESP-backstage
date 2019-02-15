@@ -143,7 +143,7 @@
 	}
 </script>
 
-<style type="text/css">
+<style type="text/css" scoped>
 
 .longselect /deep/ .el-input__inner {
 	height: 34px;
