@@ -86,7 +86,7 @@ td {
 }
 
 .name {
-	width: 400px;
+	width: 320px;
 	text-align: left !important;
 	padding-left: 30px;
 }
@@ -120,6 +120,7 @@ td {
 	color: #333333;
 	margin: 0;
 }
+
 .recrowcontent:hover {
 	background: #f7f8fc;
 }
