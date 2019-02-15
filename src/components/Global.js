@@ -31,6 +31,8 @@
 	const exp_delete = url_prefix + 'esp_admin/experiment/delete';
 
 	const exp_assign_list = url_prefix + 'esp_admin/experiment-assign/assign-list';
+	const exp_assign_create = url_prefix + 'esp_admin/experiment-assign/create';
+	const exp_assign_delete = url_prefix + 'esp_admin/experiment-assign/delete';
 
 	const ques_list = url_prefix + 'esp_admin/questions-bank/list';
 	const ques_create = url_prefix + 'esp_admin/questions-bank/create';
@@ -82,6 +84,8 @@
 		exp_delete,
 
 		exp_assign_list,
+		exp_assign_create,
+		exp_assign_delete,
 
 		ques_list,
 		ques_create,

@@ -787,8 +787,8 @@
 			},
 
 			addCreate(){
-				var api = global_.ques_create;
-				var ans;
+				let api = global_.ques_create;
+				let ans;
 				if (this.type == 1) {
 					ans = this.answer;
 

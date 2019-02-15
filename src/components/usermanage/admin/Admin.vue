@@ -172,7 +172,7 @@
 			},
 
 			reqAdmList(username, realname, status, page){
-				var api = global_.admin_list
+				let api = global_.admin_list
 						+ '?page=' 
 						+ page 
 						+ '&pagesize=' 

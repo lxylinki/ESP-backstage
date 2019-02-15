@@ -121,12 +121,47 @@
 			},
 
 			preCheck(){
-				
+				if(!this.school_value) {
+					Utils.lalert('请选择学校');
+					return;
+				} else if(!this.exp_value) {
+					Utils.lalert('请选择实验');
+				} else {
+					this.addCreate();
+				}
 			},
 
 			addCreate(){
+				for(let exp of this.exps_added) {
+					this.addOneExp(exp.id);
+				}
+				this.$router.go(-1);
+			},
 
+			addOneExp(exp_id){
+				let api = global_.exp_assign_create;
+				let data = {
+					'eid': exp_id,
+					'school_id': this.school_value
+				}
+
+				this.$http.post(api, data).then((resp)=> {
+					Utils.lalert('实验分配成功');
+					//this.$router.go(-1);
+
+				}, (err)=>{
+					if(err.body.error.hasOwnProperty('eid')) {
+						if(err.body.error.eid == 4) {
+							Utils.lalert('重复分配');
+						}
+
+					} else {
+						Utils.err_process.call(this, err, '实验分配失败');
+					}
+					return;
+				});				
 			}
+
 		},
 
 		mounted(){
@@ -195,7 +230,7 @@
 	background: #f7f7f7;
 }
 .hide-rm-btn{
-	opacity: 0;
+	display: none;
 }
 
 </style>
