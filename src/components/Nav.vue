@@ -42,6 +42,7 @@
 			return {			
 			}
 		},
+		
 		methods:{
 	      showToggle(item, idx){
 	        item.isSubShow = !item.isSubShow;
@@ -57,14 +58,6 @@
 	      	this.$router.push(url);
 	      },
 
-	      contains(item, arr) {
-	      	for(var i=0; i<arr.length; i++) {
-	      		if(item == arr[i]) {
-	      			return true;
-	      		}
-	      	}
-	      	return false;
-	      }
 		},
 
 		mounted(){
