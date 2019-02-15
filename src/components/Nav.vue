@@ -1,8 +1,8 @@
 <template>
 	<div class="nav">
 		<ul class="asideMenu">
-          	<li v-for="(item,index) in menuList">
-				<div class="oneMenu" v-on:click="showToggle(item)">
+          	<li v-for="(item, index) in menuList">
+				<div class="oneMenu" v-on:click="showToggle(item, index)">
 
 	                <a class="oneMenuText" 
 	                   style="display: inline-block; 
@@ -43,8 +43,14 @@
 			}
 		},
 		methods:{
-	      showToggle:function(item){
+	      showToggle(item, idx){
 	        item.isSubShow = !item.isSubShow;
+	        //close others
+	        for(let i in this.menuList) {
+	        	if(i != idx) {
+	        		this.menuList[i].isSubShow = false;
+	        	}
+	        }
 	      },
 
 	      showPage(url){

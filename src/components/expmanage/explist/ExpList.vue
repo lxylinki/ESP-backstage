@@ -23,7 +23,7 @@
 
 		    <div class="allcatags" style="display: inline-block;">
 		    	<div class="select-header select-header-normal">
-			    	<input type="text" class="select-header-text" placeholder="请搜索实验分类名称"  v-on:click="activate()" v-on:focus="showToggle=true" v-model="catag_search_state"></input>
+			    	<input type="text" class="select-header-text" placeholder="请搜索实验分类名称"  v-on:focus="showToggle=true" v-model="catag_search_state"></input>
 					<i class="iconfont togglesign" v-on:click="toggleList()" v-show="!showToggle">&#xe607;</i>
 					<i class="iconfont togglesign" v-on:click="toggleList()" v-show="showToggle">&#xe608;</i>
 		    	</div>
@@ -71,17 +71,18 @@
 		  <el-table
 		    :data="list"
 		    style="width: 100%;">
-		    <el-table-column
-		      prop="name"
-		      label="实验名称"
-		      min-width="100"
-		      :show-overflow-tooltip="true">
-		    </el-table-column>
 		    
 		    <el-table-column
 		      prop="order"
 		      label="编号"
 		      min-width="100">
+		    </el-table-column>
+		 
+		    <el-table-column
+		      prop="name"
+		      label="实验名称"
+		      min-width="100"
+		      :show-overflow-tooltip="true">
 		    </el-table-column>
 		    		    
 		     <el-table-column
@@ -185,20 +186,25 @@
 		},
 
 		methods: {
+			/*
 			activate(){
 				$('.select-header').removeClass('select-header-normal').addClass('select-header-active');
-			},
+			},*/
 
 			toggleList(){
 				this.showToggle = !this.showToggle;
 			},
 
 			makeChoice(item){
-				//alert('Clicked!');
 				this.catag_search_state = item.name;
 				this.catag_value = item.id;
 				this.filterSearchData(this.curPage);
 				this.showToggle = false;
+
+				// all catags opt is selected
+				if(this.catag_value === null) {
+					this.catag_options = [];
+				}
 			},
 
 			invokeSearch(e){
@@ -254,18 +260,20 @@
 			},
 
 			reqCatagList(){
-				var api = global_.expcatag_list;
+				this.catag_options = [];
+				let api = global_.expcatag_list;
 				let data = {
 					'all': 1
 				}
 				this.$http.post(api, data).then((resp)=>{
 					//this.catag_options = resp.body;
-					for(let i in resp.body) {
-						this.catag_options.push(resp.body[i]);
-						if(resp.body[i].hasOwnProperty('sub_categories')) {
-							for(let j in resp.body[i].sub_categories) {
-								resp.body[i].sub_categories[j].isleaf = true;
-								this.catag_options.push(resp.body[i].sub_categories[j]);
+					for(let i of resp.body) {
+						this.catag_options.push(i);
+
+						if(i.hasOwnProperty('sub_categories')) {
+							for(let j of i.sub_categories) {
+								j.isleaf = true;
+								this.catag_options.push(j);
 							}
 						}
 					}
@@ -273,6 +281,7 @@
 					this.filtered_catags = this.catag_options;
 					this.filtered_catags.unshift({'id': null, 'name': '全部分类'});
 					this.catag_value = null;
+
 				}, (err)=>{
 					Utils.err_process.call(this, err, '请求实验分类列表失败');
 				});				
@@ -297,14 +306,19 @@
 				this.curPage = page;
 			},
 
-			/*
+			
 			inactivate(){
 				var _this = this;
-				$(document).on('blur', '.select-list', function(){
-					$(this).removeClass('select-header-active').addClass('select-header-normal');
+				$(document).on('click', 'body', function(){
 					_this.showToggle = false;
-				});			
-			},*/
+					$('.select-header').removeClass('select-header-active').addClass('select-header-normal');
+				});	
+
+				$(document).on('click', '.select-header, .select-list', function(e){
+					$('.select-header').addClass('select-header-active').removeClass('select-header-normal');
+					e.stopPropagation();
+				});		
+			},
 
 			editRow(row){
 				this.$store.commit('sign', this.mod_name);
@@ -346,9 +360,21 @@
 			catag_search_state(newVal, oldVal) {
 				if (!this.catag_search_state) {
 					this.filtered_catags = this.catag_options;
+
 				} else {
 					this.filtered_catags = this.catag_options.filter( item => item.name.indexOf(this.catag_search_state) != -1);
+					//if entry is non-exist, reset
+					if(this.filtered_catags.length === 0) {
+						this.catag_options = [];
+						this.reqCatagList();
+						this.catag_value = null;
+					}
 				}
+			},
+
+			catag_value(newVal, oldVal) {
+				this.catag_options = [];
+				this.reqCatagList();	
 			}
 		},
 
@@ -380,7 +406,7 @@
 				} 				
 			}
 
-			//this.inactivate();
+			this.inactivate();
 			this.reqCatagList();
 			this.reqData();
 		}
@@ -493,5 +519,4 @@
 	padding-left: 15px;
 	color: #757575;
 }
-
 </style>

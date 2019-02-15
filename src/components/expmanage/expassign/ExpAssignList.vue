@@ -192,11 +192,18 @@
 
 				this.$http.post(api, data).then((resp)=>{
 					//console.log(resp);
+					//console.log(Object.keys(resp.body.school_list));
 					for(let assign of resp.body._list) {
-						assign.school_name = resp.body.school_list[assign.school_id].name;
+						//if school has been deleted
+						if(!Object.keys(resp.body.school_list).includes(assign.school_id)){
+							assign.school_name = null;
+						} else {
+							assign.school_name = resp.body.school_list[assign.school_id].name;
+						}
 						assign.create_time = Utils.convTime(assign.created_at);
  						assign.update_time = Utils.convTime(assign.updated_at);
 					}
+
 					this.tableData = resp.body._list;
 					this.totalPage = resp.body.total_page;
 					this.filterData(page);

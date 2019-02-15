@@ -26,14 +26,14 @@
 
 				    <div class="allcatags" style="display: inline-block;">
 				    	<div class="select-header select-header-normal">
-					    	<input type="text" class="select-header-text" placeholder="请搜索实验分类名称"  v-on:click="activate()" v-on:focus="showToggle=true" v-model="catag_search_state"></input>
+					    	<input type="text" class="select-header-text" placeholder="请搜索实验分类名称" v-on:focus="showToggle=true" v-model="catag_search_state"></input>
 							<i class="iconfont togglesign" v-on:click="toggleList()" v-show="!showToggle">&#xe607;</i>
 							<i class="iconfont togglesign" v-on:click="toggleList()" v-show="showToggle">&#xe608;</i>
 				    	</div>
 
 						<div class="select-list" v-show="showToggle" style="overflow-y: scroll; height: 190px;">
 					    	<!--<RecSelect v-bind:item_list="catag_options" @makechoice="makeChoice"></RecSelect>-->
-							<li class="select-item" v-bind:class="{leafcatag: item.isleaf}" v-for="item in filtered_catags" v-on:click="makeChoice(item)">{{item.name}}</li>	
+							<li class="select-item" v-bind:class="{leafcatag: item.isleaf, unselectable: item.isroot}" v-for="item in filtered_catags" v-on:click="makeChoice(item)">{{item.name}}</li>	
 						</div>
 				    </div>
 						
@@ -51,8 +51,9 @@
 				<div style="height: 30px;"></div>
 				<div> 实验编号： 
 					<input class="longinput" type="text" v-model="exporder">
-					<span class="redalert" v-show="!exporder">*</span>
-					<span class="whitedefault"v-show="exporder">*</span>
+					<!--<span class="redalert" v-show="!exporder">*</span>
+					<span class="whitedefault"v-show="exporder">*</span>-->
+					<span class="whitedefault">*</span>
 				</div>	
 				<div style="height: 30px;"></div>
 				<div> <span style="vertical-align: top;">实验概述：</span>
@@ -104,40 +105,50 @@
 		},
 
 		methods: {
+			/*
 			activate(){
 				$('.select-header').removeClass('select-header-normal').addClass('select-header-active');
-			},
+			},*/
 			toggleList(){
 				this.showToggle = !this.showToggle;
 			},
+			
 			makeChoice(item){
 				//console.log(item);
 				this.catag_search_state = item.name;
 				this.catag_value = item.id;
 				this.showToggle = false;
 			},
+
 			reqCatagList(){
-				var api = global_.expcatag_list;
+				this.catag_options = [];
+				let api = global_.expcatag_list;
 				let data = {
 					'all': 1
 				}
 				this.$http.post(api, data).then((resp)=>{
-					//this.catag_options = resp.body;
-					for(let i in resp.body) {
-						this.catag_options.push(resp.body[i]);
-						if(resp.body[i].hasOwnProperty('sub_categories')) {
-							for(let j in resp.body[i].sub_categories) {
-								resp.body[i].sub_categories[j].isleaf = true;
-								this.catag_options.push(resp.body[i].sub_categories[j]);
+					for(let i of resp.body) {
+						this.catag_options.push(i);
+						if(i.level == 1) {
+							i.isroot = true;
+						}
+
+						if(i.hasOwnProperty('sub_categories')) {
+							for(let j of i.sub_categories) {
+								j.isleaf = true;
+								if(j.level == 1) {
+									j.isroot = true;
+								}
+								this.catag_options.push(j);
 							}
 						}
 					}
 					this.filtered_catags = this.catag_options;
+
 				}, (err)=>{
 					Utils.err_process.call(this, err, '请求实验分类列表失败');
 				});				
 			},
-
 			upFile(event) {
 				$('#image').removeClass('emptyimg');
 		      	this.ufile = event.target.files[0];
@@ -153,12 +164,19 @@
 		    preCheck(){
 		    	if(!this.catag_search_state) {
 		    		Utils.lalert('请选择所属分类');
+		    		return;
+
+		    	} else if(!this.catag_value){
+		    		Utils.lalert('所属分类不存在');
+		    		return;
 
 		    	} else if(!this.expname) {
 		    		Utils.lalert('请输入实验名称');
+		    		return;
 
 		    	} else if(!this.exporder) {
 		    		Utils.lalert('请输入实验编号');
+		    		return;
 
 		    	} else {
 		    		this.saveEdit();
@@ -199,10 +217,15 @@
 		    // init select
 		    inactivate(){
 				var _this = this;
-				$(document).on('blur', '.select-header', function(){
-					$(this).removeClass('select-header-active').addClass('select-header-normal');
+				$(document).on('click', 'body', function(){
 					_this.showToggle = false;
-				});		    	
+					$('.select-header').removeClass('select-header-active').addClass('select-header-normal');
+				});	
+
+				$(document).on('click', '.select-header, .select-list', function(e){
+					$('.select-header').addClass('select-header-active').removeClass('select-header-normal');
+					e.stopPropagation();
+				});	    	
 		    },
 
 
@@ -227,7 +250,18 @@
 					this.filtered_catags = this.catag_options;
 				} else {
 					this.filtered_catags = this.catag_options.filter( item => item.name.indexOf(this.catag_search_state) != -1);
+					//if entry is non-exist, reset
+					if(this.filtered_catags.length === 0) {
+						this.catag_options = [];
+						this.reqCatagList();
+						this.catag_value = null;
+					}
 				}
+			},
+
+			catag_value(newVal, oldVal) {
+				this.catag_options = [];
+				this.reqCatagList();	
 			}
 		},		
 
@@ -420,5 +454,10 @@
 .leafcatag {
 	padding-left: 15px;
 	color: #757575;
+}
+
+.unselectable {
+	color: #d7d7d7;
+	pointer-events: none;
 }
 </style>

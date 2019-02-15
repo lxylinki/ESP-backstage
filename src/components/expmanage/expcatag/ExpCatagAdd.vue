@@ -18,8 +18,7 @@
 				  			 v-model="parent_value" 
 				  			 placeholder="请搜索实验父类别"
 				  			 filterable
-				  			 v-on:change="decidePar()"
-				  			 v-on:visible-change="setTagTitle()">
+				  			 v-on:change="decidePar()">
 				    <el-option
 				      v-for="item in catag_options"
 				      :key="item.id"
@@ -80,7 +79,7 @@
 				catag_options: [],
 				level_options: [
 					{
-						label: '独立类别',
+						label: '根类别',
 						value: 1
 					},
 					{
@@ -91,13 +90,14 @@
 			}
 		},
 		methods: {
+			/*
 			setTagTitle() {
 		        var tagTextList = document.querySelector('.parentinp').querySelectorAll('.el-select-dropdown__item>span');
 		        //console.log(tagTextList);
 		        tagTextList.forEach( (item) => {
-		          item.setAttribute('title', item.innerText)
+		          item.setAttribute('title', item.innerText);
 		        })
-			},
+			},*/
 
 			goBack(){
 				this.$router.go(-1);
@@ -149,6 +149,7 @@
 				}
 				this.$http.post(api, data).then((resp)=>{
 					this.catag_options = resp.body;
+					this.catag_options.unshift({id: null, name: '无父类别'});
 
 				}, (err)=>{
 					Utils.err_process.call(this, err, '请求实验分类列表失败');

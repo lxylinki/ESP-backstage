@@ -146,6 +146,10 @@
 				}
 			},
 
+			searchReq(){
+				this.reqSchList(this.search_state,'', 1);
+			},
+
 			addSchool(){
 				this.$router.push('/schooladd');
 			},
