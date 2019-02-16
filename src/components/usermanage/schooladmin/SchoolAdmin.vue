@@ -42,6 +42,12 @@
 		    :data="list"
 		    style="width: 100%;">
 
+			<el-table-column
+			  label="序号"
+			  type="index"
+			  min-width="100">
+			</el-table-column>
+
 		    <el-table-column
 		      prop="user_id"
 		      label="ID"
@@ -262,9 +268,6 @@
 </script>
 
 <style type="text/css" scoped>
-.selectclass {
-	background: white;
-}
 
 .addbtndiv {
 	display: inline-block;

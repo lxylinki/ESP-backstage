@@ -105,7 +105,6 @@
    		<Pager 	v-bind:current_page='curPage' 
    				v-bind:pages='totalPage'
    		       	@setPage='filterSearchData'></Pager>
-   		       	
 
    		<div id="show-quesbank" v-show="false">
 			<div class="selectclass">
@@ -133,7 +132,7 @@
 						<i class="iconfont togglesign" v-on:click="toggleTypeList()" v-show="showTypeToggle">&#xe608;</i>
 			    	</div>
 
-					<div class="select-list-2" v-show="showTypeToggle" style="height: 120px;">
+					<div class="select-list" v-show="showTypeToggle" style="height: 120px;">
 						<li class="select-item" v-for="item in type_options" v-on:click="makeTypeChoice(item)">{{item.label}}</li>	
 					</div>
 			    </div>
@@ -247,7 +246,6 @@
 				list:[],
 				qlist:[],
 				tableData:[],
-				tableQData:[],
 				exp_options:[],
 				qtype_options:[
 					{
@@ -390,22 +388,13 @@
 			},
 			
 			inactivate(){
-				var _this = this;
-				$(document).on('click', 'body', function(){
-					_this.showToggle = false;
-					_this.showTypeToggle = false;
-					$('.select-header').removeClass('select-header-active').addClass('select-header-normal');
-					$('.select-header-2').removeClass('select-header-active').addClass('select-header-normal');
-				});	
+				$(document).on('click', '.select-header', function(){
+					$(this).removeClass('select-header-normal').addClass('select-header-active');
+				});
 
-				$(document).on('click', '.select-header, .select-list', function(e){
-					$('.select-header').addClass('select-header-active').removeClass('select-header-normal');
-					e.stopPropagation();
-				});		
-				$(document).on('click', '.select-header-2, .select-list-2', function(e){
-					$('.select-header-2').addClass('select-header-active').removeClass('select-header-normal');
-					e.stopPropagation();
-				});			
+				$(document).on('click', '.select-header-2', function(){
+					$(this).removeClass('select-header-normal').addClass('select-header-active');
+				});
 				/*
 				var _this = this;
 				$(document).on('blur', '.select-header', function(){
@@ -426,7 +415,6 @@
 				}
 
 				this.$http.post(api, data).then((resp)=>{
-					//console.log(resp);
 					this.tableData = resp.body._list;
 					this.current_count = this.tableData.length;
 					//console.log(this.current_count);
@@ -683,7 +671,7 @@
 	/*box-shadow: 0 1px 6px rgba(97, 156, 222, 0.2);*/
 }
 
-.select-list, .select-list-2 {
+.select-list {
 	box-sizing: border-box;
 	background: #ffffff;
 	position: absolute;

@@ -414,10 +414,6 @@
 </script>
 
 <style type="text/css" scoped>
-.selectclass {
-	background: #ffffff;
-}
-
 .addbtndiv {
 	display: inline-block;
 	margin-bottom: 15px;

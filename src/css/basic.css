@@ -32,11 +32,13 @@ select, textarea {
  }
 
 .selectclass {
+  box-sizing: border-box;
   height: 60px;
   background: #f7f7f7;
   /*must set this*/
   overflow: hidden;
   width: 100%;
+  padding-left: 15px;
 }
 
 .pagetitle {
@@ -49,7 +51,9 @@ select, textarea {
 /*element ui*/
 .el-main{
 	/*background: #f7f7f7;*/
-  border: 60px solid #f0f2f5;
+  /*border: 60px solid #f0f2f5;
+  height: 1400px;*/
+  border-left: 20px solid #f0f2f5;
   height: 1400px;
 }
 
@@ -59,17 +63,7 @@ select, textarea {
   border-radius: 0;
 }
 
-.searchinput {
-  padding-left: 20px;
-  border: 0;
-  background: #f7f7f7;
-  width: 220px;
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
-  -webkit-border-top-left-radius: 20px;
-  -webkit-border-bottom-left-radius: 20px;
-  border-right: none;
-}
+
 
 .searchinput:focus {
   border: 0;
@@ -140,12 +134,24 @@ select, textarea {
    margin: 20px;
 }
 
+.searchinput {
+  padding-left: 20px;
+  border: 0;
+  background: #ffffff;
+  width: 220px;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  -webkit-border-top-left-radius: 20px;
+  -webkit-border-bottom-left-radius: 20px;
+  border-right: none;
+}
+
 .searchbtn {
   flex-basis: 40px;
   float: left;
   width: 30px; 
   height: 30px; 
-  background: #f7f7f7; 
+  background: #ffffff; 
   top: 218px;
   border: 1px solid #d7d7d7;
   cursor: pointer;

@@ -369,14 +369,12 @@
 				dCorrect:false,
 				eCorrect:false,
 
-				mchoice:false,
-
 				//1 单选 2 多选
 				type:'',
 				question:'',
 				exam_id:'',
 				answer:'',
-				answers:[],
+				//answers:[],
 				analyze:'',
 
 				exp_options:[],
@@ -385,21 +383,6 @@
 		},
 
 		methods: {
-			rmanswer( answers, ans){
-				var idx = answers.indexOf(ans);
-				answers.splice(idx, 1);
-				//console.log(this.answers);				
-			},
-
-			getAnswers(answers){
-				var ans = '';
-				for(var i in answers) {
-					ans += answers[i];
-				}
-				//console.log(ans);
-				return ans;
-			},
-
 			checkA(){
 				//when single choice and A is checked
 				var opta = document.querySelector('#aCheck');
@@ -412,24 +395,22 @@
 
 				if(opta.checked && this.type == 1){
 
-					this.answer = 'a';
+					//this.answer = 'a';
+					this.aCorrect = true;
 					this.bCorrect = false;
 					this.cCorrect = false;
 					this.dCorrect = false;
 					this.eCorrect = false;
-					/*
-					document.querySelector('#bCheck').checked = false;
-					document.querySelector('#cCheck').checked = false;
-					document.querySelector('#dCheck').checked = false;
-					document.querySelector('#eCheck').checked = false;*/
 					
 					// when multi-choice and A is checked
 				} else if(opta.checked && this.type == 2){
-					this.answers.push('a');
+					//this.answers.push('a');
+					this.aCorrect = true;
 
-					//when multi-choice and A is unchecked
-				} else if(!opta.checked && this.type == 2) {
-					this.rmanswer(this.answers, 'a');
+					//A is unchecked
+				} else {
+					//this.rmanswer(this.answers, 'a');
+					this.aCorrect = false;
 				}
 
 			},
@@ -444,22 +425,20 @@
 
 				if(optb.checked && this.type == 1){
 
-					this.answer = 'b';
+					//this.answer = 'b';
+					this.bCorrect = true;
 					this.aCorrect = false;
 					this.cCorrect = false;
 					this.dCorrect = false;
 					this.eCorrect = false;
-					/*
-					document.querySelector('#aCheck').checked = false;
-					document.querySelector('#cCheck').checked = false;
-					document.querySelector('#dCheck').checked = false;
-					document.querySelector('#eCheck').checked = false;*/
 
 				} else if(optb.checked && this.type == 2) {
-					this.answers.push('b');
+					//this.answers.push('b');
+					this.bCorrect = true;
 
-				} else if(!optb.checked && this.type == 2) {
-					this.rmanswer(this.answers, 'b');
+				} else {
+					//this.rmanswer(this.answers, 'b');
+					this.bCorrect = false;
 				}
 			},
 			checkC(){
@@ -472,22 +451,20 @@
 				}
 
 				if(optc.checked && this.type == 1) {
-					this.answer = 'c';
+					//this.answer = 'c';
+					this.cCorrect = true;
 					this.aCorrect = false;
 					this.bCorrect = false;
 					this.dCorrect = false;
 					this.eCorrect = false;
-					/*
-					document.querySelector('#aCheck').checked = false;
-					document.querySelector('#bCheck').checked = false;
-					document.querySelector('#dCheck').checked = false;
-					document.querySelector('#eCheck').checked = false;*/
 
 				} else if(optc.checked && this.type == 2) {
-					this.answers.push('c');
+					//this.answers.push('c');
+					this.cCorrect = true;
 
-				} else if(!optc.checked && this.type == 2) {
-					this.rmanswer(this.answers, 'c');
+				} else {
+					//this.rmanswer(this.answers, 'c');
+					this.cCorrect = false;
 				}
 			},
 			checkD(){
@@ -500,22 +477,20 @@
 				}
 
 				if(optd.checked && this.type == 1) {
-					this.answer = 'd';
+					//this.answer = 'd';
+					this.dCorrect = true;
 					this.aCorrect = false;
 					this.bCorrect = false;
 					this.cCorrect = false;
 					this.eCorrect = false;
-					/*
-					document.querySelector('#aCheck').checked = false;
-					document.querySelector('#bCheck').checked = false;
-					document.querySelector('#cCheck').checked = false;
-					document.querySelector('#eCheck').checked = false;*/	
 
 				}else if(optd.checked && this.type == 2) {
-					this.answers.push('d');
+					//this.answers.push('d');
+					this.dCorrect = true;
 
-				}else if(!optd.checked && this.type == 2) {
-					this.rmanswer(this.answers, 'd');
+				}else {
+					//this.rmanswer(this.answers, 'd');
+					this.dCorrect = false;
 				}	
 			},
 			checkE(){
@@ -528,21 +503,20 @@
 				}
 
 				if(opte.checked && this.type == 1) {
-					this.answer = 'e';
+					//this.answer = 'e';
+					this.eCorrect = true;
 					this.aCorrect = false;
 					this.bCorrect = false;
 					this.cCorrect = false;
 					this.dCorrect = false;
-					/*
-					document.querySelector('#aCheck').checked = false;
-					document.querySelector('#bCheck').checked = false;
-					document.querySelector('#cCheck').checked = false;
-					document.querySelector('#dCheck').checked = false;*/	
 
 				} else if (opte.checked && this.type == 2) {
-					this.answers.push('e');
-				} else if (!opte.checked && this.type == 2) {
-					this.rmanswer(this.answers, 'e');
+					//this.answers.push('e');
+					this.eCorrect = true;
+
+				} else {
+					//this.rmanswer(this.answers, 'e');
+					this.eCorrect = false;
 				}
 			},
 
@@ -608,14 +582,18 @@
 					//cannot delete when 1 opt left
 				}
 			},
+
 			mvDownA(){
 				if(this.showB) {
 					var a = this.aval;
 					this.aval = this.bval;
-					this.bval = a;					
+					this.bval = a;
+
+					let ifB = this.bCorrect;
+					this.bCorrect = this.aCorrect;
+					this.aCorrect = ifB;			
 				}
 			},
-
 
 			bAddNewOpt(){
 				if(this.showE) {
@@ -663,16 +641,27 @@
 					//this.showB = false;
 				}
 			},
+
 			mvUpB(){
 				var b = this.bval;
 				this.bval = this.aval;
 				this.aval = b;
+
+				let ifB = this.bCorrect;
+				this.bCorrect = this.aCorrect;
+				this.aCorrect = ifB;
 			},
+
 			mvDownB(){
+				//if option C is present
 				if(this.showC) {
 					var b = this.bval;
 					this.bval = this.cval;
-					this.cval = b;					
+					this.cval = b;
+
+					let ifB = this.bCorrect;
+					this.bCorrect = this.cCorrect;
+					this.cCorrect = ifB;					
 				}
 			},
 
@@ -713,12 +702,20 @@
 				var c = this.cval;
 				this.cval = this.bval;
 				this.bval = c;
+
+				let ifC = this.cCorrect;
+				this.cCorrect = this.bCorrect;
+				this.bCorrect = ifC;
 			},
 			mvDownC(){
 				if (this.showD){
 					var c = this.cval;
 					this.cval = this.dval;
-					this.dval = c;					
+					this.dval = c;	
+
+					let ifC = this.cCorrect;
+					this.cCorrect = this.dCorrect;
+					this.dCorrect = ifC;									
 				}
 			},
 
@@ -746,12 +743,20 @@
 				var d = this.dval;
 				this.dval = this.cval;
 				this.cval = d;
+
+				let ifD = this.dCorrect;
+				this.dCorrect = this.cCorrect;
+				this.cCorrect = ifD;
 			},
 			mvDownD(){
 				if (this.showE) {
 					var d = this.dval;
 					this.dval = this.eval;
-					this.eval = d;					
+					this.eval = d;	
+
+					let ifD = this.dCorrect;
+					this.dCorrect = this.eCorrect;
+					this.eCorrect = ifD;				
 				}
 			},
 
@@ -763,9 +768,25 @@
 				var e = this.eval;
 				this.eval = this.dval;
 				this.dval = e;
+
+				let ifE = this.eCorrect;
+				this.eCorrect = this.dCorrect;
+				this.dCorrect = ifE;
+			},
+
+			composeFinalAns(){
+				let final_ans = {'A':this.aCorrect, 'B':this.bCorrect, 'C':this.cCorrect, 'D':this.dCorrect, 'E':this.eCorrect};
+				for(let opt in final_ans) {
+					if(final_ans[opt]) {
+						this.answer += opt;
+					}
+				}
+				//console.log(this.answer);
 			},
 
 			preCheck(){
+				//this.composeFinalAns();
+
 				if(!this.exp_value) {
 					Utils.lalert('请选择所属实验');
 					return;
@@ -782,25 +803,27 @@
 					Utils.lalert('请选择正确选项');
 					return;
 				} else {
+					this.composeFinalAns();
 					this.addCreate();
 				}
 			},
 
 			addCreate(){
 				let api = global_.ques_create;
+				/*
 				let ans;
 				if (this.type == 1) {
 					ans = this.answer;
 
 				} else if (this.type == 2) {
 					ans = this.getAnswers(this.answers);
-				}
+				}*/
 
 				let data = {
 					eid: this.exp_value,
 					type: this.type,
 					question: this.question,
-					answer: ans,
+					answer: this.answer,
 					option_a: this.aval,
 					option_b: this.bval,
 					//display: 0,

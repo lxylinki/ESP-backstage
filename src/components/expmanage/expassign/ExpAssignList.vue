@@ -56,6 +56,13 @@
 		  <el-table
 		    :data="list"
 		    style="width: 100%;">
+
+			<el-table-column
+			  label="序号"
+			  type="index"
+			  min-width="100">
+			</el-table-column>
+			
 		    <el-table-column
 		      prop="school_name"
 		      label="学校名称"
@@ -116,6 +123,7 @@
 		},
 		data(){
 			return {
+				mod_name: 'exp-assign',
 				search_state: '',
 				school_value: '',
 				school_options: [],
@@ -255,10 +263,6 @@
 </script>
 
 <style type="text/css" scoped>
-.selectclass {
-	background: #ffffff;
-}
-
 .addbtndiv {
 	display: inline-block;
 	margin-bottom: 15px;

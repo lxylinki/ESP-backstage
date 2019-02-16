@@ -270,11 +270,6 @@
 </script>
 
 <style type="text/css" scoped>
-/*overwrite global setting*/
-.selectclass {
-	background: white;
-}
-
 .addbtndiv {
 	display: inline-block;
 	margin-top: 15px;

@@ -291,10 +291,6 @@
 .coltitle {
 	text-align: center;
 }
-/*overwrite global setting*/
-.selectclass {
-	background: white;
-}
 
 .addbtndiv {
 	display: inline-block;

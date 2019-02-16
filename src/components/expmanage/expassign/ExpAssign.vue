@@ -74,6 +74,7 @@
 	export default {
 		data(){
 			return {
+				mod_name: 'exp-assign',
 				school_value: '',
 				school_options: [],
 				exp_value:'',

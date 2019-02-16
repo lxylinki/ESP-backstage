@@ -41,6 +41,13 @@
 		  <el-table
 		    :data="list"
 		    style="width: 100%;">
+
+			<el-table-column
+			  label="序号"
+			  type="index"
+			  min-width="100">
+			</el-table-column>
+			
 		    <el-table-column
 		      prop="username"
 		      label="用户名"
@@ -269,11 +276,6 @@
 </script>
 
 <style type="text/css" scoped>
-/*overwrite global setting*/
-.selectclass {
-	background: white;
-}
-
 .addbtndiv {
 	display: inline-block;
 	margin-top: 15px;

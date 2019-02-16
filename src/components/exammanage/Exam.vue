@@ -7,7 +7,7 @@
 		<div style="height: 20px;"></div>
 
 		<div class="selectclass">
-			<div style="display: inline-block; width: 20px;"></div>
+			
 			<div class="pickexptitle">实验： </div>
 			<div style="display: inline-block;">
 				  <el-select v-model="exp_value" filterable placeholder="请搜索实验名称" v-on:change="filterSearchData(1)">
@@ -114,10 +114,13 @@
 		    <el-table-column
 		      prop="operation"
 		      label="操作"
-		      min-width="150">
+		      min-width="200">
 
 		      <template slot-scope="scope">
 		      	<el-button  class="op" type="text" @click="configRow(scope.row)">
+		      		旧版配置试题
+		      	</el-button>
+		      	<el-button  class="op" type="text" @click="configQs(scope.row)">
 		      		配置试题
 		      	</el-button>
 		      	<el-button  class="op" type="text" @click="editRow(scope.row)">
@@ -292,6 +295,7 @@
 				this.$router.push('/examadd');
 			},
 
+			//old ver
 			configRow(row) {
 				this.$store.commit('sign', this.mod_name);
 				this.$store.commit('setEdit', true);
@@ -299,7 +303,18 @@
 				this.$store.commit('setCurPage', this.curPage);
 				this.$store.commit('setCurSearch', this.search_state);
 				this.$store.commit('setRowsPerPage', this.rowsPerPage);
-				this.$router.push('/examconfig');				
+				this.$router.push('/examconfig');			
+			},
+
+			//new ver
+			configQs(row){
+				this.$store.commit('sign', this.mod_name);
+				this.$store.commit('setEdit', true);
+				this.$store.commit('pickRow', row);
+				this.$store.commit('setCurPage', this.curPage);
+				this.$store.commit('setCurSearch', this.search_state);
+				this.$store.commit('setRowsPerPage', this.rowsPerPage);
+				this.$router.push('/examquesconfig');
 			},
 
 			editRow(row){
@@ -377,9 +392,6 @@
 </script>
 
 <style type="text/css" scoped>
-.selectclass {
-	background: white;
-}
 
 .pickexptitle {
 	display: inline-block; 
