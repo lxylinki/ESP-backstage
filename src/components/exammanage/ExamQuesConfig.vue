@@ -323,7 +323,9 @@
 					//console.log(resp);
 					this.tableData = resp.body._list;
 					this.current_count = this.tableData.length;
-
+					
+					//reset focus_qids first
+					this.focus_qids = [];
 					for(let item of this.tableData) {
 						this.focus_qids.push(item.question_id);
 						if(resp.body.eids.hasOwnProperty(item.eid)) {
@@ -386,7 +388,7 @@
 
 			remove(arr, item) {
 				for(let i in arr) {
-					if (arr[i] === item) {
+					if (arr[i] == item) {
 						arr.splice(i, 1);
 					}
 				}
@@ -404,6 +406,7 @@
 				}
 				this.$http.post(api, data).then((resp)=>{
 					this.remove(this.focus_qids, row.question_id);
+					console.log(this.focus_qids);
 					this.reqEquesList(this.curPage);
 					Utils.lalert('删除考核试题成功');
 
