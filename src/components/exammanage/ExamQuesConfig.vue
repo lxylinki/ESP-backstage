@@ -90,9 +90,10 @@
 				      min-width="100">
 
 				      <template slot-scope="scope">
-				      	<el-button class="op selectbtn" type="text" @click="selectRow(scope.row)">
+				      	<el-button  v-show="!focus_qids.includes(scope.row.id)" class="op selectbtn" type="text" @click="selectRow(scope.row)">
 				      		添加
 				      	</el-button>
+				      	<i v-show="focus_qids.includes(scope.row.id)" class="iconfont" style="color: #31a400; font-size: 150%;">&#xe612;</i>
 				      </template>
 				    </el-table-column>
 
@@ -250,7 +251,10 @@
 						value: 50
 					}
 				],
-				loading: null
+				loading: null,
+				focus_qids:[],
+				//a question from bank to exam {in-exam id: in-bank id}
+				//quesExamMap:{}
 			}
 		},
 
@@ -299,6 +303,7 @@
 							}
 						}
 						this.filterQData(page);
+						layer.close(this.loading);
 						//console.log(resp);
 					}, (err)=>{
 		     			layer.close(this.loading);
@@ -320,7 +325,7 @@
 					this.current_count = this.tableData.length;
 
 					for(let item of this.tableData) {
-						//item.create_time = Utils.convTime(item.created_at);
+						this.focus_qids.push(item.question_id);
 						if(resp.body.eids.hasOwnProperty(item.eid)) {
 							item.exp_catag = resp.body.eids[item.eid].name;
 						}
@@ -370,6 +375,7 @@
 					'question_id': qrow.id
 				}
 				this.$http.post(api, data).then((resp)=>{
+					this.focus_qids.push(qrow.id);
 					this.current_count += 1;
 					this.reqEquesList();
 
@@ -378,8 +384,15 @@
 				});
 			},
 
+			remove(arr, item) {
+				for(let i in arr) {
+					if (arr[i] === item) {
+						arr.splice(i, 1);
+					}
+				}
+			},
+
 			deleteRow(row){
-				console.log(row);
 				var _this = this;
 				Utils.lconfirm("确定删除考核试题？", function(){_this.delEques(row)});
 			},
@@ -390,6 +403,7 @@
 					'id': row.id
 				}
 				this.$http.post(api, data).then((resp)=>{
+					this.remove(this.focus_qids, row.question_id);
 					this.reqEquesList(this.curPage);
 					Utils.lalert('删除考核试题成功');
 
@@ -403,6 +417,7 @@
 		beforeMount(){
 			this.loading = layer.load(1, {shade: false});
 		},
+
 		mounted(){
 			Utils.page_check_status.call(this);
 			var edit = this.$store.state.edit;
@@ -425,6 +440,9 @@
 </script>
 
 <style type="text/css" scoped>
+.qlist {
+	background: grey;
+}
 .altgoback {
 	margin-left: 20px;
 }
