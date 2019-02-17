@@ -99,25 +99,29 @@
 
 				  </el-table>
 				</template>	
-					<div class="tablefooter">
-						<div class="rownum">
-							<span>显示 </span>
-								<select v-model="rowsPerPage" v-on:change="pageSizeChange()" style="width: 60px; height: 25px;">
-									<option v-for="item in row_nums" v-bind:value="item.value">
-										{{item.label}}
-									</option>
-								</select>
-							<span> 条</span>
-						</div>
 
-						<div class="pages">
-							<Pager v-bind:current_page='curPage' 
-						           	  v-bind:pages='totalPage'
-							          @setPage='loadPage'
-							></Pager>			
-						</div>				 	
-					</div>			
+				<div class="tablefooter">
+					<div class="rownum">
+						<span>显示 </span>
+							<select v-model="rowsPerPage" v-on:change="pageSizeChange()" style="width: 60px; height: 25px;">
+								<option v-for="item in row_nums" v-bind:value="item.value">
+									{{item.label}}
+								</option>
+							</select>
+						<span> 条</span>
+					</div>
+
+					<div class="pages">
+						<Pager v-bind:current_page='curPage' 
+					           	  v-bind:pages='totalPage'
+						          @setPage='loadPage'
+						></Pager>			
+					</div>				 	
+				</div>			
 			</div>
+
+			<div class="add-complete"></div>
+
 
 			<div id='rtable'>
 				<span>{{exam_name}}</span><br>
@@ -387,10 +391,9 @@
 			},
 
 			remove(arr, item) {
-				for(let i in arr) {
-					if (arr[i] == item) {
-						arr.splice(i, 1);
-					}
+				let i = arr.indexOf(item);
+				if(i!= -1) {
+					arr.splice(i, 1);
 				}
 			},
 
@@ -406,7 +409,7 @@
 				}
 				this.$http.post(api, data).then((resp)=>{
 					this.remove(this.focus_qids, row.question_id);
-					console.log(this.focus_qids);
+					//console.log(this.focus_qids);
 					this.reqEquesList(this.curPage);
 					Utils.lalert('删除考核试题成功');
 
@@ -436,16 +439,12 @@
 
 				this.reqEquesList();
 				this.reqQuesList(this.exp_value, this.qtype_value, this.search_state, this.curPage);
-			}
-			
+			}	
 		}
 	}
 </script>
 
 <style type="text/css" scoped>
-.qlist {
-	background: grey;
-}
 .altgoback {
 	margin-left: 20px;
 }
@@ -462,7 +461,7 @@
 #ltable, #rtable {
 	vertical-align: top;
 	display: inline-block;
-	width: 45%;
+	width: 40%;
 }
 
 #rtable {
@@ -483,6 +482,15 @@
 
 .pages {
 	margin-left: 20px;
+}
+
+.add-complete {
+	display: inline-block; 
+	width: 40px; 
+	height: 100px; 
+	background: #0099ff;
+	margin-top: 60px;
+	margin-left: 0;
 }
 
 </style>
