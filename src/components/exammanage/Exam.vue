@@ -114,7 +114,7 @@
 		    <el-table-column
 		      prop="operation"
 		      label="操作"
-		      min-width="200">
+		      min-width="150">
 
 		      <template slot-scope="scope">
 		      	<!--
