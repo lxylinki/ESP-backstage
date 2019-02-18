@@ -260,6 +260,7 @@
 			},
 
 			reqCatagList(){
+				//console.log(this.catag_options);
 				this.catag_options = [];
 				let api = global_.expcatag_list;
 				let data = {
@@ -358,14 +359,16 @@
 		
 		watch: {
 			catag_search_state(newVal, oldVal) {
+				console.log('catag_search_state');
 				if (!this.catag_search_state) {
 					this.filtered_catags = this.catag_options;
 
 				} else {
 					this.filtered_catags = this.catag_options.filter( item => item.name.indexOf(this.catag_search_state) != -1);
+					
 					//if entry is non-exist, reset
 					if(this.filtered_catags.length === 0) {
-						this.catag_options = [];
+						//this.catag_options = [];
 						this.reqCatagList();
 						this.catag_value = null;
 					}
@@ -373,8 +376,12 @@
 			},
 
 			catag_value(newVal, oldVal) {
-				this.catag_options = [];
-				this.reqCatagList();	
+				//console.log('catag_value');
+				//console.log('old val:' + oldVal, 'new val:' + newVal);
+				//this.catag_options = [];
+				if(newVal || oldVal) {
+					this.reqCatagList();
+				}
 			}
 		},
 
@@ -405,7 +412,6 @@
 					this.curPage = curpage;
 				} 				
 			}
-
 			this.inactivate();
 			this.reqCatagList();
 			this.reqData();

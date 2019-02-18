@@ -118,9 +118,15 @@
 				this.catag_search_state = item.name;
 				this.catag_value = item.id;
 				this.showToggle = false;
+
+				// all catags opt is selected
+				if(this.catag_value === null) {
+					this.catag_options = [];
+				}
 			},
 
 			reqCatagList(){
+				//console.log(this.catag_options);
 				this.catag_options = [];
 				let api = global_.expcatag_list;
 				let data = {
@@ -167,6 +173,7 @@
 		    		return;
 
 		    	} else if(!this.catag_value){
+		    		//console.log(this.catag_search_state, this.catag_value);
 		    		Utils.lalert('所属分类不存在');
 		    		return;
 
@@ -246,21 +253,27 @@
 
 		watch: {
 			catag_search_state(newVal, oldVal) {
+				console.log('catag_search_state');
 				if (!this.catag_search_state) {
 					this.filtered_catags = this.catag_options;
+
 				} else {
-					this.filtered_catags = this.catag_options.filter( item => item.name.indexOf(this.catag_search_state) != -1);
-					//if entry is non-exist, reset
-					if(this.filtered_catags.length === 0) {
-						this.catag_options = [];
-						this.reqCatagList();
-						this.catag_value = null;
+					if(this.catag_options.length > 0) {
+						this.filtered_catags = this.catag_options.filter( item => item.name.indexOf(this.catag_search_state) != -1);
+						//if entry is non-exist, reset
+						if(this.filtered_catags.length === 0) {
+							//this.catag_options = [];
+							this.reqCatagList();	
+							this.catag_value = null;
+						}
 					}
 				}
 			},
 
 			catag_value(newVal, oldVal) {
-				this.catag_options = [];
+				//console.log('catag_value');
+				//console.log('old val:' + oldVal, 'new val:' + newVal);
+				//this.catag_options = [];
 				this.reqCatagList();	
 			}
 		},		
@@ -288,7 +301,7 @@
 				this.inactivate();
 				this.decorFileInp();
 				this.clearImgPlace();
-				this.reqCatagList();
+				//this.reqCatagList();
 			}
 		}
 	}
