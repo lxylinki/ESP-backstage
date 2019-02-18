@@ -53,7 +53,7 @@
 		<div style="height: 10px;"></div>
 
 		<div id='tables'>
-			<div id='ltable'>
+			<div id='ltable' v-show="showQbank">
 				<span>试题库</span><br>
 				<span style="font-size: 14px;">点击添加完成可收起列表</span><br>
 
@@ -120,10 +120,13 @@
 				</div>			
 			</div>
 
-			<div class="add-complete"></div>
+			<div class="add-complete" v-on:click="showToggle()">
+				<i class="iconfont add-complete-icon" v-show="showQbank">&#xe659;</i><span v-show="showQbank" class="add-complete-text">添加完成</span>
+				<i class="iconfont add-ques-icon" v-show="!showQbank">&#xe658;</i><span v-show="!showQbank" class="add-ques-text">添加试题</span>
+			</div>
 
 
-			<div id='rtable'>
+			<div id='rtable' v-bind:class="{ fulltable: !showQbank }">
 				<span>{{exam_name}}</span><br>
 				<span style="font-size: 14px;">添加试题：{{current_count}}  / 题数限制：{{limit}}</span><br>
 				<template>
@@ -257,12 +260,16 @@
 				],
 				loading: null,
 				focus_qids:[],
+				showQbank: false
 				//a question from bank to exam {in-exam id: in-bank id}
 				//quesExamMap:{}
 			}
 		},
 
 		methods:{
+			showToggle(){
+				this.showQbank = !this.showQbank;
+			},
 			invokeSearch(e) {
 				if(e.keyCode == 13) {
 					this.filterQs();
@@ -322,7 +329,7 @@
 				let data = {
 					"exam_id": this.exam_id
 				}
-
+				//console.log(this.exam_id);
 				this.$http.post(api, data).then((resp)=>{
 					//console.log(resp);
 					this.tableData = resp.body._list;
@@ -464,6 +471,11 @@
 	width: 40%;
 }
 
+#rtable.fulltable {
+	width: 90%;
+	margin-left: 10px;
+}
+
 #rtable {
 	margin-left: 100px;
 }
@@ -485,12 +497,25 @@
 }
 
 .add-complete {
+	color: #ffffff;
 	display: inline-block; 
 	width: 40px; 
 	height: 100px; 
 	background: #0099ff;
-	margin-top: 60px;
+	margin-top: 52px;
 	margin-left: 0;
+	cursor: pointer;
+	padding-top: 5px;
+	box-sizing: border-box;
 }
 
+.add-complete-text, .add-ques-text {
+	writing-mode: vertical-lr;
+	margin-left: 8px;
+	margin-top: 5px;
+}
+.add-complete-icon, .add-ques-icon {
+	margin-left: 10px;
+	font-size: 120%;
+}
 </style>

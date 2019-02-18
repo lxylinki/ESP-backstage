@@ -117,9 +117,10 @@
 		      min-width="200">
 
 		      <template slot-scope="scope">
+		      	<!--
 		      	<el-button  class="op" type="text" @click="configRow(scope.row)">
 		      		旧版配置试题
-		      	</el-button>
+		      	</el-button> -->
 		      	<el-button  class="op" type="text" @click="configQs(scope.row)">
 		      		配置试题
 		      	</el-button>
@@ -296,6 +297,7 @@
 			},
 
 			//old ver
+			/*
 			configRow(row) {
 				this.$store.commit('sign', this.mod_name);
 				this.$store.commit('setEdit', true);
@@ -304,7 +306,7 @@
 				this.$store.commit('setCurSearch', this.search_state);
 				this.$store.commit('setRowsPerPage', this.rowsPerPage);
 				this.$router.push('/examconfig');			
-			},
+			},*/
 
 			//new ver
 			configQs(row){
