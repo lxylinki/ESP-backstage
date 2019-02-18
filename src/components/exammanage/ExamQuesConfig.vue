@@ -12,41 +12,67 @@
 			
 			<div class="pickexptitle">实验： </div>
 			<div style="display: inline-block;">
-				  <el-select v-model="exp_value" filterable placeholder="请搜索实验名称" v-on:change="filterQs()">
+				  <el-select v-if="showQbank" v-model="exp_value" filterable placeholder="请搜索实验名称" v-on:change="filterQs()">
 				    <el-option
 				      v-for="item in exp_options"
 				      :key="item.id"
 				      :label="item.name"
 				      :value="item.id">
 				    </el-option>
-				  </el-select>		
+				  </el-select>	
+				  <el-select v-else v-model="exp_value" filterable placeholder="请搜索实验名称" v-on:change="filterExamQs()">
+				    <el-option
+				      v-for="item in exp_options"
+				      :key="item.id"
+				      :label="item.name"
+				      :value="item.id">
+				    </el-option>
+				  </el-select>	
 			</div>
 
 			<div style="display: inline-block; width: 20px;"></div>
 			<div class="pickquestype">题型： </div>
 			<div style="display: inline-block;">
-				  <el-select v-model="qtype_value" placeholder="请选择题型" v-on:change="filterQs()">
+				  <el-select v-if="showQbank" v-model="qtype_value" placeholder="请选择题型" v-on:change="filterQs()">
 				    <el-option
 				      v-for="item in qtype_options"
 				      :key="item.value"
 				      :label="item.label"
 				      :value="item.value">
 				    </el-option>
-				  </el-select>					
+				  </el-select>		
+				  <el-select v-else v-model="qtype_value" placeholder="请选择题型" v-on:change="filterExamQs()">
+				    <el-option
+				      v-for="item in qtype_options"
+				      :key="item.value"
+				      :label="item.label"
+				      :value="item.value">
+				    </el-option>
+				  </el-select>			
 			</div>
 
 			<div class="searchwindow quesmng-searchwindow">
 
-				<input class="searchinput" 
+				<input class="searchinput"
+						  v-if="showQbank" 
+						  v-model="search_state"
+						  v-on:keydown="invokeQSearch($event)"
+						  placeholder="请搜索试题名称">
+				</input>
+
+				<input class="searchinput"
+						  v-else 
 						  v-model="search_state"
 						  v-on:keydown="invokeSearch($event)"
 						  placeholder="请搜索试题名称">
 				</input>
 
-				<div class="searchbtn quesmng-searchbtn" v-on:click="filterQs()">
+				<div v-if="showQbank" class="searchbtn quesmng-searchbtn" v-on:click="filterQs()">
 					<i class="el-icon-search" ></i>
 				</div>
-
+				<div v-else class="searchbtn quesmng-searchbtn" v-on:click="filterExamQs()">
+					<i class="el-icon-search" ></i>
+				</div>
 			</div>
 		</div><!--selectclass-->
 
@@ -270,9 +296,16 @@
 			showToggle(){
 				this.showQbank = !this.showQbank;
 			},
-			invokeSearch(e) {
+
+			invokeQSearch(e) {
 				if(e.keyCode == 13) {
 					this.filterQs();
+				}
+			},
+
+			invokeSearch(e) {
+				if(e.keyCode == 13) {
+					this.filterExamQs();
 				}
 			},
 
@@ -327,17 +360,17 @@
 			reqEquesList(){
 				var api = global_.exam_ques_list;
 				let data = {
-					"exam_id": this.exam_id
+					"exam_id": this.exam_id,
 				}
 				//console.log(this.exam_id);
 				this.$http.post(api, data).then((resp)=>{
-					//console.log(resp);
 					this.tableData = resp.body._list;
 					this.current_count = this.tableData.length;
 					
 					//reset focus_qids first
 					this.focus_qids = [];
 					for(let item of this.tableData) {
+						//console.log(item.eid);
 						this.focus_qids.push(item.question_id);
 						if(resp.body.eids.hasOwnProperty(item.eid)) {
 							item.exp_catag = resp.body.eids[item.eid].name;
@@ -356,7 +389,14 @@
 			},
 
 			filterQs(){
+				//console.log(this.exp_value);
 				this.reqQuesList(this.exp_value, this.qtype_value, this.search_state, this.curPage);
+			},
+
+			filterExamQs(){
+				this.list = this.tableData.filter(item=> this.exp_value? item.eid === this.exp_value : true)
+										  .filter(item=> this.qtype_value? item.type == this.qtype_value: true)
+										  .filter(item=> this.search_state? item.question.indexOf(this.search_state) != -1 : true);
 			},
 
 			loadPage(page){
