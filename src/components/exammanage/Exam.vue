@@ -111,6 +111,16 @@
 		      min-width="100">
 		    </el-table-column>
 
+		     <el-table-column
+		      prop="type"
+		      label="类型"
+		      min-width="100">
+		      <template slot-scope="scope">
+		      	<span v-if="scope.row.type == 1">考核</span>
+		      	<span v-if="scope.row.type == 2">抢救治疗</span>
+		      </template>
+		    </el-table-column>
+
 		    <el-table-column
 		      prop="operation"
 		      label="操作"
@@ -379,16 +389,18 @@
 				}
 
 				//item added: default append to list end
+				//change to list start
+				/*
 				if(after > before) {
 					this.curPage = Math.ceil(after / this.rowsPerPage);	
 
 				} else if(curpage > 0) {
 					this.curPage = curpage;
-				} 				
+				}*/				
 			}
 			//console.log(before, after, pagesize, keyword, curpage);
 			this.fillExpSelect();
-			this.reqExamList(this.curPage);
+			this.reqExamList(1);
 		}
 	}
 </script>

@@ -1,6 +1,6 @@
 <template>
 	<div class="rectablerows">
-			<tr class="recrow" v-for="(item, idx) in item_list">
+			<tr class="recrow" v-for="(item, idx) in item_list" :class="{leafcatag: item.isleaf}">
 				<div class="recrowcontent" >
 					<td class="name"><div class="nametext">{{item.name}}</div></td>
 					<td class="level">{{item.level}}</td> 
@@ -127,12 +127,18 @@ td {
 
 /*sub item*/
 .recrow .recrow .recrowcontent .name{
-	padding-left: 20px;
+	padding-left: 10px;
 }
 
+/*second level*/
 .recrow .recrow .recrowcontent .name .nametext {
 	width: 100px;
-	padding-left: 30px;
+	padding-left: 35px;
+}
+
+.recrow .recrow .recrow .recrowcontent .name .nametext {
+	width: 100px;
+	padding-left: 50px;
 }
 
 .recrow .recrow .recrowcontent {

@@ -16,14 +16,14 @@
 			</div>
 			<div style="height: 30px;"></div>
 			<div> 姓名： 
-				<input class="longinput" type="text" v-model="realname">
+				<input class="longinput" type="text" v-model="realname" autocomplete="off">
 				<!--<el-input class="usrenter" v-model="name" placeholder=""></el-input>-->
 				<span class="redalert" v-show="!realname">*</span>
 				<span class="whitedefault" v-show="realname">*</span>
 			</div>
 			<div style="height: 30px;"></div>
 			<div> 密码： 
-				<input class="longinput" type="password" v-model="password">
+				<input class="longinput" type="password" v-model="password" autocomplete="off">
 				<!--<el-input class="usrenter" v-model="password" placeholder=""></el-input>-->
 				<span class="redalert" v-show="password.split('').length<6">*</span>
 				<span class="whitedefault" v-show="password.split('').length>=6">*</span>
@@ -164,4 +164,12 @@
   margin-left: 20px;
 }
 
+/*overwrite default*/
+input:-webkit-autofill {
+	box-shadow: 0 0 0 10000px #ffffff inset;
+    -webkit-box-shadow: 0 0 0 10000px #ffffff inset;
+    -webkit-text-fill-color: #20222d;
+    caret-color: #20222d;
+}
 </style>
+

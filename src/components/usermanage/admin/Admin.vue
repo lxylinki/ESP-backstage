@@ -263,14 +263,16 @@
 				}
 
 				//item added: default append to list end
+				//change to list start
+				/*
 				if(after > before) {
 					this.curPage = Math.ceil(after / this.rowsPerPage);	
 
 				} else if(curpage > 0) {
 					this.curPage = curpage;
-				} 				
+				} */				
 			}
-			this.reqAdmList('', this.search_state, null, this.curPage);
+			this.reqAdmList('', this.search_state, null, 1);
 		}
 	}
 </script>

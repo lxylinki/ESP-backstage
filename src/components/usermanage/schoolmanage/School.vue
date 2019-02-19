@@ -169,6 +169,7 @@
 				};
 
 				this.$http.post(api, data).then((resp)=>{
+					//console.log(resp);
 			    	this.$store.commit('sign', this.mod_name);
 			    	this.$store.commit('setRowNumBefore', resp.body.total);
 			    	this.$store.commit('setRowNumAfter', resp.body.total);

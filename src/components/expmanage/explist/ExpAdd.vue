@@ -132,27 +132,28 @@
 					'all': 1
 				}
 				this.$http.post(api, data).then((resp)=>{
-					for(let i of resp.body) {
-						this.catag_options.push(i);
-						if(i.level == 1) {
-							i.isroot = true;
-						}
-
-						if(i.hasOwnProperty('sub_categories')) {
-							for(let j of i.sub_categories) {
-								j.isleaf = true;
-								if(j.level == 1) {
-									j.isroot = true;
-								}
-								this.catag_options.push(j);
-							}
-						}
-					}
+					this.expandCatag(this.catag_options, resp.body);				
 					this.filtered_catags = this.catag_options;
 
 				}, (err)=>{
 					Utils.err_process.call(this, err, '请求实验分类列表失败');
 				});				
+			},
+
+			expandCatag(arr, tree){
+				for(let i of tree) {
+					if(i.level == -1) {
+						i.isleaf = true;
+					} else if(i.level == 1) {
+						i.isroot = true;
+					} else if(i.level == 2) {
+						i.ismid = true;
+					}
+					arr.push(i);
+					if(i.hasOwnProperty('sub_categories')) {
+						this.expandCatag(arr, i.sub_categories)
+					}
+				}
 			},
 
 			upFile(event) {

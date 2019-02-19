@@ -180,7 +180,9 @@
 				async function asyncReq(){
 					let resp = await Utils.reqSchoolList.call(this, name, alias, page);
 	     			this.school_options = resp.body._list;
-	     			this.school_options.unshift({name: '所有学校', id: null});
+	     			if(this.school_options && this.school_options.length > 0) {
+	     				this.school_options.unshift({name: '所有学校', id: null});
+	     			}
 	     		}			
 			},
 
@@ -199,6 +201,9 @@
 				}
 
 				this.$http.post(api, data).then((resp)=>{
+					if(!resp.body._list) {
+						return;
+					}
 					//console.log(resp);
 					//console.log(Object.keys(resp.body.school_list));
 					for(let assign of resp.body._list) {

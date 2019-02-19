@@ -11,19 +11,21 @@
 				<span class="redalert" v-show="!catag_name">*</span>
 				<span class="whitedefault"v-show="catag_name">*</span>
 			</div>
+
+
 			<div style="height: 30px;"></div>
 			<div class="parentinp"> 父类别： 
 				<template>
 				  <el-select class="longselect"
 				  			 v-model="parent_value" 
 				  			 placeholder="请搜索实验父类别"
-				  			 filterable
-				  			 v-on:change="decidePar()">
+				  			 filterable>
 				    <el-option
 				      v-for="item in catag_options"
 				      :key="item.id"
 				      :label="item.name"
-				      :value="item.id">
+				      :value="item.id"
+				      :class="{leafcatag: item.isleaf, midcatag: item.ismid, unselectable: item.isleaf}">
 				    </el-option>
 				  </el-select>
 				</template>
@@ -32,7 +34,6 @@
 				<span class="whitedefault">*</span>
 			</div>
 			<div style="height: 30px;"></div>
-			
 			<div>级别： 
 				<template>
 				  <el-select class="longselect"
@@ -79,8 +80,12 @@
 				catag_options: [],
 				level_options: [
 					{
-						label: '根类别',
+						label: '一级类别',
 						value: 1
+					},
+					{
+						label: '二级类别',
+						value: 2
 					},
 					{
 						label: '子类别',
@@ -107,8 +112,11 @@
 				if(!this.catag_name) {
 					Utils.lalert('请输入分类名称');
 					return;
+
 				} else if(!this.level_value) {
 					Utils.lalert('请选择实验级别');
+					return;
+
 				} else {
 					this.addCreate();
 				}
@@ -133,27 +141,45 @@
 					if(err.body.error.hasOwnProperty('pid')) {
 						if(err.body.error.pid == 2){
 							Utils.lalert('父类别错误：无法创建子类');
-						}
-						
+						}			
 					} else {
 						Utils.err_process.call(this, err, '实验分类创建失败');
 					}
 				});
 			},
 
-
 			reqCatagList(){
-				var api = global_.expcatag_list;
+				//console.log(this.catag_options);
+				this.catag_options = [];
+				let api = global_.expcatag_list;
 				let data = {
 					'all': 1
 				}
 				this.$http.post(api, data).then((resp)=>{
-					this.catag_options = resp.body;
-					this.catag_options.unshift({id: null, name: '无父类别'});
+					this.expandCatag(this.catag_options, resp.body);				
+					this.filtered_catags = this.catag_options;
+					this.filtered_catags.unshift({'id': null, 'name': '无父类别'});
 
 				}, (err)=>{
 					Utils.err_process.call(this, err, '请求实验分类列表失败');
-				});
+				});				
+			},
+
+
+			expandCatag(arr, tree){
+				for(let i of tree) {
+					if(i.level == -1 && i.pid) {
+						i.isleaf = true;
+					} else if(i.level == 1) {
+						i.isroot = true;
+					} else if(i.level == 2) {
+						i.ismid = true;
+					}
+					arr.push(i);
+					if(i.hasOwnProperty('sub_categories')) {
+						this.expandCatag(arr, i.sub_categories)
+					}
+				}
 			},
 
 			decideLev(){
@@ -162,11 +188,12 @@
 				}
 			},
 
+			/*
 			decidePar(){
 				if (this.parent_value) {
-					this.level_value = -1;
+					this.level_value = 2;
 				}
-			}
+			}*/
 		},
 
 		mounted(){
@@ -206,4 +233,18 @@
 	color: #ffffff;
 }
 
+.leafcatag {
+	padding-left: 35px;
+	color: #757575;
+}
+
+.midcatag {
+	padding-left: 25px;
+	color: #757575;
+}
+
+.unselectable {
+	color: #d7d7d7;
+	pointer-events: none;
+}
 </style>

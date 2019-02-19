@@ -169,6 +169,7 @@
 				}
 			},
 
+			
 			reqCatagList(page){
 				var api = global_.expcatag_list;
 				let data = {
@@ -178,6 +179,13 @@
 					this.tableData = resp.body;
 					this.totalRow = resp.body.length;
 
+					for(let i of this.tableData) {
+						//console.log(i);
+						if(i.level == -1) {
+							i.isleaf =true;
+						}
+					}
+
 					this.$store.commit('sign', this.mod_name);
 			    	this.$store.commit('setRowNumBefore', this.totalRow);
 			    	this.$store.commit('setRowNumAfter', this.totalRow);
@@ -185,15 +193,7 @@
 
 					//this.tableData[1].sub_categories[0].created_at = 1548148931;
 					//this.tableData[1].sub_categories[0].updated_at = 1548149001;
-					
-					/*
-					for(var i in this.tableData) {
-						if(this.tableData[i].hasOwnProperty('sub_categories')) {
-							for(var j in this.tableData[i].sub_categories) {
-								this.tableData.splice(i+1, 0, this.tableData[i].sub_categories[j]);
-							}
-						}
-					}*/
+
 					this.filterSearchData(page);
 					layer.close(this.loading);
 
@@ -273,15 +273,17 @@
 				}
 
 				//item added: default append to list end
+				//change to list start
+				/*
 				if(after > before) {
 					this.curPage = Math.ceil(after / this.rowsPerPage);	
 
 				} else if(curpage > 0) {
 					this.curPage = curpage;
-				} 				
+				}*/				
 			}
 
-			this.reqCatagList(this.curPage);
+			this.reqCatagList(1);
 			Bus.$on('refreshPage', this.reqCatagList);
 		}
 	}

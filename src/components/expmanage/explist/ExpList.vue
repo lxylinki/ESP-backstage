@@ -30,7 +30,7 @@
 
 				<div class="select-list" v-show="showToggle" style="overflow-y: scroll; height: 190px;">
 			    	<!--<RecSelect v-bind:item_list="catag_options" @makechoice="makeChoice"></RecSelect>-->
-					<li class="select-item" v-bind:class="{leafcatag: item.isleaf}" v-for="item in filtered_catags" v-on:click="makeChoice(item)">{{item.name}}</li>	
+					<li class="select-item" v-bind:class="{leafcatag: item.isleaf, rootcatag: item.isroot, midcatag: item.ismid}" v-for="item in filtered_catags" v-on:click="makeChoice(item)">{{item.name}}</li>	
 				</div>
 		    </div>
 
@@ -259,6 +259,7 @@
 				}
 			},
 
+			/*
 			reqCatagList(){
 				//console.log(this.catag_options);
 				this.catag_options = [];
@@ -286,6 +287,41 @@
 				}, (err)=>{
 					Utils.err_process.call(this, err, '请求实验分类列表失败');
 				});				
+			},*/
+
+			reqCatagList(){
+				//console.log(this.catag_options);
+				this.catag_options = [];
+				let api = global_.expcatag_list;
+				let data = {
+					'all': 1
+				}
+				this.$http.post(api, data).then((resp)=>{
+					this.expandCatag(this.catag_options, resp.body);				
+					this.filtered_catags = this.catag_options;
+					this.filtered_catags.unshift({'id': null, 'name': '全部分类'});
+					this.catag_value = null;
+
+				}, (err)=>{
+					Utils.err_process.call(this, err, '请求实验分类列表失败');
+				});				
+			},
+
+
+			expandCatag(arr, tree){
+				for(let i of tree) {
+					if(i.level == -1 && i.pid) {
+						i.isleaf = true;
+					} else if(i.level == 1) {
+						i.isroot = true;
+					} else if(i.level == 2) {
+						i.ismid = true;
+					}
+					arr.push(i);
+					if(i.hasOwnProperty('sub_categories')) {
+						this.expandCatag(arr, i.sub_categories)
+					}
+				}
 			},
 
 			addExp(){
@@ -408,9 +444,11 @@
 					this.search_state = keyword;
 				}
 
+				/*
 				if(curpage > 0) {
 					this.curPage = curpage;
-				} 				
+				}*/
+				this.curPage = 1; 				
 			}
 			this.inactivate();
 			this.reqCatagList();
@@ -518,7 +556,12 @@
 }
 
 .leafcatag {
-	padding-left: 15px;
+	padding-left: 25px;
+	color: #757575;
+}
+
+.midcatag {
+	padding-left: 10px;
 	color: #757575;
 }
 </style>
