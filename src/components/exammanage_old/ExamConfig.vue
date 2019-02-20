@@ -48,20 +48,20 @@
 			<el-table-column
 			  label="序号"
 			  type="index"
-			  min-width="100">
+			  min-width="200">
 			</el-table-column>
 		    
 		    <el-table-column
 		      prop="question"
 		      label="试题名称"
-		      min-width="100"
+		      min-width="200"
 		      :show-overflow-tooltip="true">
 		    </el-table-column>
 		    	    
 		    <el-table-column
 		      prop="exp_catag"
 		      label="实验分类"
-		      min-width="100">
+		      min-width="200">
 		    </el-table-column>
 
 		    <el-table-column
@@ -106,6 +106,7 @@
    				v-bind:pages='totalPage'
    		       	@setPage='filterSearchData'></Pager>
 
+<!------------------------------------------------------------------------------------------------------------------------------>
    		<div id="show-quesbank" v-show="false">
 			<div class="selectclass">
 				<div style="display: inline-block; width: 20px;"></div>
