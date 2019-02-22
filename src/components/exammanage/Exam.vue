@@ -234,8 +234,8 @@
 				    	this.$store.commit('setRowNumBefore', resp.body.total);
 				    	this.$store.commit('setRowNumAfter', resp.body.total);
 						this.tableData = resp.body._list;
-						for(let i in this.tableData) {
-							let item = this.tableData[i];
+						for(let item of this.tableData) {
+							//console.log(item);
 							item.create_time = Utils.convTime(item.created_at);
 							item.update_time = Utils.convTime(item.updated_at);
 						}
