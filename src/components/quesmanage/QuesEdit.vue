@@ -815,14 +815,16 @@
 			},			
 
 			saveEdit(){
-				var api = global_.ques_update;
-				var ans;
+				let api = global_.ques_update,
+				    ans = this.answer;
+
+				/*
 				if (this.type == 1) {
 					ans = this.answer;
 
 				} else if (this.type == 2) {
 					ans = this.getAnswers(this.answers);
-				}
+				}*/
 
 				let data = {
 					id: this.id,
