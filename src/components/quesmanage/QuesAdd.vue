@@ -2,35 +2,27 @@
 	<div id="quesadd">
 		<div style="width: 100%; height: 35px;">
 			<span style="color: #1890ff; font-weight: bold">|</span> 
-			试题管理
+			公共题库管理
 		</div>
-		
-		<div style="height: 30px;"></div>
 
-		<div class="questype">
-			<div id="tp">
-				题型： 
-			</div>
-
+		<div class="ques-type">
+			<div class="ques-type-title">题型:</div>
 			<div class="schoice">
 				<input type="radio" id="single" name="qtype" value='1' v-model="type">
 				<label for="single">单选</label>
 			</div>
-			
 			<div class="mchoice">
 				<input type="radio" id="multi" name="qtype" value='2' v-model="type">
 				<label for="multi">多选</label>
 			</div>
 		</div>
 
-		<div style="height: 40px;"></div>
 
-		<div class="expbelong">所属实验： 
+		<div class="exp-belong">所属实验： 
 			<template>
 			  <el-select class="longselect exp-belong-input"
 			  			 v-model="exp_value" 
-			  			 placeholder="请搜索实验名称"
-			  			 v-on:change="">
+			  			 placeholder="请搜索实验名称">
 			    <el-option
 			      v-for="item in exp_options"
 			      :key="item.id"
@@ -38,755 +30,311 @@
 			      :value="item.id">
 			    </el-option>
 			  </el-select>
-			</template>
-				
-			<span class="redalert" v-show="!exp_value">*</span>
-			<span class="whitedefault" v-show="exp_value">*</span>
+			</template>			
+			<span v-bind:class="{red: !exp_value, white: exp_value}">*</span>
 		</div>
 
-		<div style="height: 40px;"></div>
 		
 		<div class="question">
-			<div id="ques">
-				题干：
-			</div>
+			<div class="ques-body-title">题干：</div>
 				
-			<div id="quesbody">
-				<el-input type="textarea" 
-						  class="questionbody" 
+			<div class="ques-body">
+				<el-input type="textarea"
+						  class="ques-body-input"
 						  v-model="question"
-						  placeholder="必填"></el-input>
+						  placeholder="必填">
+				</el-input>
 			</div>
 		</div>
-
-		<div style="height: 40px;"></div>
-
-		<div class="answers">
-			<div class="ansopt">答案选项</div>
-			<div class="adddel">增加/删除</div>
-			<div class="rightopt">正确选项</div>
-			<div class="mvupdown">上移下移</div>
-		</div>
-
-		<div style="height: 30px;"></div>
-
 
 		<div class="opts">
+			<div class="ans-header">
+				<div class="ans-opt-col">答案选项</div>
+				<div class="add-del-col">增加/删除</div>
+				<div class="right-opt-col">正确选项</div>
+				<div class="mv-updown-col">上移下移</div>
+			</div>
+		
 			<div class="opts-div">
-<!------------------------------------------------------------------------------------------------------------------------>
-			<div class="answera" v-show="showA">
-				<div style="display: inline-block; margin-left: 0px; margin-right: 20px;" class="opt-label">选项A</div>
+				<Option v-for="(opt, idx) in opt_list" 
+					 
+					 v-bind:key="opt.id"
+					 v-bind:opts_num="opts_num"
+					 v-bind:idx="idx"
+					 v-bind:opt="opt"
 
-				<!--input-->
-				<div style="display: inline-block; margin-right: 20px;" class="opt-input">
-					<input class="longinput" type="text" v-model="aval" placeholder="必填">
-				</div>
-				
-				<!--add-->
-				<div style="display: inline-block;" class="opt-add">
-					<i style="color: #333333; font-size: 150%;" 
-					   class="iconfont" 
-					   v-on:click="aAddNewOpt()"
-					   v-show="!showE">
-						&#xe62d;
-					</i>
-					<i style="color: #ffffff; font-size: 150%;" class="iconfont" v-show="showE">&#xe62d;</i>
-				</div>
-				
-				<!--del-->
-				<div style="display: inline-block;" class="opt-del">
-					<i style="color: #333333; font-size: 150%; margin-right: 20px;" 
-					   class="iconfont" 
-					   v-on:click="delA()"
-					   v-show="showC">&#xe6a9;</i>
-					<i style="color: #ffffff; font-size: 150%; margin-right: 20px;" 
-					   class="iconfont" 
-					   v-show="!showC">&#xe6a9;</i>
-				</div>
-				
-				<!--correct one-->
-				<div class="checkicon opt-correct" style="display: inline-block;">
-					<input style="height: 24px; width: 24px; margin-right: 20px; margin-left: 30px;" 
-						   class="checkbox"
-						   id="aCheck"
-						   v-on:change="checkA()" 
-						   v-model="aCorrect"
-						   type="checkbox"><label for="aCheck"></label>
-				</div>
-				
-				<!--move up-->
-				<div style="display: inline-block;" class="opt-mvup">
-					<i style="color: #333333; font-size: 170%; margin-left: 20px;" class="iconfont">&#xe7c6;</i>
-				</div>
+					 v-on:delete="del_opt"
+					 v-on:add="add_opt"
+					 v-on:select="select_opt"
+					 v-on:unselect="unselect_opt"
+					 v-on:mvup="mv_up"
+					 v-on:mvdown="mv_down"
 
-				<!--move down-->
-				<div style="display: inline-block;" class="opt-mvdown">
-					<i style="color: #333333; font-size: 170%;" class="iconfont" v-on:click="mvDownA()">&#xe8ed;</i>
-				</div>
-				<div style="height: 20px;"></div>
-			</div>
-<!----------------------------------------------------------------------------------------------------------------------->
-			<div class="answerb" v-show="showB">
-				<!--title-->
-				<div style="display: inline-block; margin-left: 0px; margin-right: 20px;">选项B</div>
-
-				<!--input-->
-				<div style="display: inline-block; margin-right: 20px;">
-					<input class="longinput" type="text" v-model="bval" placeholder="必填">
-				</div>
-				<!--add-->
-				<div style="display: inline-block;">
-					<i style="color: #333333; font-size: 150%;" 
-					   class="iconfont" 
-					   v-on:click="bAddNewOpt()"
-					   v-show="!showE">
-						&#xe62d;
-					</i>
-					<i style="color: #ffffff; font-size: 150%;" class="iconfont" v-show="showE">&#xe62d;</i>
-				</div>
-
-				<!--del-->
-				<div style="display: inline-block;" >
-					<i style="color: #333333; font-size: 150%; margin-right: 20px;" 
-					   class="iconfont" 
-					   v-on:click="delB()"
-					   v-show="showC">&#xe6a9;</i>
-					<i style="color: #ffffff; font-size: 150%; margin-right: 20px;" 
-					   class="iconfont" 
-					   v-show="!showC">&#xe6a9;</i>
-				</div>
-				
-				<!--correct-->
-				<div class="checkicon" style="display: inline-block;">
-					<input style="height: 24px; width: 24px; margin-right: 20px; margin-left: 30px;" 
-						   class="checkbox" 
-						   type="checkbox"
-						   id="bCheck"
-						   v-on:change="checkB()"
-						   v-model="bCorrect"><label for="bCheck"></label>
-				</div>
-				<!--move up-->
-				<div style="display: inline-block;">
-					<i style="color: #333333; font-size: 170%; margin-left: 20px;" class="iconfont" v-on:click="mvUpB()">&#xe7c6;</i>
-				</div>
-				<!--move down-->
-				<div style="display: inline-block;">
-					<i style="color: #333333; font-size: 170%;" class="iconfont" v-on:click="mvDownB()">&#xe8ed;</i>
-				</div>
-				<div style="height: 20px;"></div>
-			</div>
-
-<!-------------------------------------------------------------------------------------------------------------------------->
-			<div class="answerc" v-show="showC">
-				<!--title-->
-				<div style="display: inline-block; margin-left: 0px; margin-right: 20px;">选项C</div>
-
-				<!--input-->
-				<div style="display: inline-block; margin-right: 20px;">
-					<input class="longinput" type="text" v-model="cval">
-				</div>
-				<!--add-->
-				<div style="display: inline-block;">
-					<i style="color: #333333; font-size: 150%;" 
-					   class="iconfont" 
-					   v-on:click="cAddNewOpt()"
-					   v-show="!showE">
-						&#xe62d;
-					</i>
-					<i style="color: #ffffff; font-size: 150%;" class="iconfont" v-show="showE">&#xe62d;</i>
-				</div>
-				<!--del-->
-				<div style="display: inline-block;">
-					<i style="color: #333333; font-size: 150%; margin-right: 20px;" 
-					   class="iconfont" 
-					   v-on:click="delC()">&#xe6a9;</i>
-				</div>
-				<!--correct-->
-				<div class="checkicon" style="display: inline-block;">
-					<input style="height: 24px; width: 24px; margin-right: 20px; margin-left: 30px;" 
-						   class="checkbox" 
-						   type="checkbox"
-						   id="cCheck"
-						   v-on:change="checkC()"
-						   v-model="cCorrect"><label for="cCheck"></label>
-				</div>
-				<!--move up-->
-				<div style="display: inline-block;">
-					<i style="color: #333333; font-size: 170%; margin-left: 20px;" class="iconfont" v-on:click="mvUpC()">&#xe7c6;</i>
-				</div>
-				<!--move down-->
-				<div style="display: inline-block;">
-					<i style="color: #333333; font-size: 170%;" class="iconfont" v-on:click="mvDownC()">&#xe8ed;</i>
-				</div>
-				<div style="height: 20px;"></div>
-			</div>
-
-			
-<!-------------------------------------------------------------------------------------------------------------------------->
-			<div class="answerd" v-show="showD">
-				<!--title-->
-				<div style="display: inline-block; margin-left: 0px; margin-right: 20px;">选项D</div>
-
-				<!--input-->
-				<div style="display: inline-block; margin-right: 20px;">
-					<input class="longinput" type="text" v-model="dval">
-				</div>
-				
-				<!--add-->
-				<div style="display: inline-block;">
-					<i style="color: #333333; font-size: 150%;" 
-					   class="iconfont" 
-					   v-on:click="dAddNewOpt()"
-					   v-show="!showE">
-						&#xe62d;
-					</i>
-					<i style="color: #ffffff; font-size: 150%;" class="iconfont" v-show="showE">&#xe62d;</i>
-				</div>
-				
-				<!--del-->
-				<div style="display: inline-block;">
-					<i style="color: #333333; font-size: 150%; margin-right: 20px;" class="iconfont" v-on:click="delD()">&#xe6a9;</i>
-				</div>
-				
-				<!--correct one-->
-				<div class="checkicon" style="display: inline-block;">
-					<input style="height: 24px; width: 24px; margin-right: 20px; margin-left: 30px;" 
-						   class="checkbox" 
-						   type="checkbox"
-						   id="dCheck" 
-						   v-on:change="checkD()"
-						   v-model="dCorrect"><label for="dCheck"></label>
-				</div>
-				
-				<!--move up-->
-				<div style="display: inline-block;">
-					<i style="color: #333333; font-size: 170%; margin-left: 20px;" class="iconfont" v-on:click="mvUpD()">&#xe7c6;</i>
-				</div>
-
-				<!--move down-->
-				<div style="display: inline-block;">
-					<i style="color: #333333; font-size: 170%;" class="iconfont" v-on:click="mvDownD()">&#xe8ed;</i>
-				</div>
-
-				<div style="height: 20px;"></div>
-			</div>
-
-			
-<!----------------------------------------------------------------------------------------------------------------------------->
-			<div class="answere" v-show="showE">
-				<!--title-->
-				<div style="display: inline-block; margin-left: 0px; margin-right: 20px;">选项E</div>
-				<!--input-->
-				<div style="display: inline-block; margin-right: 20px;">
-					<input class="longinput" type="text" v-model="eval">
-				</div>
-				<!--add-->
-				<div style="display: inline-block;">
-					<i style="color: #333333; font-size: 150%;" 
-					   class="iconfont" 
-					   v-on:click="eAddNewOpt()"
-					   v-show="!showE">
-						&#xe62d;
-					</i>
-					<i style="color: #ffffff; font-size: 150%;" class="iconfont" v-show="showE">&#xe62d;</i>
-				</div>
-				<!--del-->
-				<div style="display: inline-block;">
-					<i style="color: #333333; font-size: 150%; margin-right: 20px;" class="iconfont" v-on:click="delE()">&#xe6a9;</i>
-				</div>
-				<!--correct one-->
-				<div class="checkicon" style="display: inline-block;">
-					<input style="height: 24px; width: 24px; margin-right: 20px; margin-left: 30px;" 
-						   class="checkbox" 
-						   type="checkbox"
-						   id="eCheck"
-						   v-on:change="checkE()"
-						   v-model="eCorrect"><label for="eCheck"></label>
-				</div>
-				<!--move up-->
-				<div style="display: inline-block;">
-					<i style="color: #333333; font-size: 170%; margin-left: 20px;" class="iconfont" v-on:click="mvUpE()">&#xe7c6;</i>
-				</div>
-				<!--move down-->
-				<div style="display: inline-block;">
-					<i style="color: #333333; font-size: 170%;" class="iconfont">&#xe8ed;</i>
-				</div>
-				<div style="height: 20px;"></div>
+					 v-bind:class="{'animated-opt-up': opt.id == up_id, 
+					 				'animated-opt-down': opt.id == down_id}"></Option>
 			</div>
 		</div>
-
 			
-
-		<div class="analysis">
-			<div id="anls" style="display: inline-block; vertical-align: top;">
-				题目解析：
-			</div>	
-			<div id="anlsbody" style="display: inline-block; margin-bottom: 100px;">
-				<el-input type="textarea" class="analysisbody" v-model="analyze"></el-input>
+		<div class="anls">
+			<div class="anls-title">题目解析：</div>	
+			<div class="anls-body">
+				<el-input type="textarea" class="anals-body-input" v-model="analysis"></el-input>
 			</div>
 		</div>
-		
-		
-		
+				
 		<div class="btn-group">
 			<el-button class="confirm" v-on:click="preCheck()">确定</el-button>
 			<el-button class="goback" v-on:click="goBack()">返回</el-button>
-			<div style="height: 40px;"></div>
 		</div>
-
-		</div>
-
-	
 	</div>
-
 </template>
 
 <script type="text/javascript">
-	import global_ from '../Global.js';
-	import store from '../../vuex/store.js';
+	import Option from './Option.vue';
 	import Utils from '@/components/Utils.js';
-
+	import global_ from '@/components/Global.js';
 	export default {
-		store:store,
+		components: {
+			'Option': Option
+		},
 		data(){
-			return{
-				mod_name: 'ques-manage',
-				showA: true,
-				showB: true,
-				showC: false,
-				showD: false,
-				showE: false,
-
-				aval:'',
-				bval:'',
-				cval:'',
-				dval:'',
-				eval:'',
-
-				aCorrect:false,
-				bCorrect:false,
-				cCorrect:false,
-				dCorrect:false,
-				eCorrect:false,
-
-				//1 单选 2 多选
-				type:'',
-				question:'',
-				exam_id:'',
-				answer:'',
-				//answers:[],
-				analyze:'',
-
-				exp_options:[],
-				exp_value: ''
+			return {
+				type: 1,
+				exp_value: null,
+				exp_options: [],
+				question: '',
+				answer: '',
+				analysis: '',
+				opts_num: 0,
+				//name as id
+				opt_list: [
+					{	
+						id: 0,
+						name: '选项A',
+						show: true,
+						text: '',
+						correct: false,
+					},
+					{	
+						id: 1,
+						name: '选项B',
+						show: true,
+						text: '',
+						correct: false,
+					},
+					{
+						id: 2,
+						name: '选项C',
+						show: false,
+						text: '',
+						correct: false,
+					},
+					{
+						id: 3,
+						name: '选项D',
+						show: false,
+						text: '',
+						correct: false,
+					},
+					{	
+						id: 4,
+						name: '选项E',
+						show: false,
+						text: '',
+						correct: false,
+					},																				
+				],
+				//for ease of final naming
+				opt_names: ['选项A', '选项B', '选项C', '选项D', '选项E'],
+				opts: ['A', 'B', 'C', 'D', 'E'],
+				up_id: null,
+				down_id: null
 			}
 		},
 
 		methods: {
-			checkA(){
-				//when single choice and A is checked
-				var opta = document.querySelector('#aCheck');
-
-				if(!this.aval && opta.checked) {
-					this.aCorrect = false;
-					Utils.lalert('请输入选项');
-					return;
-				}
-
-				if(opta.checked && this.type == 1){
-
-					//this.answer = 'a';
-					this.aCorrect = true;
-					this.bCorrect = false;
-					this.cCorrect = false;
-					this.dCorrect = false;
-					this.eCorrect = false;
-					
-					// when multi-choice and A is checked
-				} else if(opta.checked && this.type == 2){
-					//this.answers.push('a');
-					this.aCorrect = true;
-
-					//A is unchecked
-				} else {
-					//this.rmanswer(this.answers, 'a');
-					this.aCorrect = false;
-				}
-
-			},
-			checkB(){
-				var optb = document.querySelector('#bCheck');
-
-				if(!this.bval && optb.checked) {
-					this.bCorrect = false;
-					Utils.lalert('请输入选项');
-					return;
-				}
-
-				if(optb.checked && this.type == 1){
-
-					//this.answer = 'b';
-					this.bCorrect = true;
-					this.aCorrect = false;
-					this.cCorrect = false;
-					this.dCorrect = false;
-					this.eCorrect = false;
-
-				} else if(optb.checked && this.type == 2) {
-					//this.answers.push('b');
-					this.bCorrect = true;
-
-				} else {
-					//this.rmanswer(this.answers, 'b');
-					this.bCorrect = false;
-				}
-			},
-			checkC(){
-				var optc = document.querySelector('#cCheck');
-
-				if(!this.cval && optc.checked) {
-					this.cCorrect = false;
-					Utils.lalert('请输入选项');
-					return;
-				}
-
-				if(optc.checked && this.type == 1) {
-					//this.answer = 'c';
-					this.cCorrect = true;
-					this.aCorrect = false;
-					this.bCorrect = false;
-					this.dCorrect = false;
-					this.eCorrect = false;
-
-				} else if(optc.checked && this.type == 2) {
-					//this.answers.push('c');
-					this.cCorrect = true;
-
-				} else {
-					//this.rmanswer(this.answers, 'c');
-					this.cCorrect = false;
-				}
-			},
-			checkD(){
-				var optd = document.querySelector('#dCheck');
-
-				if(!this.dval && optd.checked) {
-					this.dCorrect = false;
-					Utils.lalert('请输入选项');
-					return;
-				}
-
-				if(optd.checked && this.type == 1) {
-					//this.answer = 'd';
-					this.dCorrect = true;
-					this.aCorrect = false;
-					this.bCorrect = false;
-					this.cCorrect = false;
-					this.eCorrect = false;
-
-				}else if(optd.checked && this.type == 2) {
-					//this.answers.push('d');
-					this.dCorrect = true;
-
-				}else {
-					//this.rmanswer(this.answers, 'd');
-					this.dCorrect = false;
-				}	
-			},
-			checkE(){
-				var opte = document.querySelector('#eCheck');
-
-				if(!this.eval && opte.checked) {
-					this.eCorrect = false;
-					Utils.lalert('请输入选项');
-					return;
-				}
-
-				if(opte.checked && this.type == 1) {
-					//this.answer = 'e';
-					this.eCorrect = true;
-					this.aCorrect = false;
-					this.bCorrect = false;
-					this.cCorrect = false;
-					this.dCorrect = false;
-
-				} else if (opte.checked && this.type == 2) {
-					//this.answers.push('e');
-					this.eCorrect = true;
-
-				} else {
-					//this.rmanswer(this.answers, 'e');
-					this.eCorrect = false;
-				}
+			active_rows(){
+				return this.opt_list.filter(item=>item.show);
 			},
 
-			aAddNewOpt(){
-				//if A is empty or E is present or B is present and empty
-				if(this.showE) {
-					return;
-				} else {
-					if (this.showD) {
-						this.showE = true;
-						this.eval = this.dval;
-						this.dval = this.cval;
-						this.cval = this.bval;
-						this.bval = '';
+			inactive_rows(){
+				return this.opt_list.filter(item=>!item.show);
+			},
 
-					} else if (this.showC) {
-						this.showD = true;
-						this.dval = this.cval;
-						this.cval = this.bval;
-						this.bval = '';
+			goBack(){
+				this.$router.go(-1);
+			},
 
-					} else if (this.showB) {
-						this.showC = true;
-						this.cval = this.bval;
-						this.bval = '';
+			exchange(arr, i, j) {
+				arr.splice(j,1,...arr.splice(i, 1 , arr[j]));
+			},
 
-					} else {
-						this.bval = '';
-						this.showB = true;
+			fillExpSelect() {
+				asyncReq.call(this);
+				async function asyncReq(){	
+					let resp = await Utils.reqExpList.call(this);
+					this.exp_options = resp.body._list;
+					this.exp_options.unshift({'name': '所有实验', 'id': null});
+				}				
+			},
+
+			//helper
+			findIdx(target_opt){
+				for(let i in this.opt_list) {
+					if(this.opt_list[i].id === target_opt.id) {
+						return Number(i);
 					}
 				}
-			},
-			delA(){
-				if (this.showE){
-					this.aval = this.bval;
-					this.bval = this.cval;
-					this.cval = this.dval;
-					this.dval = this.eval;
-					this.eval = '';
-					this.showE = false;
-
-				} else if (this.showD) {
-					this.aval = this.bval;
-					this.bval = this.cval;
-					this.cval = this.dval;
-					this.dval = '';
-					this.showD = false;
-
-				} else if (this.showC) {
-					this.aval = this.bval;
-					this.bval = this.cval;
-					this.cval = '';
-					this.showC = false;
-
-				} else if (this.showB) {
-					this.aval = this.bval;
-					this.bval = '';
-					this.showB = false;
-
-				} else {
-					this.aval = '';
-					//set add btn not visible
-					//cannot delete when 1 opt left
-				}
+				return -1;
 			},
 
-			mvDownA(){
-				if(this.showB) {
-					var a = this.aval;
-					this.aval = this.bval;
-					this.bval = a;
-
-					let ifB = this.bCorrect;
-					this.bCorrect = this.aCorrect;
-					this.aCorrect = ifB;			
-				}
-			},
-
-			bAddNewOpt(){
-				if(this.showE) {
-					return;
-				} else {
-					if(this.showD) {
-						this.showE = true;
-						this.eval = this.dval;
-						this.dval = this.cval;
-						this.cval = '';
-
-					} else if (this.showC) {
-						this.showD = true;
-						this.dval = this.cval;
-						this.cval = '';
-
-					} else {
-						this.showC = true;
-						this.cval = '';
+			findActIdx(target_opt) {
+				let active_opts = this.active_rows();
+				for(let i in active_opts) {
+					if(active_opts[i].id === target_opt.id) {
+						return Number(i);
 					}
 				}
+				return -1;
 			},
-			delB(){
 
-				if(this.showE) {
-					this.bval = this.cval;
-					this.cval = this.dval;
-					this.dval = this.eval;
-					this.eval = '';
-					this.showE = false;
+			//delete is hide
+			del_opt(opt) {
+				opt.show = false;
+				opt.text = '';
+				opt.correct= false;
 
-				} else if (this.showD) {
-					this.bval = this.cval;
-					this.cval = this.dval;
-					this.dval = '';
-					this.showD = false;
+				let active_opts = this.active_rows();
+				for(let i in active_opts) {
+					active_opts[i].name = this.opt_names[i];
+				}
+				this.opts_num = active_opts.length;
+			},
 
-				} else if (this.showC) {
-					this.bval = this.cval;
-					this.cval = '';
-					this.showC = false;
+			//idx is orig index in list
+			add_opt(idx) {
+				let inactive_opts = this.inactive_rows(),
+					add_target = this.opt_list[idx];
 
-				} else {
-					this.bval = '';
-					//this.showB = false;
+				if(inactive_opts.length > 0) {
+					let i = this.findIdx(inactive_opts[0]);
+					let first_hidden = this.opt_list.splice(i, 1)[0];
+					let new_idx = this.findIdx(add_target);
+					this.opt_list.splice(new_idx+1, 0, first_hidden);
+					first_hidden.show = true;
+				}
+
+				let active_opts = this.active_rows();
+				for(let i in active_opts) {
+					active_opts[i].name = this.opt_names[i];
+				}
+				this.opts_num = active_opts.length;
+			},
+
+			select_opt(idx) {
+				if(this.type == 1) {
+					for(let i in this.opt_list) {
+						if(i == idx) {
+							this.opt_list[i].correct = true;
+						} else {
+							this.opt_list[i].correct = false;
+						}
+					}					
+				} else if(this.type == 2) {
+					this.opt_list[idx].correct = true;
 				}
 			},
 
-			mvUpB(){
-				var b = this.bval;
-				this.bval = this.aval;
-				this.aval = b;
-
-				let ifB = this.bCorrect;
-				this.bCorrect = this.aCorrect;
-				this.aCorrect = ifB;
+			unselect_opt(opt) {
+				opt.correct = false;
 			},
 
-			mvDownB(){
-				//if option C is present
-				if(this.showC) {
-					var b = this.bval;
-					this.bval = this.cval;
-					this.cval = b;
-
-					let ifB = this.bCorrect;
-					this.bCorrect = this.cCorrect;
-					this.cCorrect = ifB;					
-				}
-			},
-
-
-			cAddNewOpt(){
-				if(this.showE) {
+			//set up_id
+			pre_up(idx) {
+				//remove down class
+				this.down_id = null;
+				let act_idx = this.findActIdx(this.opt_list[idx]);
+				if(act_idx === 0) {
 					return;
 				} else {
-					if (this.showD) {
-						this.showE = true;
-						this.eval = this.dval;
-						this.dval = '';
+					this.up_id = this.opt_list[idx].id;
+				}
+			},
 
-					} else {
-						this.dval = '';
-						this.showD = true;
+			//exchange with the first active above
+			mv_up(idx) {
+				this.pre_up(idx);				
+				let opt_clicked = document.querySelectorAll('#option')[idx],
+					_this = this;
+				opt_clicked.addEventListener('animationend', switchData, false);
+
+				function switchData(){
+					for(let i=idx-1; i>=0; i--) {
+						if(_this.opt_list[i].show) {
+							_this.exchange(_this.opt_list, idx, i);
+							break;
+						}
 					}
-				}
-			},
-			delC(){
-				if(this.showE) {
-					this.cval = this.dval;
-					this.dval = this.eval;
-					this.eval = '';
-					this.showE = false;
 
-				} else if (this.showD) {
-					this.cval = this.dval;
-					this.dval = '';
-					this.showD = false;
-
-				} else {
-					this.cval = '';
-					this.showC = false;
-				}
-			},
-			mvUpC(){
-				var c = this.cval;
-				this.cval = this.bval;
-				this.bval = c;
-
-				let ifC = this.cCorrect;
-				this.cCorrect = this.bCorrect;
-				this.bCorrect = ifC;
-			},
-			mvDownC(){
-				if (this.showD){
-					var c = this.cval;
-					this.cval = this.dval;
-					this.dval = c;	
-
-					let ifC = this.cCorrect;
-					this.cCorrect = this.dCorrect;
-					this.dCorrect = ifC;									
+					let active_opts = _this.active_rows();
+					for(let i in active_opts) {
+						active_opts[i].name = _this.opt_names[i];
+					}
+					//reset
+					_this.up_id = null;
+					opt_clicked.removeEventListener('animationend', switchData, false);
 				}
 			},
 
-
-			dAddNewOpt(){
-				if(this.showE) {
+			//set down_id
+			pre_down(idx) {
+				//remove up class
+				this.up_id = null;
+				let act_idx = this.findActIdx(this.opt_list[idx]);
+				if(act_idx === this.opts_num-1) {
 					return;
 				} else {
-					this.showE = true;
-					this.eval = '';
+					this.down_id = this.opt_list[idx].id;
 				}
 			},
 
-			delD(){
-				if (this.showE) {
-					this.dval = this.eval;
-					this.eval = '';
-					this.showE = false;
-				} else {
-					this.dval = '';
-					this.showD = false;
-				}
-			},
-			mvUpD(){
-				var d = this.dval;
-				this.dval = this.cval;
-				this.cval = d;
+			//exchange with the first active below
+			mv_down(idx) {
+				this.pre_down(idx);
+				let opt_clicked = document.querySelectorAll('#option')[idx],
+					_this = this;
+				opt_clicked.addEventListener('animationend', switchData, false);
 
-				let ifD = this.dCorrect;
-				this.dCorrect = this.cCorrect;
-				this.cCorrect = ifD;
-			},
-			mvDownD(){
-				if (this.showE) {
-					var d = this.dval;
-					this.dval = this.eval;
-					this.eval = d;	
-
-					let ifD = this.dCorrect;
-					this.dCorrect = this.eCorrect;
-					this.eCorrect = ifD;				
-				}
-			},
-
-			delE(){
-				this.eval = '';
-				this.showE = false;
-			},
-			mvUpE(){
-				var e = this.eval;
-				this.eval = this.dval;
-				this.dval = e;
-
-				let ifE = this.eCorrect;
-				this.eCorrect = this.dCorrect;
-				this.dCorrect = ifE;
-			},
-
-			composeFinalAns(){
-				let final_ans = {'A':this.aCorrect, 'B':this.bCorrect, 'C':this.cCorrect, 'D':this.dCorrect, 'E':this.eCorrect};
-				for(let opt in final_ans) {
-					if(final_ans[opt]) {
-						this.answer += opt;
+				function switchData(event){
+					for(let i=idx+1; i<=4; i++) {
+						if(_this.opt_list[i].show) {
+							_this.exchange(_this.opt_list, idx, i);
+							break;
+						}						
 					}
-				}
-				//console.log(this.answer);
+					let active_opts = _this.active_rows();
+					for(let i in active_opts) {
+						active_opts[i].name = _this.opt_names[i];
+					}	
+					//reset
+					_this.down_id = null;
+					opt_clicked.removeEventListener('animationend', switchData, false);			
+				}				
 			},
 
-			preCheck(){
-				//this.composeFinalAns();
+			collectAns(active_opts){
+				for(let i in active_opts) {
+					let opt = active_opts[i];
+					if(opt.correct) {
+						this.answer += this.opts[i];
+					}
+				}				
+			},			
 
+			preCheck(){			
+				let final_opts = this.active_rows();
+				this.collectAns(final_opts);
+				
 				if(!this.exp_value) {
 					Utils.lalert('请选择所属实验');
 					return;
@@ -795,181 +343,74 @@
 					Utils.lalert('请输入题干');
 					return;
 
-				} else if((!this.aval) || (!this.bval)) {
+				} else if((!final_opts[0].text) || (!final_opts[1].text)) {
 					Utils.lalert('请输入选项');
 					return;
 
-				} else if(!(this.aCorrect || this.bCorrect || this.cCorrect || this.dCorrect || this.eCorrect)) {
+				} else if(this.answer.length === 0) {
 					Utils.lalert('请选择正确选项');
 					return;
+
 				} else {
-					this.composeFinalAns();
 					this.addCreate();
 				}
 			},
 
 			addCreate(){
-				let api = global_.ques_create;
-				/*
-				let ans;
-				if (this.type == 1) {
-					ans = this.answer;
+				let final_opts = this.active_rows();
+				let api = global_.ques_create,
+					data = {
+						eid: this.exp_value,
+						type: this.type,
+						question: this.question,
+						answer: this.answer,
+						option_a: final_opts[0].text,
+						option_b: final_opts[1].text,
+						analysis: this.analysis
+					};	
 
-				} else if (this.type == 2) {
-					ans = this.getAnswers(this.answers);
-				}*/
-
-				let data = {
-					eid: this.exp_value,
-					type: this.type,
-					question: this.question,
-					answer: this.answer,
-					option_a: this.aval,
-					option_b: this.bval,
-					//display: 0,
-					analysis: this.analyze
+				if(final_opts[2]) {
+					data.option_c = final_opts[2].text;
 				}
 
-				if(this.cval) {
-					data.option_c = this.cval;
-				}
-
-				if(this.dval) {
-					data.option_d = this.dval;
+				if(final_opts[3]) {
+					data.option_d = final_opts[3].text;
 				}
 				
-				if(this.eval) {
-					data.option_e = this.eval;
+				if(final_opts[4]) {
+					data.option_e = final_opts[4].text;
 				}
-
-				//console.log(data);
 
 				this.$http.post(api, data).then((resp)=>{
 					//console.log(resp);
-					layer.alert('试题创建成功', {title:'提示', area:['280px','190px']});
-					this.$store.commit('sign', this.mod_name);
-					this.$store.commit('incRowNumAfter', 1);
+					Utils.lalert('试题创建成功');
 					this.$router.go(-1);
 
 				}, (err)=>{
-					layer.alert('试题创建失败', {title:'提示', area:['280px','190px']});
-					console.log(err);
-				});
-			},
-
-			goBack(){
-				this.$router.go(-1);
-			},
-
-			fillExpSelect(){
-				asyncReq.call(this);
-				async function asyncReq(){
-					let resp = await Utils.reqExpList.call(this);
-					this.exp_options = resp.body._list;
-					this.exp_options.unshift({'name': '所有实验', 'id': null});
-				}				
+					Utils.err_process.call(this, err, '试题创建失败')
+				});			
 			}
+
 		},
-		mounted(){		
-			Utils.page_check_status.call(this);	
-			this.type = 1;
+
+		mounted(){
+			Utils.page_check_status.call(this);
 			this.fillExpSelect();
+			this.opts_num = this.active_rows().length;
 		}
 	}
 </script>
 
 <style type="text/css" scoped>
-.checkicon {
-	position: relative;
+.ques-type {
+	margin-top: 30px;
+	margin-bottom: 40px;
 }
 
-.checkicon input[type="checkbox"] {
-	opacity: 0;
-}
-
-.checkicon label {
-	width: 22px;
-	height: 22px;
-	border: 2px solid #cccccc;
-	position: absolute;
-	left: 30px;
-	top: 4px;
-}
-
-.checkicon input[type="checkbox"]:checked + label {
-	background: #0099ff;
-	border: 1px solid #0099ff;
-	background-image: url("../../assets/white-correct.png");
-	background-repeat: no-repeat;
-}
-
-.longselect /deep/ .el-input__inner {
-	height: 34px;
-	width: 300px;
-}
-
-.redalert {
-	color: red;
-}
-.whitedefault {
-	/*same with bg color*/
-	color: #ffffff;
-}
-
-.analysis {
-	margin-top: 15px;
-	margin-right: 15px;
-	position: relative;
-}
-
-.analysisbody {
-	margin-left: 5px;
-}
-
-.btn-group {
-	position: relative;
-	margin-left: 95px;
-}
-
-.iconfont {
-	cursor: pointer;
-}
-
-.opts {
-	background: #ffffff;
-	position: relative;
-	width: 800px;
-	margin-bottom: 30px;
-	text-align: left;
-}
-
-.checkbox {
-	height: 18px;
-}
-
-.answers {
-	position: relative;
-	height: 40px;
-	background: #f7f7f7;
-}
-
-.ansopt {
+.ques-type-title {
 	display: inline-block;
-	margin-right: 320px;
-	margin-top: 8px;
-	margin-left: 20px;
-}
-
-.adddel {
-	display: inline-block;
+	margin-left: 38px;
 	margin-right: 20px;
-}
-.rightopt {
-	display: inline-block;
-	margin-right: 20px;
-}
-.mvupdown {
-	display: inline-block;
 }
 
 div>.schoice input {
@@ -991,45 +432,159 @@ div>.mchoice input {
 	margin-left: 40px;
 }
 
-#tp {
-	display: inline-block;
-	margin-left: 38px;
-	margin-right: 5px;
-}
-
-#ques {
-	position: relative;
-	vertical-align: top;
-	display: inline-block;
-	margin-left: 36px;
-}
-
-#anls {
+.exp-belong {
 	margin-left: 5px;
-}
-
-#quesbody {
-	display: inline-block;
-	position: relative;
-	left: 0px;
-}
-
-.expbelong {
-	margin-left: 5px;
-}
-
-.questionbody {
-	margin-left: 10px;
+	margin-bottom: 30px;
 }
 
 .exp-belong-input {
 	margin-left: 10px;
 }
 
-.opts-div {
-	text-align: right;
-	width: 650px;
-	padding-left: 5px;
+.red {
+	color: red;
 }
 
+.white {
+	/*same with bg color*/
+	color: white;
+	pointer-events: none;
+}
+.ques-body-title {
+	position: relative;
+	vertical-align: top;
+	display: inline-block;
+	margin-left: 36px;	
+}
+
+.ques-body {
+	display: inline-block;
+	position: relative;
+	left: 0px;	
+}
+
+.ques-body-input {
+	margin-left: 10px;
+}
+
+.longselect /deep/ .el-input__inner {
+	height: 36px;
+	width: 300px;
+}
+
+.ans-header {
+	position: relative;
+	height: 40px;
+	width: 100%;
+	background: #f0f7ff;
+}
+
+.ans-opt-col {
+	display: inline-block;
+	margin-right: 640px;
+	margin-top: 8px;
+	margin-left: 10px;
+}
+
+.add-del-col {
+	display: inline-block;
+	margin-left: 5px;
+	margin-right: 10px;
+}
+
+.right-opt-col {
+	display: inline-block;
+	margin-left: 10px;
+}
+
+.mv-updown-col {
+	display: inline-block;
+	margin-left: 20px;
+}
+
+.opts {
+	border: 1px solid red;
+	width:1000px;
+	height: 100%;
+	border:1px solid rgba(92,156,236,1);
+	border-radius:0px 0px 4px 4px;
+	margin-left: 98px;
+	margin-bottom: 30px;
+	margin-top: 30px;
+}
+
+.opts-div {
+	position: relative;
+	width: 1000px;
+	text-align: right;
+	width: 100%;
+	padding-bottom: 20px;
+}
+
+.anls {
+	margin-top: 15px;
+	margin-right: 15px;
+	position: relative;
+}
+
+
+.btn-group {
+	position: relative;
+	margin-left: 95px;
+	margin-bottom: 40px;
+}
+
+.opt-correct {
+	position: relative;
+	top: 15px;
+}
+
+.ans-opt {
+	/*must set position for animation*/
+	position: relative;
+	height: 60px;
+	line-height: 60px;
+}
+
+.anls-title {
+	margin-left: 10px;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.anls-body {
+	display: inline-block;
+	margin-left: 2px;
+	margin-bottom: 40px;
+}
+
+
+.longinput {
+	box-sizing: border-box;
+}
+
+#option {
+	position: relative;
+	/*transition: all 10s;*/
+}
+
+@keyframes mvup{
+	0%   {bottom: 0;}
+	100% {bottom: 60px;}	
+}
+
+@keyframes mvdown{
+	0%   {top: 0;}
+	100% {top: 60px;}	
+}
+
+.animated-opt-up {
+	/*background: yellowgreen;*/
+	animation: mvup .5s ease-in-out 1;
+}
+
+.animated-opt-down {
+	/*background: pink;*/
+	animation: mvdown .5s ease-in-out 1;
+}
 </style>
