@@ -2,6 +2,8 @@
 	<div class="rectablerows">
 			<tr class="recrow" v-for="(item, idx) in item_list" :class="{leafcatag: item.isleaf}">
 				<div class="recrowcontent" >
+					<td class="index" v-if="page_size>0">{{(current_page-1)*page_size+idx+1}}</td>
+					<td class="sub-index" v-else></td>
 					<td class="name"><div class="nametext">{{item.name}}</div></td>
 					<td class="level">{{item.level}}</td> 
 					<td class="created_at">{{tconv(item.created_at)}}</td>
@@ -33,7 +35,7 @@
 
 	export default {
 		name: 'RecTable',
-		props:['item_list', 'mod_name', 'current_page', 'search_state'],
+		props:['item_list', 'mod_name', 'current_page', 'search_state', 'page_size'],
 		methods: {
 			tconv(ntime){
 				return Utils.convTime(ntime);
@@ -68,7 +70,7 @@
 				});
 			}
 
-		}
+		},
 	}
 </script>
 
@@ -85,9 +87,13 @@ td {
 	/*border: 1px solid;*/
 }
 
+.index, .sub-index {
+	width: 200px;
+}
+
 .name {
 	width: 320px;
-	text-align: left !important;
+	text-align: center;
 	padding-left: 30px;
 }
 
@@ -125,24 +131,23 @@ td {
 	background: #f7f8fc;
 }
 
-/*sub item*/
+
 .recrow .recrow .recrowcontent .name{
 	padding-left: 10px;
 }
 
-/*second level*/
 .recrow .recrow .recrowcontent .name .nametext {
 	width: 100px;
-	padding-left: 35px;
+	padding-left: 45px;
 }
 
 .recrow .recrow .recrow .recrowcontent .name .nametext {
 	width: 100px;
-	padding-left: 50px;
+	padding-left: 60px;
 }
 
 .recrow .recrow .recrowcontent {
-	color: #757575;
+	color: #999999;
 }
 
 .op {

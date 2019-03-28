@@ -69,7 +69,14 @@
 		<template>
 		  <el-table
 		    :data="list"
-		    style="width: 100%;">
+		    style="width: 100%;"
+		    :row-class-name="row_name">
+
+			<el-table-column
+			  label="序号"
+			  :formatter="formatter"
+			  min-width="100">
+			</el-table-column>		    
 		    
 		    <el-table-column
 		      prop="order"
@@ -183,10 +190,13 @@
 		},
 
 		methods: {
-			/*
-			activate(){
-				$('.select-header').removeClass('select-header-normal').addClass('select-header-active');
-			},*/
+			row_name({row, rowIndex}){
+				row.ridx = rowIndex;
+			},
+			
+			formatter(row, column ,cellValue) {
+				return this.rowsPerPage * (this.curPage - 1)  + (1+ row.ridx);
+			},
 
 			toggleList(){
 				this.showToggle = !this.showToggle;
@@ -255,36 +265,6 @@
 					this.filterSearchData(this.curPage);
 				}
 			},
-
-			/*
-			reqCatagList(){
-				//console.log(this.catag_options);
-				this.catag_options = [];
-				let api = global_.expcatag_list;
-				let data = {
-					'all': 1
-				}
-				this.$http.post(api, data).then((resp)=>{
-					//this.catag_options = resp.body;
-					for(let i of resp.body) {
-						this.catag_options.push(i);
-
-						if(i.hasOwnProperty('sub_categories')) {
-							for(let j of i.sub_categories) {
-								j.isleaf = true;
-								this.catag_options.push(j);
-							}
-						}
-					}
-
-					this.filtered_catags = this.catag_options;
-					this.filtered_catags.unshift({'id': null, 'name': '全部分类'});
-					this.catag_value = null;
-
-				}, (err)=>{
-					Utils.err_process.call(this, err, '请求实验分类列表失败');
-				});				
-			},*/
 
 			reqCatagList(){
 				//console.log(this.catag_options);

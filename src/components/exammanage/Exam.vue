@@ -68,7 +68,15 @@
 		<template>
 		  <el-table
 		    :data="list"
-		    style="width: 100%;">
+		    style="width: 100%;"
+		    :row-class-name="row_name">
+
+			<el-table-column
+			  label="序号"
+			  :formatter="formatter"
+			  min-width="100">
+			</el-table-column>
+
 		    <el-table-column
 		      prop="name"
 		      label="考核名称"
@@ -214,6 +222,14 @@
 		},
 
 		methods: {
+			row_name({row, rowIndex}){
+				row.ridx = rowIndex;
+			},
+			
+			formatter(row, column ,cellValue) {
+				return this.rowsPerPage * (this.curPage - 1)  + (1+ row.ridx);
+			},
+			
 			fillExpSelect(){
 				asyncReq.call(this);
 				async function asyncReq(){

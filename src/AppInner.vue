@@ -23,19 +23,17 @@
 				</el-header>
 
 
-				<el-container>
-        			<el-aside width="240px">
-        				<!--<div style="height: 110px; background: #31313c"></div>-->
-        				<Nav v-bind:menuList='menuList'
-        				     v-bind:curGroup='current_group'></Nav>
-        				<!--<div class="navbg"></div>-->
-        			</el-aside>
-        
-        			<el-main>
-        				<!--main content area-->
-        				<router-view></router-view>
-        			</el-main>
-      			</el-container>
+    			<el-aside width="240px">
+    				<!--<div style="height: 110px; background: #31313c"></div>-->
+    				<Nav v-bind:menuList='menuList'
+    				     v-bind:curGroup='current_group'></Nav>
+    				<!--<div class="navbg"></div>-->
+    			</el-aside>
+    
+    			<el-main>
+    				<!--main content area-->
+    				<router-view></router-view>
+    			</el-main>
 
 			</el-container>
 

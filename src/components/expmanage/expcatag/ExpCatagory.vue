@@ -89,7 +89,8 @@
 
 
 		<div class="tableheader">
-			<div class="coltitle" style="width: 400px;">实验名称</div>
+			<div class="coltitle" style="width: 200px;">序号</div>
+			<div class="coltitle" style="width: 320px;">实验名称</div>
 			<div class="coltitle" style="width: 400px;">级别</div>
 			<div class="coltitle" style="width: 400px;">创建时间</div>
 			<div class="coltitle" style="width: 400px;">更新时间</div>
@@ -98,6 +99,7 @@
 
 		<!--<table style="table-layout: fixed; border-collapse:collapse;">-->
 		<RecTable v-bind:item_list="list"
+				  v-bind:page_size="rowsPerPage"
 				  v-bind:mod_name="mod_name"
 				  v-bind:current_page="curPage"
 				  v-bind:search_state="search_state"></RecTable>
@@ -134,7 +136,7 @@
 				search_state:'',
 				curPage: 1,
 				totalRow: 0,
-				rowsPerPage: 10,
+				rowsPerPage: 5,
 				mod_name: 'exp-catag',
 				loading: null,
 				row_nums: [
