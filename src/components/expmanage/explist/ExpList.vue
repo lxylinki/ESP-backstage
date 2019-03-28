@@ -372,7 +372,6 @@
 		
 		watch: {
 			catag_search_state(newVal, oldVal) {
-				console.log('catag_search_state');
 				if (!this.catag_search_state) {
 					this.filtered_catags = this.catag_options;
 
