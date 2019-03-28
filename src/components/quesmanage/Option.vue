@@ -114,8 +114,8 @@
 .opt-input input {
 	width:600px;
 	height:32px;
-	background:rgba(255,255,255,1);
-	border:1px solid rgba(153,153,153,0.5);
+	background:rgba(255, 255, 255, 1);
+	border:1px solid rgba(153, 153, 153, 0.5);
 	border-radius:4px;
 }
 
@@ -132,7 +132,7 @@
 }
 
 .unchecked-box, .checked-box {
-	color: #5c9cec;
+	color: #0099ff;
 	cursor: pointer;
 	font-size: 180%;
 }

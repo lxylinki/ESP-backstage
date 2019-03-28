@@ -29,7 +29,6 @@
 		    	</div>
 
 				<div class="select-list" v-show="showToggle" style="overflow-y: scroll; height: 190px;">
-			    	<!--<RecSelect v-bind:item_list="catag_options" @makechoice="makeChoice"></RecSelect>-->
 					<li class="select-item" v-bind:class="{leafcatag: item.isleaf, rootcatag: item.isroot, midcatag: item.ismid}" v-for="item in filtered_catags" v-on:click="makeChoice(item)">{{item.name}}</li>	
 				</div>
 		    </div>
@@ -137,12 +136,10 @@
 <script type="text/javascript">
 	import global_ from '@/components/Global.js';
 	import Utils from '@/components/Utils.js';
-	//import RecSelect from './RecSelect.vue';
 	import Pager from '@/components/Pager.vue';
 
 	export default {
 		components: {
-			//'RecSelect': RecSelect
 			'Pager': Pager
 		},
 		data(){

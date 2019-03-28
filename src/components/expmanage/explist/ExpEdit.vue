@@ -32,7 +32,6 @@
 				    	</div>
 
 						<div class="select-list" v-show="showToggle" style="overflow-y: scroll; height: 190px;">
-					    	<!--<RecSelect v-bind:item_list="catag_options" @makechoice="makeChoice"></RecSelect>-->
 							<li class="select-item" v-bind:class="{leafcatag: item.isleaf, unselectable: item.isroot}" v-for="item in filtered_catags" v-on:click="makeChoice(item)">{{item.name}}</li>	
 						</div>
 				    </div>
@@ -332,6 +331,8 @@
 	height: 500px;
 	margin-top: 10px;
 	float: right;
+	position: relative;
+	right: 400px;
 }
 
 .box {

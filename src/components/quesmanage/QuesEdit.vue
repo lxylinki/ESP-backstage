@@ -530,7 +530,7 @@ div>.mchoice input {
 	position: relative;
 	height: 40px;
 	width: 100%;
-	background: #f0f7ff;
+	background: #f7f7f7;
 }
 
 .ans-opt-col {
@@ -560,7 +560,7 @@ div>.mchoice input {
 	border: 1px solid red;
 	width:1000px;
 	height: 100%;
-	border:1px solid rgba(92,156,236,1);
+	border:1px solid rgba(153, 153, 153, 0.5);
 	border-radius:0px 0px 4px 4px;
 	margin-left: 98px;
 	margin-bottom: 30px;
