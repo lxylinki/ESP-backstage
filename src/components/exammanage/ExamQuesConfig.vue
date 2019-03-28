@@ -553,6 +553,7 @@
 	writing-mode: vertical-lr;
 	margin-left: 8px;
 	margin-top: 5px;
+	font-size: 14px;
 }
 .add-complete-icon, .add-ques-icon {
 	margin-left: 10px;
